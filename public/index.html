@@ -285,6 +285,37 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .tech-item-desc { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
 .tech-impact { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
 
+/* ── SEARCH CONSOLE ── */
+.gsc-metric { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 16px 18px; }
+.gsc-metric-label { font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.gsc-metric-val { font-size: 26px; font-weight: 700; color: var(--white); line-height: 1; }
+.gsc-metric-delta { font-size: 11px; margin-top: 5px; }
+.gsc-action-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--gray-700); align-items: flex-start; }
+.gsc-action-item:last-child { border-bottom: none; }
+.gsc-action-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.gsc-action-body { flex: 1; }
+.gsc-action-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.4; }
+.gsc-action-desc { font-size: 12px; color: var(--gray-400); line-height: 1.6; }
+.gsc-action-why { font-size: 11px; color: var(--lime); margin-top: 4px; font-weight: 500; }
+.gsc-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; flex-shrink: 0; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+.gsc-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--gray-700); }
+.gsc-row:last-child { border-bottom: none; }
+.gsc-row-label { flex: 1; font-size: 12px; color: var(--gray-200); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gsc-row-bar-wrap { width: 80px; flex-shrink: 0; }
+.gsc-row-bar-track { background: var(--gray-700); border-radius: 3px; height: 5px; overflow: hidden; }
+.gsc-row-bar-fill { height: 100%; border-radius: 3px; background: var(--lime); }
+.gsc-row-num { font-size: 11px; color: var(--gray-400); width: 44px; text-align: right; flex-shrink: 0; }
+.gsc-row-pos { font-size: 11px; font-weight: 700; width: 28px; text-align: center; flex-shrink: 0; padding: 2px 4px; border-radius: 4px; }
+.gsc-opp-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--gray-700); }
+.gsc-opp-row:last-child { border-bottom: none; }
+.gsc-opp-query { flex: 1; font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.gsc-opp-meta { font-size: 11px; color: var(--gray-400); }
+.gsc-opp-fix { font-size: 11px; color: var(--lime); margin-top: 3px; }
+.gsc-device-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); padding: 12px 16px; min-width: 140px; }
+.gsc-device-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); margin-bottom: 4px; }
+.gsc-device-clicks { font-size: 20px; font-weight: 700; color: var(--white); }
+.gsc-device-impr { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
 /* ── COPYWRITER ── */
 .copy-client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
 .copy-client-tile { background: var(--gray-800); border: 2px solid var(--gray-700); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .2s; text-align: center; }
@@ -359,6 +390,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
     <button class="nav-tab" onclick="switchTab('citation', this)">Citation generator</button>
     <button class="nav-tab" onclick="switchTab('linkedin', this)">Content and social</button>
     <button class="nav-tab" onclick="switchTab('scheduler', this)">Post scheduler</button>
+    <button class="nav-tab" onclick="switchTab('gsc', this)">Search Console</button>
     <button class="nav-tab" onclick="switchTab('seo', this)">SEO</button>
     <button class="nav-tab" onclick="switchTab('copy', this)">Copywriter</button>
   </nav>
@@ -839,7 +871,114 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
   </div>
 
   <!-- ══════════════════════════════════════════════════════
-       SEO PANEL
+       SEARCH CONSOLE PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-gsc">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>Search Console</h1>
+        <p>How Google sees novograf.co.uk — what is working, what is not, and exactly what to do about it</p>
+        <div class="period-label"><span class="period-dot"></span>Live data from Google Search Console · Last 28 days</div>
+      </div>
+
+      <!-- AUTH GATE -->
+      <div id="gsc-auth-prompt" style="display:none; background:var(--gray-800); border:1px solid var(--gray-700); border-radius:var(--radius); padding:2.5rem; text-align:center; margin-bottom:2rem;">
+        <div style="font-size:28px;margin-bottom:12px;">🔍</div>
+        <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;">Search Console requires Google sign-in</div>
+        <div style="font-size:13px;color:var(--gray-400);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">Sign in with the Google account that has access to novograf.co.uk in Search Console.</div>
+        <a href="/auth/login" class="login-btn" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Sign in with Google
+        </a>
+      </div>
+
+      <!-- GSC CONTENT -->
+      <div id="gsc-content" style="display:none;">
+
+        <!-- OVERVIEW METRICS -->
+        <div class="metrics-grid" id="gsc-metrics-grid">
+          <div class="loading"><div class="spinner"></div> Loading Search Console data...</div>
+        </div>
+
+        <!-- ACTION LIST + DATA SIDE BY SIDE -->
+        <div class="chart-grid-2" style="margin-top:20px;">
+
+          <!-- ACTION LIST -->
+          <div class="chart-card" style="border-color:rgba(200,240,38,0.25);">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title" style="color:var(--lime);">Your action list</div>
+                <div class="chart-subtitle">Prioritised by impact — do these in order</div>
+              </div>
+              <div id="gsc-action-spinner" class="chart-badge" style="background:var(--gray-700);color:var(--gray-400);">Loading...</div>
+            </div>
+            <div id="gsc-action-list">
+              <div class="loading" style="padding:1rem 0;"><div class="spinner"></div> Analysing your data...</div>
+            </div>
+          </div>
+
+          <!-- QUICK WINS TABLE -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Quick wins</div>
+                <div class="chart-subtitle">Pages appearing in search but not getting clicked — fix these first</div>
+              </div>
+              <div class="chart-badge lime">High impact</div>
+            </div>
+            <div id="gsc-opportunities">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TOP QUERIES + TOP PAGES -->
+        <div class="chart-grid-2" style="margin-top:16px;">
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">What people search to find you</div>
+                <div class="chart-subtitle">Top queries — last 28 days</div>
+              </div>
+            </div>
+            <div id="gsc-queries">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Your best performing pages</div>
+                <div class="chart-subtitle">Most visible in Google — last 28 days</div>
+              </div>
+            </div>
+            <div id="gsc-pages">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DEVICE BREAKDOWN -->
+        <div class="chart-card" style="margin-top:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">How people find you</div><div class="chart-subtitle">Device breakdown — last 28 days</div></div>
+          </div>
+          <div id="gsc-devices" style="display:flex;gap:24px;flex-wrap:wrap;padding:8px 0;"></div>
+        </div>
+
+      </div>
+      <!-- end gsc-content -->
+
+    </div>
+  </div>
+  <!-- end search console panel -->
+
+  <!-- ══════════════════════════════════════════════════════
   ══════════════════════════════════════════════════════ -->
   <div class="panel" id="panel-seo">
     <div class="container">
@@ -1381,7 +1520,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 function switchTab(tab, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  ['analytics','citation','linkedin','scheduler','seo','copy'].forEach(p => {
+  ['analytics','citation','linkedin','scheduler','gsc','seo','copy'].forEach(p => {
     document.getElementById('panel-'+p).classList.toggle('active', p === tab);
   });
   if (tab === 'linkedin') {
@@ -1390,6 +1529,7 @@ function switchTab(tab, btn) {
   }
   if (tab === 'scheduler') { renderCalendar(); renderPostList(); }
   if (tab === 'seo') { initTechChecklist(); }
+  if (tab === 'gsc') { loadGscData(); }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2904,6 +3044,286 @@ function sendCopyToScheduler() {
 
 // Initialise on first load
 document.addEventListener('DOMContentLoaded', () => { initCopywriter(); });
+
+/* ══════════════════════════════════════════════════════════════
+   SEARCH CONSOLE
+══════════════════════════════════════════════════════════════ */
+
+let gscLoaded = false;
+
+async function loadGscData() {
+  // Check auth first
+  try {
+    const r = await fetch('/auth/status');
+    const j = await r.json();
+    if (!j.authenticated) {
+      document.getElementById('gsc-auth-prompt').style.display = 'block';
+      document.getElementById('gsc-content').style.display = 'none';
+      return;
+    }
+  } catch(e) {
+    document.getElementById('gsc-auth-prompt').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('gsc-auth-prompt').style.display = 'none';
+  document.getElementById('gsc-content').style.display = 'block';
+
+  if (gscLoaded) return; // don't reload on repeat tab visits
+  gscLoaded = true;
+
+  // Fire all requests in parallel
+  const [overview, queries, pages, opportunities, devices] = await Promise.allSettled([
+    fetch('/api/gsc/overview').then(r => r.json()),
+    fetch('/api/gsc/queries').then(r => r.json()),
+    fetch('/api/gsc/pages').then(r => r.json()),
+    fetch('/api/gsc/opportunities').then(r => r.json()),
+    fetch('/api/gsc/devices').then(r => r.json())
+  ]);
+
+  renderGscOverview(overview.value);
+  renderGscQueries(queries.value);
+  renderGscPages(pages.value);
+  renderGscOpportunities(opportunities.value);
+  renderGscDevices(devices.value);
+  buildGscActionList(overview.value, queries.value, pages.value, opportunities.value);
+}
+
+function gscFmt(n) {
+  if (!n && n !== 0) return '—';
+  if (n >= 1000) return (n/1000).toFixed(1)+'k';
+  return Math.round(n).toString();
+}
+function gscPct(n) { return n ? (n*100).toFixed(1)+'%' : '0%'; }
+function gscPos(n) { return n ? n.toFixed(1) : '—'; }
+function gscDelta(curr, prev, higher_is_better = true) {
+  if (!prev || prev === 0) return '';
+  const diff = ((curr - prev) / prev) * 100;
+  const up = diff > 0;
+  const col = (up === higher_is_better) ? 'var(--positive)' : 'var(--negative)';
+  return `<span style="color:${col}">${up?'▲':'▼'} ${Math.abs(diff).toFixed(0)}% vs prev period</span>`;
+}
+
+function renderGscOverview(data) {
+  const grid = document.getElementById('gsc-metrics-grid');
+  if (!data?.success) {
+    grid.innerHTML = `<div class="gsc-metric" style="grid-column:1/-1"><div class="gsc-metric-label">Error</div><div style="font-size:13px;color:var(--negative);">${data?.error || 'Could not load Search Console data. Make sure novograf.co.uk is verified in your Google Search Console account.'}</div></div>`;
+    return;
+  }
+  const c = data.current, p = data.previous;
+  const metrics = [
+    { label: 'Total clicks', val: gscFmt(c.clicks), delta: gscDelta(c.clicks, p.clicks) },
+    { label: 'Total impressions', val: gscFmt(c.impressions), delta: gscDelta(c.impressions, p.impressions) },
+    { label: 'Click-through rate', val: gscPct(c.ctr), delta: gscDelta(c.ctr, p.ctr) },
+    { label: 'Average position', val: gscPos(c.position), delta: gscDelta(c.position, p.position, false) },
+    { label: 'Period', val: data.period?.startDate + ' to ' + data.period?.endDate, delta: '' },
+  ];
+  grid.innerHTML = metrics.map(m => `
+    <div class="gsc-metric">
+      <div class="gsc-metric-label">${m.label}</div>
+      <div class="gsc-metric-val" style="font-size:${m.label==='Period'?'13px':'26px'}">${m.val}</div>
+      ${m.delta ? `<div class="gsc-metric-delta">${m.delta}</div>` : ''}
+    </div>`).join('');
+}
+
+function renderGscQueries(data) {
+  const el = document.getElementById('gsc-queries');
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No query data available.</div>'; return; }
+  const max = data.rows[0].impressions;
+  el.innerHTML = data.rows.map(r => {
+    const pos = r.position;
+    const posCol = pos <= 3 ? 'var(--positive)' : pos <= 10 ? '#f59e0b' : 'var(--negative)';
+    return `<div class="gsc-row">
+      <div class="gsc-row-label" title="${r.keys[0]}">${r.keys[0]}</div>
+      <div class="gsc-row-bar-wrap"><div class="gsc-row-bar-track"><div class="gsc-row-bar-fill" style="width:${Math.round((r.impressions/max)*100)}%"></div></div></div>
+      <div class="gsc-row-num">${gscFmt(r.impressions)}</div>
+      <div class="gsc-row-pos" style="background:${posCol}22;color:${posCol}">${gscPos(pos)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderGscPages(data) {
+  const el = document.getElementById('gsc-pages');
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No page data available.</div>'; return; }
+  const max = data.rows[0].impressions;
+  el.innerHTML = data.rows.map(r => {
+    const slug = r.keys[0].replace('https://novograf.co.uk','') || '/';
+    return `<div class="gsc-row">
+      <div class="gsc-row-label" title="${r.keys[0]}">${slug}</div>
+      <div class="gsc-row-bar-wrap"><div class="gsc-row-bar-track"><div class="gsc-row-bar-fill" style="width:${Math.round((r.impressions/max)*100)}%"></div></div></div>
+      <div class="gsc-row-num">${gscFmt(r.impressions)}</div>
+      <div class="gsc-row-num">${gscFmt(r.clicks)} <span style="color:var(--gray-500);font-size:10px;">clicks</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderGscOpportunities(data) {
+  const el = document.getElementById('gsc-opportunities');
+  if (!data?.success || !data.rows?.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No quick win opportunities found — either CTR is already good or not enough data yet.</div>';
+    return;
+  }
+  el.innerHTML = data.rows.map(r => {
+    const posLabel = r.position <= 3 ? 'Top 3' : r.position <= 10 ? 'Page 1' : 'Page 2';
+    const posCol = r.position <= 3 ? 'var(--positive)' : r.position <= 10 ? '#f59e0b' : 'var(--gray-400)';
+    const fix = r.position <= 3
+      ? 'Improve your title tag and meta description — you are ranking well but not getting clicked.'
+      : r.position <= 10
+      ? 'Strengthen your title tag with more specific language and add a meta description if missing.'
+      : 'Create a dedicated page targeting this exact phrase to move from page 2 to page 1.';
+    return `<div class="gsc-opp-row">
+      <div style="flex:1;">
+        <div class="gsc-opp-query">${r.keys[0]}</div>
+        <div class="gsc-opp-meta">${gscFmt(r.impressions)} impressions · ${gscPct(r.ctr)} CTR · Position <span style="color:${posCol};font-weight:600;">${gscPos(r.position)} (${posLabel})</span></div>
+        <div class="gsc-opp-fix">→ ${fix}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderGscDevices(data) {
+  const el = document.getElementById('gsc-devices');
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);">No device data.</div>'; return; }
+  const icons = { MOBILE: '📱', DESKTOP: '💻', TABLET: '⊡' };
+  el.innerHTML = data.rows.map(r => `
+    <div class="gsc-device-card">
+      <div class="gsc-device-name">${icons[r.keys[0]] || ''} ${r.keys[0]}</div>
+      <div class="gsc-device-clicks">${gscFmt(r.clicks)}<span style="font-size:12px;color:var(--gray-400);font-weight:400;"> clicks</span></div>
+      <div class="gsc-device-impr">${gscFmt(r.impressions)} impressions</div>
+    </div>`).join('');
+}
+
+function buildGscActionList(overview, queries, pages, opportunities) {
+  const el = document.getElementById('gsc-action-list');
+  const badge = document.getElementById('gsc-action-spinner');
+  const actions = [];
+
+  // Pull data safely
+  const c = overview?.current || {};
+  const oppRows = opportunities?.rows || [];
+  const queryRows = queries?.rows || [];
+  const pageRows = pages?.rows || [];
+
+  // ── ACTION 1: CTR check ──────────────────────────────────────────
+  const ctr = c.ctr || 0;
+  if (ctr < 0.03) {
+    actions.push({
+      priority: 'critical',
+      title: 'Your click-through rate is very low — fix your title tags and meta descriptions',
+      desc: `Your average CTR is ${gscPct(ctr)}. This means Google is showing your pages in search results but people are not clicking. The most common cause is title tags and meta descriptions that do not tell the searcher why your result is the best choice.`,
+      why: 'Go to your top 5 pages in GSC → check each title tag is under 60 characters, starts with the target keyword, and has a clear value proposition. Add or rewrite meta descriptions for every page that is missing one.',
+      col: 'var(--negative)', bg: 'var(--red-dim)'
+    });
+  } else if (ctr < 0.06) {
+    actions.push({
+      priority: 'improve',
+      title: 'Click-through rate has room to improve — review your top pages\' title tags',
+      desc: `Your average CTR is ${gscPct(ctr)}. The benchmark for B2B commercial interiors is 5 to 8%. Improving title tags on your top 5 pages can move this significantly within 30 days.`,
+      why: 'For each page in the Top Pages list below, open the page in WordPress and check: is the title tag specific and keyword-led? Does the meta description give a clear reason to click?',
+      col: '#f59e0b', bg: 'rgba(245,158,11,0.1)'
+    });
+  }
+
+  // ── ACTION 2: Position opportunities ───────────────────────────
+  const page2Opps = oppRows.filter(r => r.position > 10 && r.position <= 20 && r.impressions >= 50);
+  if (page2Opps.length > 0) {
+    const top = page2Opps[0];
+    actions.push({
+      priority: 'high',
+      title: `You are on page 2 for "${top.keys[0]}" — one push gets you to page 1`,
+      desc: `"${top.keys[0]}" shows ${gscFmt(top.impressions)} times per month and you sit at position ${gscPos(top.position)}. Position 11 to 20 means you are almost there. A targeted content improvement on the relevant page could move this to page 1 within 60 to 90 days.`,
+      why: 'Open the page that targets this keyword. Add 200 to 300 words of supporting content. Make sure the keyword appears in the H1, first paragraph, and at least one subheading. Add 2 to 3 internal links from other pages pointing to it.',
+      col: 'var(--lime)', bg: 'rgba(200,240,38,0.08)'
+    });
+  }
+
+  // ── ACTION 3: Low-click high-impression queries ─────────────────
+  const highImpLowCtr = oppRows.filter(r => r.impressions >= 100 && r.ctr < 0.02);
+  if (highImpLowCtr.length > 0) {
+    const top = highImpLowCtr[0];
+    actions.push({
+      priority: 'high',
+      title: `"${top.keys[0]}" gets ${gscFmt(top.impressions)} impressions but almost no clicks`,
+      desc: `This query is showing your site ${gscFmt(top.impressions)} times a month at ${gscPct(top.ctr)} CTR. That is a lot of missed traffic. The page appearing for this search is not compelling enough in the search result.`,
+      why: `Find which page ranks for this query, then rewrite the title tag to include "${top.keys[0]}" more prominently and add a meta description that tells the searcher exactly what they will find. Test a new title within 2 weeks.`,
+      col: 'var(--lime)', bg: 'rgba(200,240,38,0.08)'
+    });
+  }
+
+  // ── ACTION 4: Average position ─────────────────────────────────
+  const avgPos = c.position || 0;
+  if (avgPos > 20) {
+    actions.push({
+      priority: 'high',
+      title: 'Average position is beyond page 2 — focus content on fewer, stronger topics',
+      desc: `Your average position is ${gscPos(avgPos)}. This typically means the site is trying to rank for too many topics without enough depth on any of them. Google rewards topic authority — going deeper on a smaller number of commercial topics will outperform spreading thin.`,
+      why: 'Identify your 5 most important service pages (window graphics, wall graphics, floor graphics, hoardings, surface emulation). Make sure each has at least 600 words of specific, keyword-rich content, a clear H1, and at least 3 supporting blog posts linking to it.',
+      col: '#f59e0b', bg: 'rgba(245,158,11,0.1)'
+    });
+  }
+
+  // ── ACTION 5: Blog / content gaps ──────────────────────────────
+  const brandQueries = queryRows.filter(r => r.keys[0].toLowerCase().includes('novograf'));
+  const nonBrandTotal = queryRows.filter(r => !r.keys[0].toLowerCase().includes('novograf')).reduce((sum, r) => sum + r.impressions, 0);
+  const brandTotal = brandQueries.reduce((sum, r) => sum + r.impressions, 0);
+  if (brandTotal > nonBrandTotal * 0.5) {
+    actions.push({
+      priority: 'medium',
+      title: 'Most of your search traffic is branded — you need more non-branded content',
+      desc: 'A high proportion of your impressions come from people searching for "Novograf" directly. This means you are not yet capturing buyers who do not know you yet — people searching for "retail wall graphics UK" or "commercial floor graphics company Scotland" are not finding you.',
+      why: 'Use the SEO tab to generate a Keyword Target list for your top service areas. Publish one new blog post per week targeting a non-branded keyword. Over 3 months this is the single highest-impact content activity available.',
+      col: '#f59e0b', bg: 'rgba(245,158,11,0.1)'
+    });
+  }
+
+  // ── ACTION 6: Missing pages ────────────────────────────────────
+  const keyServices = ['window-graphics', 'wall-graphics', 'floor', 'hoardings', 'replica', 'wayfinding', 'asset-wrap', 'sustainability'];
+  const rankedPages = (pageRows || []).map(r => r.keys[0].toLowerCase());
+  const missingServices = keyServices.filter(s => !rankedPages.some(p => p.includes(s)));
+  if (missingServices.length > 0) {
+    actions.push({
+      priority: 'medium',
+      title: 'Some key service pages are not appearing in search at all',
+      desc: `Pages covering ${missingServices.slice(0,3).join(', ')} are not showing up in your top impressions. This could mean they are not indexed, have very thin content, or are not being found by Google yet.`,
+      why: 'Check that each service page exists and is indexed by pasting its URL into Google Search Console → URL Inspection. If indexed but not ranking, add more keyword-rich content. If not indexed, submit it manually.',
+      col: 'var(--gray-300)', bg: 'var(--gray-700)'
+    });
+  }
+
+  // ── Always present: ongoing action ────────────────────────────
+  actions.push({
+    priority: 'ongoing',
+    title: 'Publish one case study or project page per month',
+    desc: 'Case studies are the highest-converting content type for a commercial graphics company. Every project completed with a named client is a content opportunity. A 400-word project page with before and after photography, the client sector, and the challenge solved creates a new indexed page targeting long-tail keywords.',
+    why: 'Format: Client sector + project type + location + result. Example: "Co-op convenience store floor graphics, Scotland — 47 sites, delivered in 3 weeks." This type of content ranks for highly specific searches from buyers in the same sector.',
+    col: 'var(--gray-400)', bg: 'var(--gray-800)'
+  });
+
+  const priorityConfig = {
+    critical: { label: 'Do today', col: 'var(--negative)', bg: 'var(--red-dim)', num: '#f87171' },
+    high:     { label: 'This week', col: 'var(--lime)', bg: 'rgba(200,240,38,0.08)', num: '#c8f026' },
+    improve:  { label: 'This week', col: '#f59e0b', bg: 'rgba(245,158,11,0.1)', num: '#f59e0b' },
+    medium:   { label: 'This month', col: '#f59e0b', bg: 'rgba(245,158,11,0.1)', num: '#f59e0b' },
+    ongoing:  { label: 'Ongoing', col: 'var(--gray-400)', bg: 'var(--gray-800)', num: 'var(--gray-400)' }
+  };
+
+  el.innerHTML = actions.map((a, i) => {
+    const cfg = priorityConfig[a.priority] || priorityConfig.medium;
+    return `<div class="gsc-action-item">
+      <div class="gsc-action-num" style="background:${cfg.bg};color:${cfg.num}">${i + 1}</div>
+      <div class="gsc-action-body">
+        <div class="gsc-action-title">${a.title}</div>
+        <div class="gsc-action-desc">${a.desc}</div>
+        <div class="gsc-action-why">What to do: ${a.why}</div>
+      </div>
+      <span class="gsc-tag" style="background:${cfg.bg};color:${cfg.col}">${cfg.label}</span>
+    </div>`;
+  }).join('');
+
+  badge.textContent = `${actions.length} actions`;
+  badge.style.background = 'rgba(200,240,38,0.1)';
+  badge.style.color = 'var(--lime)';
+}
 </script>
 </body>
 </html>

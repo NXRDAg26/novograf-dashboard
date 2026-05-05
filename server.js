@@ -58,7 +58,10 @@ app.get('/auth/login', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',
-    scope: ['https://www.googleapis.com/auth/analytics.readonly']
+    scope: [
+      'https://www.googleapis.com/auth/analytics.readonly',
+      'https://www.googleapis.com/auth/webmasters.readonly'
+    ]
   });
   res.redirect(url);
 });
@@ -426,6 +429,111 @@ app.post('/api/generate-vision', async (req, res) => {
     res.json({ success: true, text });
   } catch (err) {
     console.error('Vision error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ── GOOGLE SEARCH CONSOLE API ────────────────────────────────────────────────
+
+const GSC_SITE = process.env.GSC_SITE_URL || 'sc-domain:novograf.co.uk';
+
+function getGscClient(tokens) {
+  const auth = getOAuthClient();
+  auth.setCredentials(tokens);
+  return google.searchconsole({ version: 'v1', auth });
+}
+
+function gscDateRange(daysBack) {
+  const end = new Date();
+  end.setDate(end.getDate() - 3); // GSC data has ~3 day lag
+  const start = new Date(end);
+  start.setDate(start.getDate() - daysBack);
+  const fmt = d => d.toISOString().split('T')[0];
+  return { startDate: fmt(start), endDate: fmt(end) };
+}
+
+// Overview: top metrics for the last 28 days vs previous 28 days
+app.get('/api/gsc/overview', requireAuth, async (req, res) => {
+  try {
+    const gsc = getGscClient(req.session.tokens);
+    const curr = gscDateRange(28);
+    const prev = { startDate: new Date(new Date(curr.startDate).setDate(new Date(curr.startDate).getDate() - 28)).toISOString().split('T')[0], endDate: new Date(new Date(curr.startDate).setDate(new Date(curr.startDate).getDate() - 1)).toISOString().split('T')[0] };
+
+    const query = (range) => gsc.searchanalytics.query({
+      siteUrl: GSC_SITE,
+      requestBody: { startDate: range.startDate, endDate: range.endDate, dimensions: [], rowLimit: 1 }
+    });
+
+    const [currRes, prevRes] = await Promise.all([query(curr), query(prev)]);
+    const c = currRes.data.rows?.[0] || { clicks: 0, impressions: 0, ctr: 0, position: 0 };
+    const p = prevRes.data.rows?.[0] || { clicks: 0, impressions: 0, ctr: 0, position: 0 };
+
+    res.json({ success: true, current: c, previous: p, period: curr });
+  } catch (err) {
+    console.error('GSC overview error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Top queries: what people are searching for to find the site
+app.get('/api/gsc/queries', requireAuth, async (req, res) => {
+  try {
+    const gsc = getGscClient(req.session.tokens);
+    const { startDate, endDate } = gscDateRange(28);
+    const result = await gsc.searchanalytics.query({
+      siteUrl: GSC_SITE,
+      requestBody: { startDate, endDate, dimensions: ['query'], rowLimit: 20, orderBy: [{ fieldName: 'impressions', sortOrder: 'DESCENDING' }] }
+    });
+    res.json({ success: true, rows: result.data.rows || [] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Top pages: which pages get the most visibility
+app.get('/api/gsc/pages', requireAuth, async (req, res) => {
+  try {
+    const gsc = getGscClient(req.session.tokens);
+    const { startDate, endDate } = gscDateRange(28);
+    const result = await gsc.searchanalytics.query({
+      siteUrl: GSC_SITE,
+      requestBody: { startDate, endDate, dimensions: ['page'], rowLimit: 15, orderBy: [{ fieldName: 'impressions', sortOrder: 'DESCENDING' }] }
+    });
+    res.json({ success: true, rows: result.data.rows || [] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Low-hanging fruit: high impressions, low CTR queries (quick wins)
+app.get('/api/gsc/opportunities', requireAuth, async (req, res) => {
+  try {
+    const gsc = getGscClient(req.session.tokens);
+    const { startDate, endDate } = gscDateRange(90);
+    const result = await gsc.searchanalytics.query({
+      siteUrl: GSC_SITE,
+      requestBody: { startDate, endDate, dimensions: ['query'], rowLimit: 50, orderBy: [{ fieldName: 'impressions', sortOrder: 'DESCENDING' }] }
+    });
+    const rows = (result.data.rows || []).filter(r =>
+      r.impressions >= 20 && r.ctr < 0.05 && r.position <= 20
+    ).slice(0, 15);
+    res.json({ success: true, rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Devices breakdown
+app.get('/api/gsc/devices', requireAuth, async (req, res) => {
+  try {
+    const gsc = getGscClient(req.session.tokens);
+    const { startDate, endDate } = gscDateRange(28);
+    const result = await gsc.searchanalytics.query({
+      siteUrl: GSC_SITE,
+      requestBody: { startDate, endDate, dimensions: ['device'], rowLimit: 5 }
+    });
+    res.json({ success: true, rows: result.data.rows || [] });
+  } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });

@@ -316,6 +316,29 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .gsc-device-clicks { font-size: 20px; font-weight: 700; color: var(--white); }
 .gsc-device-impr { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
 
+/* ── WELCOME PANEL ── */
+.welcome-stat { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 16px 18px; transition: border-color .2s; cursor: default; }
+.welcome-stat:hover { border-color: var(--gray-500); }
+.welcome-stat-icon { font-size: 20px; margin-bottom: 8px; }
+.welcome-stat-val { font-size: 22px; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 4px; }
+.welcome-stat-label { font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.welcome-stat-sub { font-size: 11px; color: var(--gray-300); margin-top: 4px; }
+.welcome-action-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--gray-700); cursor: pointer; transition: background .15s; }
+.welcome-action-item:last-child { border-bottom: none; }
+.welcome-action-item:hover { background: rgba(255,255,255,0.02); }
+.welcome-action-item.done .welcome-action-title { text-decoration: line-through; color: var(--gray-400); }
+.welcome-action-item.done .welcome-action-desc { color: var(--gray-500); }
+.welcome-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--gray-500); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.welcome-checkbox.checked { background: var(--lime); border-color: var(--lime); }
+.welcome-action-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.4; }
+.welcome-action-desc { font-size: 11px; color: var(--gray-400); line-height: 1.55; }
+.welcome-action-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; flex-shrink: 0; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+.welcome-tool-btn { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); cursor: pointer; font-family: 'Poppins',sans-serif; font-size: 12px; font-weight: 600; color: var(--white); transition: all .15s; border: none; text-align: left; }
+.welcome-tool-btn:hover { background: var(--gray-600); border-color: var(--lime); color: var(--lime); }
+.welcome-tool-btn .t-icon { font-size: 16px; flex-shrink: 0; }
+.welcome-score-bar { height: 6px; border-radius: 3px; background: var(--gray-700); overflow: hidden; margin-top: 6px; }
+.welcome-score-bar-fill { height: 100%; border-radius: 3px; background: var(--lime); transition: width 1s ease 0.5s; }
+
 /* ── COPYWRITER ── */
 .copy-client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
 .copy-client-tile { background: var(--gray-800); border: 2px solid var(--gray-700); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .2s; text-align: center; }
@@ -386,7 +409,8 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
   <!-- NAV TABS -->
   <nav class="nav-tabs">
-    <button class="nav-tab active" onclick="switchTab('analytics', this)">Analytics</button>
+    <button class="nav-tab active" onclick="switchTab('welcome', this)">Home</button>
+    <button class="nav-tab" onclick="switchTab('analytics', this)">Analytics</button>
     <button class="nav-tab" onclick="switchTab('citation', this)">Citation generator</button>
     <button class="nav-tab" onclick="switchTab('linkedin', this)">Content and social</button>
     <button class="nav-tab" onclick="switchTab('scheduler', this)">Post scheduler</button>
@@ -396,9 +420,128 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
   </nav>
 
   <!-- ══════════════════════════════════════════════════════
+       WELCOME PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel active" id="panel-welcome">
+    <div class="container">
+
+      <!-- GREETING -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:32px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">NXRD AI Marketing Tool</div>
+          <h1 style="font-size:28px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;">Good <span id="welcome-greeting">morning</span>, Novograf</h1>
+          <p style="font-size:14px;color:var(--gray-300);max-width:520px;line-height:1.6;">Your digital presence dashboard — everything you need to grow Novograf's online visibility, in one place.</p>
+        </div>
+        <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:14px 20px;text-align:right;flex-shrink:0;">
+          <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Today</div>
+          <div style="font-size:18px;font-weight:700;color:var(--white);" id="welcome-date">—</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;" id="welcome-time">—</div>
+        </div>
+      </div>
+
+      <!-- SCORE + QUICK STATS -->
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;margin-bottom:24px;align-items:start;">
+
+        <!-- PRESENCE SCORE RING -->
+        <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:24px 20px;text-align:center;">
+          <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Digital presence score</div>
+          <svg width="120" height="120" viewBox="0 0 120 120" style="display:block;margin:0 auto 12px;">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--gray-700)" stroke-width="10"/>
+            <circle id="welcome-score-ring" cx="60" cy="60" r="50" fill="none" stroke="var(--lime)" stroke-width="10"
+              stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314"
+              transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1.2s ease 0.3s"/>
+            <text x="60" y="55" text-anchor="middle" font-family="Poppins,sans-serif" font-size="28" font-weight="700" fill="#ffffff" id="welcome-score-num">0</text>
+            <text x="60" y="72" text-anchor="middle" font-family="Poppins,sans-serif" font-size="11" fill="#666666">out of 100</text>
+          </svg>
+          <div style="font-size:12px;color:var(--gray-300);line-height:1.5;" id="welcome-score-label">Calculating your score...</div>
+        </div>
+
+        <!-- STAT GRID -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" id="welcome-stat-grid">
+          <!-- populated by JS -->
+        </div>
+
+      </div>
+
+      <!-- ACTION LIST + TOOL LINKS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+
+        <!-- TOP 5 ACTIONS -->
+        <div style="background:var(--gray-800);border:1px solid rgba(200,240,38,0.25);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--gray-700);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--white);">Top 5 actions</div>
+              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Tick these off to grow your digital presence</div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:var(--lime);" id="welcome-actions-progress">0 / 5 done</div>
+          </div>
+          <div id="welcome-actions-list" style="padding:0 0 4px;"></div>
+          <div style="padding:10px 20px;border-top:1px solid var(--gray-700);">
+            <button class="copy-btn" onclick="resetWelcomeActions()" style="font-size:10px;">Reset all</button>
+          </div>
+        </div>
+
+        <!-- TOOL NAVIGATOR -->
+        <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--gray-700);">
+            <div style="font-size:13px;font-weight:700;color:var(--white);">What do you want to do today?</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Jump straight to the right tool</div>
+          </div>
+          <div style="padding:8px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="welcome-tools-grid">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ABOUT NOVOGRAF SNAPSHOT -->
+      <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;">
+        <div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Novograf at a glance</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">35+</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Years in business</div>
+          </div>
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--lime);line-height:1;">100%</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Employee owned</div>
+          </div>
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">9</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Accreditations including ISO 9001 and 14001</div>
+          </div>
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">10+</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Major national brand clients</div>
+          </div>
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">7</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Product and service categories</div>
+          </div>
+          <div>
+            <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">UK</div>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">National rollout capability from East Kilbride</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY CLIENTS STRIP -->
+      <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:16px 24px;">
+        <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Trusted by</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          ${["Co-op","Sainsbury's","Greggs","NatWest","M&S","Waitrose","Iceland","Travelodge","Accor Hotels","WH Smith","First Group Rail","William Hill","Pets at Home"].map(c =>
+            `<span style="background:var(--gray-700);border:1px solid var(--gray-600);border-radius:var(--radius-sm);padding:5px 12px;font-size:11px;font-weight:600;color:var(--gray-200);">${c}</span>`
+          ).join('')}
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end welcome panel -->
+
+  <!-- ══════════════════════════════════════════════════════
        ANALYTICS PANEL
   ══════════════════════════════════════════════════════ -->
-  <div class="panel active" id="panel-analytics">
+  <div class="panel" id="panel-analytics">
     <div class="container">
 
       <!-- Inline sign-in prompt shown only when not authenticated -->
@@ -1520,7 +1663,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 function switchTab(tab, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  ['analytics','citation','linkedin','scheduler','gsc','seo','copy'].forEach(p => {
+  ['welcome','analytics','citation','linkedin','scheduler','gsc','seo','copy'].forEach(p => {
     document.getElementById('panel-'+p).classList.toggle('active', p === tab);
   });
   if (tab === 'linkedin') {
@@ -3043,13 +3186,137 @@ function sendCopyToScheduler() {
 }
 
 // Initialise on first load
-document.addEventListener('DOMContentLoaded', () => { initCopywriter(); });
+document.addEventListener('DOMContentLoaded', () => {
+  initCopywriter();
+  initWelcome();
+});
 
 /* ══════════════════════════════════════════════════════════════
-   SEARCH CONSOLE
+   WELCOME PANEL
 ══════════════════════════════════════════════════════════════ */
 
-let gscLoaded = false;
+const WELCOME_ACTIONS_KEY = 'novograf_welcome_actions_v1';
+
+const WELCOME_ACTIONS = [
+  { id:'wa1', title:'Set up a project photography process for every install', desc:'Before, during, and after shots on every job. This is your most powerful content asset and costs nothing extra to capture.', tag:'Content', tagCol:'var(--lime)', tagBg:'rgba(200,240,38,0.1)', tab:'linkedin' },
+  { id:'wa2', title:'Post 3 times per week on LinkedIn — Mon, Wed, Fri at 08:30', desc:'Consistency beats quality spikes. Even a short post on a slow week outperforms silence. Lock in the schedule and stick to it.', tag:'Social', tagCol:'#4ade80', tagBg:'rgba(74,222,128,0.1)', tab:'linkedin' },
+  { id:'wa3', title:'Fix title tags and meta descriptions on every service page', desc:'Window graphics, wall graphics, floor graphics, hoardings, replicas — each page needs a unique keyword-led title under 60 characters and a meta description under 155.', tag:'SEO', tagCol:'#f59e0b', tagBg:'rgba(245,158,11,0.1)', tab:'seo' },
+  { id:'wa4', title:'Publish one case study per month with a named client', desc:'Co-op, Greggs, NatWest — named clients open doors. A 400-word project page per month compounds into a library of proof that ranks and converts.', tag:'Content', tagCol:'var(--lime)', tagBg:'rgba(200,240,38,0.1)', tab:'copy' },
+  { id:'wa5', title:'Tell the employee ownership story at least once a month', desc:'No competitor can say what Novograf can. Every team member owns the business. Use it — it is the most powerful differentiator you have and barely visible online.', tag:'Brand', tagCol:'#f97316', tagBg:'rgba(249,115,22,0.1)', tab:'linkedin' }
+];
+
+const WELCOME_STATS = [
+  { icon:'🖼', label:'Products and services', val:'7', sub:'Window, wall, floor, hoardings, replicas, wayfinding, asset wrapping', col:'var(--white)' },
+  { icon:'🏆', label:'Named brand clients', val:'13+', sub:"Co-op, Greggs, Sainsbury's, NatWest, M&S, Waitrose and more", col:'var(--lime)' },
+  { icon:'📍', label:'Location', val:'Scotland', sub:'East Kilbride — national UK capability', col:'var(--white)' },
+  { icon:'✅', label:'Accreditations', val:'9', sub:'ISO 9001, ISO 14001, Altius, CHAS, Construction Line and more', col:'var(--white)' },
+  { icon:'♻', label:'Own eco product', val:'Lamigraf', sub:'PVC-free surface solution — ESG ready', col:'var(--lime)' },
+  { icon:'📅', label:'In business since', val:'1989', sub:'Employee-owned since 2015', col:'var(--white)' }
+];
+
+const WELCOME_TOOLS = [
+  { icon:'📱', label:'Generate a LinkedIn post', tab:'linkedin' },
+  { icon:'✍', label:'Write copy', tab:'copy' },
+  { icon:'🔍', label:'Audit a page for SEO', tab:'seo' },
+  { icon:'📊', label:'Check Search Console', tab:'gsc' },
+  { icon:'📅', label:'Schedule a post', tab:'scheduler' },
+  { icon:'🔗', label:'Generate a citation', tab:'citation' },
+  { icon:'📈', label:'View analytics', tab:'analytics' },
+  { icon:'🗝', label:'Find keyword targets', tab:'seo' }
+];
+
+function initWelcome() {
+  updateWelcomeClock();
+  setInterval(updateWelcomeClock, 60000);
+
+  document.getElementById('welcome-stat-grid').innerHTML = WELCOME_STATS.map(s => `
+    <div class="welcome-stat">
+      <div class="welcome-stat-icon">${s.icon}</div>
+      <div class="welcome-stat-val" style="color:${s.col}">${s.val}</div>
+      <div class="welcome-stat-label">${s.label}</div>
+      <div class="welcome-stat-sub">${s.sub}</div>
+    </div>`).join('');
+
+  document.getElementById('welcome-tools-grid').innerHTML = WELCOME_TOOLS.map(t => `
+    <button class="welcome-tool-btn" onclick="switchTabFromWelcome('${t.tab}')">
+      <span class="t-icon">${t.icon}</span>${t.label}
+    </button>`).join('');
+
+  renderWelcomeActions();
+}
+
+function updateWelcomeClock() {
+  const now = new Date();
+  const h = now.getHours();
+  const greet = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+  const el = document.getElementById('welcome-greeting');
+  const dateEl = document.getElementById('welcome-date');
+  const timeEl = document.getElementById('welcome-time');
+  if (el) el.textContent = greet;
+  if (dateEl) dateEl.textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+}
+
+function getActionChecked() {
+  return JSON.parse(localStorage.getItem(WELCOME_ACTIONS_KEY) || '{}');
+}
+
+function renderWelcomeActions() {
+  const checked = getActionChecked();
+  const done = Object.values(checked).filter(Boolean).length;
+  document.getElementById('welcome-actions-progress').textContent = `${done} / ${WELCOME_ACTIONS.length} done`;
+
+  document.getElementById('welcome-actions-list').innerHTML = WELCOME_ACTIONS.map(a => {
+    const isDone = !!checked[a.id];
+    return `<div class="welcome-action-item ${isDone ? 'done' : ''}" onclick="toggleWelcomeAction('${a.id}')">
+      <div class="welcome-checkbox ${isDone ? 'checked' : ''}" id="wacb-${a.id}">
+        ${isDone ? '<svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+      </div>
+      <div style="flex:1;">
+        <div class="welcome-action-title">${a.title}</div>
+        <div class="welcome-action-desc">${a.desc}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+        <span class="welcome-action-tag" style="color:${a.tagCol};background:${a.tagBg}">${a.tag}</span>
+        <button onclick="event.stopPropagation();switchTabFromWelcome('${a.tab}')" style="font-size:10px;padding:3px 10px;background:transparent;border:1px solid var(--gray-600);border-radius:var(--radius-sm);color:var(--gray-400);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s;" onmouseover="this.style.color='var(--lime)';this.style.borderColor='var(--lime)'" onmouseout="this.style.color='var(--gray-400)';this.style.borderColor='var(--gray-600)'">Open tool ↗</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  updateWelcomeScore();
+}
+
+function toggleWelcomeAction(id) {
+  const checked = getActionChecked();
+  checked[id] = !checked[id];
+  localStorage.setItem(WELCOME_ACTIONS_KEY, JSON.stringify(checked));
+  renderWelcomeActions();
+}
+
+function resetWelcomeActions() {
+  if (!confirm('Reset all actions to unticked?')) return;
+  localStorage.removeItem(WELCOME_ACTIONS_KEY);
+  renderWelcomeActions();
+}
+
+function updateWelcomeScore() {
+  const checked = getActionChecked();
+  const done = Object.values(checked).filter(Boolean).length;
+  const actionScore = Math.round((done / WELCOME_ACTIONS.length) * 50);
+  const score = 50 + actionScore; // 50 base for Novograf's existing credentials
+  const ring = document.getElementById('welcome-score-ring');
+  const num = document.getElementById('welcome-score-num');
+  const label = document.getElementById('welcome-score-label');
+  if (ring) { ring.style.strokeDashoffset = 314 - (314 * score / 100); ring.style.stroke = score >= 80 ? 'var(--positive)' : score >= 65 ? '#f59e0b' : 'var(--lime)'; }
+  if (num) num.textContent = score;
+  const msgs = [[100,'Excellent — fully optimised'],[90,'Very strong digital presence'],[80,'Strong — keep the momentum'],[70,'Good foundations, room to grow'],[60,'Solid start — complete the actions'],[0,'Getting started — work through the actions']];
+  if (label) label.textContent = (msgs.find(([min]) => score >= min) || msgs[msgs.length-1])[1];
+}
+
+function switchTabFromWelcome(tab) {
+  const btn = document.querySelector('.nav-tab[onclick*="switchTab(\'' + tab + '\'"]');
+  switchTab(tab, btn);
+}
 
 async function loadGscData() {
   // Check auth first

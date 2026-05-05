@@ -468,7 +468,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           </div>
           <div class="form-group">
             <label class="form-label">Query tested</label>
-            <input class="form-input" id="inputQuery" placeholder="e.g. industrial filtration suppliers Europe" type="text">
+            <input class="form-input" id="inputQuery" placeholder="e.g. commercial graphics company UK, retail signage specialist Scotland" type="text">
           </div>
           <div class="form-group">
             <label class="form-label">Novograf cited?</label>
@@ -519,13 +519,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           </div>
           <div class="form-group">
             <label class="form-label">Page title <span style="color:var(--negative)">*</span></label>
-            <input class="form-input" type="text" id="cit-title" placeholder="e.g. Industrial Dust Extraction Solutions" />
+            <input class="form-input" type="text" id="cit-title" placeholder="e.g. Custom Wall Graphics for Retail Environments" />
           </div>
         </div>
 
         <div class="form-group" style="margin-top:12px">
           <label class="form-label">Topic or keywords</label>
-          <input class="form-input" type="text" id="cit-keywords" placeholder="e.g. industrial filtration, dust extraction, B2B" />
+          <input class="form-input" type="text" id="cit-keywords" placeholder="e.g. retail wall graphics, commercial signage UK, surface emulation, brand rollout" />
         </div>
 
         <div class="cit-grid-2" style="margin-top:12px">
@@ -677,7 +677,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
             </div>
             <div class="form-group">
               <label class="form-label">Target audience</label>
-              <input class="form-input" id="blog-audience" type="text" placeholder="e.g. plant engineers, food manufacturers, oil and gas operators">
+              <input class="form-input" id="blog-audience" type="text" placeholder="e.g. retail brand managers, store development leads, hospitality fit-out buyers">
             </div>
           </div>
           <div class="cit-grid-2" style="margin-bottom:16px;">
@@ -1720,8 +1720,8 @@ document.getElementById('cit-genbtn').addEventListener('click', () => {
     { n:1, t:'Add the schema markup to your website',        d:`Paste the JSON-LD code above into the <head> section of your page at ${url}. This tells AI crawlers and search engines exactly what your content is about.` },
     { n:2, t:'Submit your URL to Google Search Console',     d:'Go to search.google.com/search-console, paste your URL into the inspection tool and request indexing. AI platforms frequently pull from Google-indexed content.' },
     { n:3, t:'Paste the AI prompts into each platform',      d:'Use the prompts above in ChatGPT, Claude and Perplexity. Each prompt is written to encourage the AI to discover and cite your specific page.' },
-    { n:4, t:'Share the page on LinkedIn',                   d:`Post about "${title}" on LinkedIn with your URL. LinkedIn content is crawled by AI platforms and increases the authority signal around your domain.` },
-    { n:5, t:'Build at least 3 backlinks to this page',      d:'Ask partners, suppliers or industry directories to link to this URL. Backlinks remain one of the strongest signals for both search engines and AI citation models.' },
+    { n:4, t:'Share the page on LinkedIn',                   d:`Post about "${title}" on LinkedIn with your URL, targeting retail brand managers and fit-out professionals. LinkedIn content is crawled by AI platforms and a strong commercial interiors audience increases the authority signal around your domain.` },
+    { n:5, t:'Build at least 3 backlinks to this page',      d:'Ask fit-out partners, retail design publications, and industry directories like the BSGA to link to this URL. Backlinks from relevant industry sources are among the strongest signals for both search engines and AI citation models.' },
     { n:6, t:'Repeat the AI prompt test in 30 days',         d:'AI platforms update their knowledge regularly. Paste the prompts again in a month and log the result in the AI citation tracker on the Analytics tab to track progress.' }
   ];
   document.getElementById('cit-checklist').innerHTML = items.map(i =>
@@ -1776,7 +1776,7 @@ async function runBlogSuggester() {
   const prompt = `You are an expert B2B content strategist and SEO consultant. Generate a complete blog content strategy for ${brand || 'this business'} with the following details:
 
 Topic area: ${topic}
-Target audience: ${audience || 'industrial professionals and B2B buyers'}
+Target audience: ${audience || 'retail brand managers, store development leads, and hospitality and commercial property buyers'}
 Current blogging frequency: ${currentMap[current] || 'not specified'}
 
 Your response must include ALL of the following sections:
@@ -1800,7 +1800,7 @@ These should be the highest-value articles for AI citation, covering educational
 5. QUICK WINS — 3 ARTICLES TO PUBLISH FIRST
 The three articles most likely to generate AI citations and inbound traffic within 60 days. Explain why each one is a quick win.
 
-Write in plain, direct language. No fluff. Format with clear section headers. No bullet points — use numbered lists and paragraphs.`;
+Write in plain, direct language. No fluff. Format with clear section headers. No bullet points — use numbered lists and paragraphs. Context: Novograf is a UK-based employee-owned commercial graphics and surface solutions company in East Kilbride, Scotland. Their clients are retail chains, hospitality groups, banks, and commercial property developers. Topics should be relevant to retail brand environments, commercial signage, surface graphics, and national fit-out programmes.`;
 
   try {
     const response = await fetch('/api/generate', {

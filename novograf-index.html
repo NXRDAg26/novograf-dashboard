@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NXRD AI Marketing Tool</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --black: #0a0a0a; --white: #ffffff; --lime: #c8f026; --lime-dim: #a8cc10;
+  --gray-900: #111111; --gray-800: #1a1a1a; --gray-700: #242424; --gray-600: #2e2e2e;
+  --gray-500: #3d3d3d; --gray-400: #666666; --gray-300: #999999; --gray-200: #cccccc;
+  --positive: #4ade80; --negative: #f87171; --radius: 12px; --radius-sm: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: var(--white); min-height: 100vh; }
+
+/* ── LOGIN BTN — used in inline analytics auth prompt ── */
+.login-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--lime); color: var(--black); font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; padding: 12px 28px; border-radius: var(--radius-sm); border: none; cursor: pointer; text-decoration: none; transition: background .2s; }
+.login-btn:hover { background: var(--lime-dim); }
+
+/* ── DASHBOARD ── */
+.dashboard { display: block; }
+
+/* ── HEADER ── */
+.header { background: var(--black); border-bottom: 1px solid var(--gray-700); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
+.header-logo { display: flex; align-items: center; gap: 12px; }
+.header-logo img { height: 28px; width: auto; }
+.logo-text { font-size: 13px; font-weight: 600; color: var(--white); letter-spacing: 0.5px; }
+.logo-sub { font-size: 11px; color: var(--gray-400); font-weight: 400; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.last-updated { font-size: 11px; color: var(--gray-400); }
+.header-btn { background: var(--gray-700); border: 1px solid var(--gray-600); color: var(--gray-200); font-family: 'Poppins', sans-serif; font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: all .2s; }
+.header-btn:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
+.header-btn.logout { background: transparent; color: var(--gray-400); border-color: var(--gray-600); }
+.header-btn.logout:hover { background: var(--negative); color: var(--white); border-color: var(--negative); }
+
+/* ── NAV TABS ── */
+.nav-tabs { background: var(--black); border-bottom: 1px solid var(--gray-700); padding: 0 2rem; display: flex; gap: 0; }
+.nav-tab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-400); background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 18px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.nav-tab:hover { color: var(--gray-200); }
+.nav-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
+/* ── IFRAME PANEL ── */
+.iframe-panel { width: 100%; height: calc(100vh - 116px); border: none; display: block; background: #0d0f14; }
+
+/* ── SCHEDULER ── */
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 20px; }
+.cal-header-cell { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; text-align: center; padding-bottom: 6px; letter-spacing: 0.5px; }
+.cal-day { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); min-height: 80px; padding: 6px; cursor: pointer; transition: border-color .15s; position: relative; }
+.cal-day:hover { border-color: var(--lime); }
+.cal-day.today { border-color: var(--lime); }
+.cal-day.other-month { opacity: 0.35; }
+.cal-day-num { font-size: 11px; font-weight: 600; color: var(--gray-300); margin-bottom: 4px; }
+.cal-day.today .cal-day-num { color: var(--lime); }
+.cal-post-chip { font-size: 9px; padding: 2px 5px; border-radius: 3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; cursor: pointer; }
+.chip-draft { background: rgba(102,102,102,.3); color: var(--gray-300); }
+.chip-scheduled { background: rgba(200,240,38,.15); color: var(--lime); }
+.chip-published { background: rgba(74,222,128,.15); color: var(--positive); }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 999; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--gray-800); border: 1px solid var(--gray-600); border-radius: var(--radius); padding: 1.75rem; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+.modal-title { font-size: 15px; font-weight: 600; color: var(--white); }
+.modal-close { background: none; border: none; color: var(--gray-400); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; }
+.modal-close:hover { color: var(--white); }
+.sched-textarea { width: 100%; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 13px; padding: 10px 12px; resize: vertical; outline: none; line-height: 1.6; min-height: 120px; }
+.sched-textarea:focus { border-color: var(--lime); }
+.sched-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.sched-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+.post-list { display: flex; flex-direction: column; gap: 8px; }
+.post-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); padding: 12px 14px; display: flex; align-items: flex-start; gap: 12px; }
+.post-card-body { flex: 1; min-width: 0; }
+.post-card-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.post-card-meta { font-size: 11px; color: var(--gray-400); }
+.post-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.icon-btn { background: none; border: 1px solid var(--gray-600); border-radius: 5px; color: var(--gray-400); font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'Poppins',sans-serif; transition: all .15s; }
+.icon-btn:hover { border-color: var(--lime); color: var(--lime); }
+.icon-btn.del:hover { border-color: var(--negative); color: var(--negative); }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cal-nav-btn { background: var(--gray-700); border: 1px solid var(--gray-600); color: var(--gray-200); font-family: 'Poppins',sans-serif; font-size: 12px; padding: 5px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; }
+.cal-nav-btn:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
+.cal-month-label { font-size: 15px; font-weight: 600; color: var(--white); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.dot-draft { background: var(--gray-400); }
+.dot-scheduled { background: var(--lime); }
+.dot-published { background: var(--positive); }
+.content-link-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--gray-300); margin-top: 4px; }
+.format-badge { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 600; margin-right: 4px; }
+.fmt-carousel { background: rgba(59,130,246,.2); color: #60a5fa; }
+.fmt-video { background: rgba(249,115,22,.2); color: #fb923c; }
+.fmt-text { background: rgba(200,240,38,.15); color: var(--lime); }
+.fmt-image { background: rgba(167,139,250,.2); color: #a78bfa; }
+
+/* ── PANELS ── */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── CONTAINER ── */
+.container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+.page-title { margin-bottom: 2rem; }
+.page-title h1 { font-size: 22px; font-weight: 600; }
+.page-title p { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
+.period-label { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--gray-300); margin-top: 8px; }
+.period-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+.section-title { font-size: 13px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--gray-700); }
+
+/* ── METRIC CARDS ── */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.metric-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.25rem; }
+.metric-card.highlight { border-color: var(--lime); }
+.metric-label { font-size: 11px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.metric-value { font-size: 28px; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 8px; }
+.metric-compare { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+.metric-delta { display: flex; align-items: center; gap: 3px; font-weight: 600; font-size: 11px; }
+.metric-delta.up { color: var(--positive); }
+.metric-delta.down { color: var(--negative); }
+.metric-prev { color: var(--gray-400); }
+
+/* ── CHART CARDS ── */
+.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.chart-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.5rem; }
+.chart-card.wide { grid-column: span 2; }
+.chart-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+.chart-title { font-size: 14px; font-weight: 600; color: var(--white); }
+.chart-subtitle { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.chart-badge { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--gray-300); }
+.chart-badge.lime { background: rgba(200,240,38,.1); border-color: rgba(200,240,38,.3); color: var(--lime); }
+
+/* ── CHANNELS ── */
+.channel-list { display: flex; flex-direction: column; gap: 10px; }
+.channel-item { display: flex; flex-direction: column; gap: 4px; }
+.channel-meta { display: flex; justify-content: space-between; align-items: center; }
+.channel-name { font-size: 12px; color: var(--gray-200); font-weight: 500; }
+.channel-stats { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.channel-current { color: var(--white); font-weight: 600; }
+.channel-prev { color: var(--gray-400); }
+.channel-bar-track { height: 4px; background: var(--gray-700); border-radius: 2px; overflow: hidden; }
+.channel-bar-fill { height: 100%; border-radius: 2px; transition: width .8s ease; }
+
+/* ── GEO ── */
+.geo-table { width: 100%; border-collapse: collapse; }
+.geo-table th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 0 10px; text-align: left; border-bottom: 1px solid var(--gray-700); }
+.geo-table td { padding: 8px 0; font-size: 12px; color: var(--gray-200); border-bottom: 1px solid var(--gray-800); }
+.geo-table tr:last-child td { border-bottom: none; }
+.geo-bar-track { width: 80px; height: 3px; background: var(--gray-700); border-radius: 2px; display: inline-block; vertical-align: middle; margin: 0 8px; }
+.geo-bar-fill { height: 3px; border-radius: 2px; background: var(--lime); display: block; }
+
+/* ── PAGES ── */
+.pages-list { display: flex; flex-direction: column; }
+.page-item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--gray-700); }
+.page-item:last-child { border-bottom: none; }
+.page-rank { font-size: 11px; color: var(--gray-500); width: 16px; flex-shrink: 0; font-weight: 600; }
+.page-path { font-size: 12px; color: var(--gray-200); flex: 1; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.page-views { font-size: 12px; font-weight: 600; color: var(--white); flex-shrink: 0; }
+.page-change { font-size: 10px; flex-shrink: 0; font-weight: 600; }
+.page-change.up { color: var(--positive); }
+.page-change.down { color: var(--negative); }
+
+/* ── AI REFERRALS ── */
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.ai-source-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: var(--gray-700); border-radius: var(--radius-sm); border: 1px solid var(--gray-600); margin-bottom: 8px; }
+.ai-source-name { font-size: 12px; color: var(--gray-200); font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+.ai-sessions { font-size: 13px; font-weight: 700; color: var(--white); }
+.ai-empty { text-align: center; padding: 2rem; color: var(--gray-400); font-size: 13px; }
+
+/* ── TRACKER ── */
+.tracker-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 16px; }
+.tracker-form { display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 1.5rem; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.form-input, .form-select { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 12px; padding: 8px 10px; outline: none; transition: border-color .2s; width: 100%; }
+.form-input:focus, .form-select:focus { border-color: var(--lime); }
+.form-input::placeholder { color: var(--gray-500); }
+.form-select option { background: var(--gray-800); }
+.add-btn { background: var(--lime); color: var(--black); border: none; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 18px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.add-btn:hover { background: var(--lime-dim); }
+.visibility-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+.vis-stat { background: var(--gray-700); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+.vis-stat-value { font-size: 22px; font-weight: 700; color: var(--white); }
+.vis-stat-value.lime { color: var(--lime); }
+.vis-stat-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.visibility-log { display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; }
+.log-entry { display: grid; grid-template-columns: 100px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 14px; background: var(--gray-700); border-radius: var(--radius-sm); border: 1px solid var(--gray-600); }
+.log-platform { font-size: 11px; font-weight: 600; color: var(--lime); }
+.log-query { font-size: 12px; color: var(--gray-200); }
+.log-query span { font-size: 10px; color: var(--gray-400); display: block; margin-top: 2px; }
+.log-cited { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; }
+.log-cited.yes { color: var(--positive); }
+.log-cited.no { color: var(--negative); }
+.log-delete { background: none; border: none; color: var(--gray-500); cursor: pointer; font-size: 14px; padding: 2px 4px; border-radius: 4px; }
+.log-delete:hover { color: var(--negative); }
+
+/* ── LOADING ── */
+.loading { display: flex; align-items: center; justify-content: center; padding: 2rem; color: var(--gray-400); font-size: 13px; gap: 10px; }
+.spinner { width: 16px; height: 16px; border: 2px solid var(--gray-600); border-top-color: var(--lime); border-radius: 50%; animation: spin .8s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── FOOTER ── */
+.footer { border-top: 1px solid var(--gray-700); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; }
+.footer-brand { font-size: 11px; color: var(--gray-400); }
+.footer-brand span { color: var(--lime); font-weight: 600; }
+.footer-note { font-size: 10px; color: var(--gray-500); }
+
+/* ── CITATION TOOL ── */
+.cit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cit-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 16px; }
+.cit-card.highlight { border-color: rgba(200,240,38,.4); }
+.cit-section-intro { font-size: 13px; color: var(--gray-400); margin-bottom: 1.5rem; line-height: 1.6; }
+
+.style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.scard { padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--gray-600); background: var(--gray-700); cursor: pointer; transition: border-color .15s; }
+.scard:hover { border-color: var(--lime); }
+.scard.active { border-color: var(--lime); background: rgba(200,240,38,.06); }
+.scard-name { font-size: 12px; font-weight: 600; color: var(--gray-200); margin-bottom: 3px; }
+.scard.active .scard-name { color: var(--lime); }
+.scard-desc { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
+
+.gen-btn { background: var(--lime); color: var(--black); border: none; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; padding: 10px 24px; cursor: pointer; width: 100%; margin-top: 20px; transition: background .2s; }
+.gen-btn:hover { background: var(--lime-dim); }
+.cit-error { font-size: 12px; color: var(--negative); margin-top: 8px; display: none; }
+
+.outbox { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); padding: 14px; margin-top: 0; }
+.out-label { font-size: 10px; color: var(--lime); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 8px; }
+.out-text { font-size: 12px; color: var(--gray-200); line-height: 1.7; word-break: break-word; white-space: pre-wrap; }
+.schema-out { font-family: 'Courier New', Consolas, monospace; font-size: 11px; color: #a5b4fc; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+.copy-btn { margin-top: 10px; background: transparent; border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--gray-400); font-family: 'Poppins', sans-serif; font-size: 11px; padding: 5px 14px; cursor: pointer; transition: all .15s; }
+.copy-btn:hover { border-color: var(--lime); color: var(--lime); }
+
+.score-wrap { display: flex; align-items: flex-start; gap: 20px; }
+.score-right { flex: 1; padding-top: 4px; }
+.score-item { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+.score-item-label { font-size: 11px; color: var(--gray-300); min-width: 60px; }
+.score-bar-bg { flex: 1; height: 3px; background: var(--gray-600); border-radius: 2px; overflow: hidden; }
+.score-bar-fill { height: 3px; border-radius: 2px; background: var(--lime); transition: width .6s ease; }
+.score-num { font-size: 11px; color: var(--lime); font-weight: 600; min-width: 28px; text-align: right; }
+.tip-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+.tip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); margin-top: 6px; flex-shrink: 0; }
+.tip-text { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.tip-text strong { color: var(--gray-200); }
+
+.platform-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.ptab { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid var(--gray-600); background: transparent; color: var(--gray-400); cursor: pointer; font-family: 'Poppins', sans-serif; transition: all .15s; }
+.ptab:hover { border-color: var(--lime); color: var(--lime); }
+.ptab.active { background: rgba(200,240,38,.1); color: var(--lime); border-color: rgba(200,240,38,.4); }
+
+.checklist-item { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--gray-700); }
+.checklist-item:last-child { border-bottom: none; }
+.check-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(200,240,38,.1); border: 1px solid rgba(200,240,38,.3); color: var(--lime); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.check-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.check-desc { font-size: 11px; color: var(--gray-400); line-height: 1.6; }
+
+.cit-results { display: none; }
+
+/* ── SEO TOOL ── */
+.seo-stab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-400); background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; cursor: pointer; transition: all .2s; white-space: nowrap; margin-bottom: -1px; }
+.seo-stab:hover { color: var(--gray-200); }
+.seo-stab.active { color: var(--lime); border-bottom-color: var(--lime); }
+.seo-sub { display: none; }
+.seo-sub.active { display: block; }
+.seo-issue-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-700); }
+.seo-issue-row:last-child { border-bottom: none; }
+.seo-issue-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.seo-issue-body { flex: 1; }
+.seo-issue-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.seo-issue-desc { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.seo-priority { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+.seo-score-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 14px 16px; }
+.seo-score-label { font-size: 11px; color: var(--gray-400); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.seo-score-val { font-size: 24px; font-weight: 700; line-height: 1; }
+.seo-score-note { font-size: 11px; margin-top: 4px; }
+.tech-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--gray-700); cursor: pointer; }
+.tech-item:last-child { border-bottom: none; }
+.tech-checkbox { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--gray-600); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all .15s; }
+.tech-checkbox.checked { background: var(--lime); border-color: var(--lime); color: var(--black); }
+.tech-item-body { flex: 1; }
+.tech-item-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.tech-item-desc { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.tech-impact { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+
+/* ── COPYWRITER ── */
+.copy-client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.copy-client-tile { background: var(--gray-800); border: 2px solid var(--gray-700); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .2s; text-align: center; }
+.copy-client-tile:hover { border-color: var(--lime); background: rgba(200,240,38,.04); }
+.copy-client-tile.selected { border-color: var(--lime); background: rgba(200,240,38,.08); }
+.copy-client-tile .cct-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.copy-client-tile .cct-sector { font-size: 11px; color: var(--gray-400); }
+.copy-client-tile.selected .cct-name { color: var(--lime); }
+.copy-format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 20px; }
+.copy-format-tile { background: var(--gray-800); border: 1.5px solid var(--gray-700); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px; }
+.copy-format-tile:hover { border-color: var(--gray-500); }
+.copy-format-tile.selected { border-color: var(--lime); background: rgba(200,240,38,.06); }
+.copy-format-tile .cft-icon { font-size: 16px; flex-shrink: 0; }
+.copy-format-tile .cft-label { font-size: 12px; font-weight: 500; color: var(--gray-200); }
+.copy-format-tile.selected .cft-label { color: var(--lime); }
+.copy-output-block { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); overflow: hidden; margin-top: 20px; }
+.copy-output-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--gray-700); }
+.copy-output-label { font-size: 10px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; }
+.copy-output-text { padding: 18px 20px; font-size: 13px; color: var(--gray-200); line-height: 1.8; white-space: pre-wrap; min-height: 120px; }
+.copy-output-footer { padding: 10px 16px; border-top: 1px solid var(--gray-700); display: flex; gap: 8px; flex-wrap: wrap; }
+.copy-history-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-700); cursor: pointer; transition: all .15s; }
+.copy-history-item:last-child { border-bottom: none; }
+.copy-history-item:hover { padding-left: 6px; }
+.copy-history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); flex-shrink: 0; margin-top: 5px; }
+.copy-history-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+.copy-history-meta { font-size: 11px; color: var(--gray-400); }
+.lang-toggle { display: flex; gap: 0; border: 1px solid var(--gray-600); border-radius: var(--radius-sm); overflow: hidden; }
+.lang-btn { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 14px; border: none; background: transparent; color: var(--gray-400); cursor: pointer; transition: all .15s; text-transform: uppercase; letter-spacing: 0.04em; }
+.lang-btn.active { background: var(--lime); color: var(--black); }
+.lang-btn:hover:not(.active) { background: var(--gray-700); color: var(--gray-200); }
+
+@media (max-width: 900px) {
+  .chart-grid-2, .ai-grid, .cit-grid-2 { grid-template-columns: 1fr; }
+  .chart-card.wide { grid-column: span 1; }
+  .tracker-form { grid-template-columns: 1fr 1fr; }
+  .visibility-summary { grid-template-columns: 1fr 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .style-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 1rem; }
+  .header { padding: 0 1rem; }
+  .nav-tabs { padding: 0 1rem; overflow-x: auto; }
+  .tracker-form { grid-template-columns: 1fr; }
+  .log-entry { grid-template-columns: 1fr 1fr; }
+  .score-wrap { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- DASHBOARD — always visible, no login gate -->
+<div class="dashboard visible" id="dashboard">
+
+  <header class="header">
+    <div class="header-logo">
+      <img src="/nxrd-logo.jpg" alt="NXRD">
+      <div class="logo-sub">NXRD AI Marketing Tool — Novograf</div>
+    </div>
+    <div class="header-right">
+      <span class="last-updated" id="lastUpdated"></span>
+      <span id="auth-status-pill" style="display:none;"></span>
+      <button class="header-btn" id="header-signin-btn" style="display:none;" onclick="window.location='/auth/login'">Sign in for Analytics</button>
+      <button class="header-btn" id="header-refresh-btn" style="display:none;" onclick="loadAll()">Refresh</button>
+      <button class="header-btn logout" id="header-signout-btn" style="display:none;" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <!-- NAV TABS -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('analytics', this)">Analytics</button>
+    <button class="nav-tab" onclick="switchTab('citation', this)">Citation generator</button>
+    <button class="nav-tab" onclick="switchTab('linkedin', this)">Content and social</button>
+    <button class="nav-tab" onclick="switchTab('scheduler', this)">Post scheduler</button>
+    <button class="nav-tab" onclick="switchTab('seo', this)">SEO</button>
+    <button class="nav-tab" onclick="switchTab('copy', this)">Copywriter</button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       ANALYTICS PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel active" id="panel-analytics">
+    <div class="container">
+
+      <!-- Inline sign-in prompt shown only when not authenticated -->
+      <div id="analytics-signin-prompt" style="display:none; background:var(--gray-800); border:1px solid var(--gray-700); border-radius:var(--radius); padding:2.5rem; text-align:center; margin-bottom:2rem;">
+        <div style="font-size:28px;margin-bottom:12px;">📊</div>
+        <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;">Analytics requires Google sign-in</div>
+        <div style="font-size:13px;color:var(--gray-400);margin-bottom:1.5rem;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto;">The Analytics tab connects to the Novograf GA4 property. All other tabs — Content and Social, Post Scheduler, Citation Generator, SEO, and Copywriter — are available without signing in.</div>
+        <a href="/auth/login" class="login-btn" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Sign in with Google
+        </a>
+      </div>
+
+      <div id="analytics-content">
+        <div class="page-title">
+          <h1>Novograf website analytics</h1>
+          <p>Live data from Google Analytics 4 — Property YOUR_GA4_PROPERTY_ID</p>
+          <div class="period-label"><span class="period-dot"></span><span id="periodText">Loading period...</span></div>
+        </div>
+
+        <div class="section-title">Overview</div>
+        <div class="metrics-grid" id="metricsGrid"><div class="loading"><div class="spinner"></div> Loading metrics...</div></div>
+
+      <div class="section-title">Traffic trend</div>
+      <div class="chart-grid-2">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <div><div class="chart-title">Sessions vs users</div><div class="chart-subtitle">Current month vs previous month</div></div>
+            <div style="display:flex;gap:12px;align-items:center;font-size:11px;color:var(--gray-400)">
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:2px;background:var(--lime);display:inline-block"></span>This month</span>
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:2px;background:#444;display:inline-block"></span>Last month</span>
+            </div>
+          </div>
+          <div style="position:relative;height:220px"><canvas id="trendChart" role="img" aria-label="Sessions and users trend"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-title">Traffic sources</div>
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Channel breakdown</div><div class="chart-subtitle">Sessions by channel — current vs previous</div></div></div>
+          <div class="channel-list" id="channelList"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Channel share</div><div class="chart-subtitle">Current month distribution</div></div></div>
+          <div style="position:relative;height:200px"><canvas id="donutChart" role="img" aria-label="Channel distribution"></canvas></div>
+          <div id="donutLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--gray-400)"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Content performance</div>
+      <div class="chart-grid-2">
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Top pages</div><div class="chart-subtitle">By pageviews — current month</div></div></div>
+          <div class="pages-list" id="pagesList"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Geographic traffic</div><div class="chart-subtitle">Top countries — current month</div></div></div>
+          <table class="geo-table" id="geoTable">
+            <thead><tr><th>Country</th><th>Sessions</th><th>Share</th></tr></thead>
+            <tbody><tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-title">AI visibility</div>
+      <div class="ai-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div><div class="chart-title">AI platform referrals</div><div class="chart-subtitle">Traffic arriving from AI platforms</div></div>
+            <div class="chart-badge lime">Live data</div>
+          </div>
+          <div id="aiReferrals"><div class="loading"><div class="spinner"></div></div></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">AI referral trend</div><div class="chart-subtitle">Current vs previous month</div></div></div>
+          <div style="position:relative;height:180px"><canvas id="aiTrendChart" role="img" aria-label="AI referral trend"></canvas></div>
+        </div>
+      </div>
+
+      <div class="tracker-card">
+        <div class="chart-header" style="margin-bottom:1.25rem">
+          <div><div class="chart-title">AI citation tracker</div><div class="chart-subtitle">Manually log when Novograf is cited by AI platforms</div></div>
+          <div class="chart-badge">Manual tracking</div>
+        </div>
+        <div class="visibility-summary">
+          <div class="vis-stat"><div class="vis-stat-value" id="totalTests">0</div><div class="vis-stat-label">Tests logged</div></div>
+          <div class="vis-stat"><div class="vis-stat-value lime" id="totalCited">0</div><div class="vis-stat-label">Times cited</div></div>
+          <div class="vis-stat"><div class="vis-stat-value" id="citationRate">0%</div><div class="vis-stat-label">Citation rate</div></div>
+          <div class="vis-stat"><div class="vis-stat-value" id="platformsCovered">0</div><div class="vis-stat-label">Platforms tested</div></div>
+        </div>
+        <div class="tracker-form">
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <select class="form-select" id="inputPlatform">
+              <option>ChatGPT</option><option>Claude</option><option>Perplexity</option>
+              <option>Gemini</option><option>Copilot</option><option>You.com</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Query tested</label>
+            <input class="form-input" id="inputQuery" placeholder="e.g. industrial filtration suppliers Europe" type="text">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Novograf cited?</label>
+            <select class="form-select" id="inputCited">
+              <option value="true">Yes — cited</option>
+              <option value="false">No — not cited</option>
+            </select>
+          </div>
+          <button class="add-btn" onclick="addVisibilityEntry()">Add entry</button>
+        </div>
+        <div class="visibility-log" id="visibilityLog">
+          <div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No entries yet.</div>
+        </div>
+      </div>
+
+      </div><!-- end analytics-content -->
+    </div>
+  </div>
+  <!-- end analytics panel -->
+
+  <!-- ══════════════════════════════════════════════════════
+       CITATION PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-citation">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>Citation generator</h1>
+        <p>Generate citations, AI prompts, schema markup and a submission checklist in one click</p>
+        <div class="period-label"><span class="period-dot"></span>Helps AI platforms like ChatGPT, Claude and Perplexity discover and cite your content</div>
+      </div>
+
+      <!-- INPUTS -->
+      <div class="section-title">Enter your content details</div>
+
+      <div class="cit-card">
+        <div class="chart-header">
+          <div><div class="chart-title">Your content</div><div class="chart-subtitle">Only URL and page title are required — everything else improves your score</div></div>
+          <div class="chart-badge lime">Free tool</div>
+        </div>
+
+        <p class="cit-section-intro">Fill in the details below for the page you want to get cited. The more you provide, the stronger your citation health score and AI prompts will be.</p>
+
+        <div class="cit-grid-2">
+          <div class="form-group">
+            <label class="form-label">Page URL <span style="color:var(--negative)">*</span></label>
+            <input class="form-input" type="url" id="cit-url" placeholder="https://novograf.co.uk/your-article" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Page title <span style="color:var(--negative)">*</span></label>
+            <input class="form-input" type="text" id="cit-title" placeholder="e.g. Industrial Dust Extraction Solutions" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:12px">
+          <label class="form-label">Topic or keywords</label>
+          <input class="form-input" type="text" id="cit-keywords" placeholder="e.g. industrial filtration, dust extraction, B2B" />
+        </div>
+
+        <div class="cit-grid-2" style="margin-top:12px">
+          <div class="form-group">
+            <label class="form-label">Author surname</label>
+            <input class="form-input" type="text" id="cit-alast" placeholder="Silva" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">First name / initials</label>
+            <input class="form-input" type="text" id="cit-afirst" placeholder="A." />
+          </div>
+        </div>
+
+        <div class="cit-grid-2" style="margin-top:12px">
+          <div class="form-group">
+            <label class="form-label">Website name</label>
+            <input class="form-input" type="text" id="cit-site" placeholder="Novograf" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Publish date</label>
+            <input class="form-input" type="text" id="cit-pubdate" placeholder="12 March 2024" />
+          </div>
+        </div>
+
+        <label class="form-label" style="margin-top:20px;margin-bottom:8px;">What are you citing this for?</label>
+        <div class="style-grid">
+          <div class="scard active" data-s="APA">
+            <div class="scard-name">General use / AI tools</div>
+            <div class="scard-desc">Best for getting cited by ChatGPT, Claude, Perplexity and other AI platforms. Most widely recognised format.</div>
+          </div>
+          <div class="scard" data-s="Harvard">
+            <div class="scard-name">Business and reports</div>
+            <div class="scard-desc">Common in business, consultancy and professional reports. Standard across UK industry.</div>
+          </div>
+          <div class="scard" data-s="MLA">
+            <div class="scard-name">Journalism and media</div>
+            <div class="scard-desc">Used by journalists, publishers and content writers. Standard for editorial citation.</div>
+          </div>
+          <div class="scard" data-s="Chicago">
+            <div class="scard-name">Publishing and books</div>
+            <div class="scard-desc">Preferred by book publishers and long form editorial. Common in humanities and print.</div>
+          </div>
+          <div class="scard" data-s="Vancouver">
+            <div class="scard-name">Medical and scientific</div>
+            <div class="scard-desc">Standard in healthcare, clinical research and scientific journals.</div>
+          </div>
+          <div class="scard" data-s="IEEE">
+            <div class="scard-name">Technical and engineering</div>
+            <div class="scard-desc">Used in engineering, electronics and technical white papers.</div>
+          </div>
+        </div>
+
+        <button class="gen-btn" id="cit-genbtn">Generate everything</button>
+        <p class="cit-error" id="cit-err"></p>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="cit-results" id="cit-results">
+
+        <div class="section-title">Your citation</div>
+        <div class="cit-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Formatted citation</div><div class="chart-subtitle">Copy and use this anywhere you need to reference your content</div></div>
+            <div class="chart-badge lime" id="cit-style-badge">APA 7th</div>
+          </div>
+          <div class="outbox">
+            <p class="out-label" id="cit-out-label">Citation</p>
+            <p class="out-text" id="cit-out-text"></p>
+            <button class="copy-btn" data-target="cit-out-text">Copy citation</button>
+          </div>
+        </div>
+
+        <div class="section-title">Citation health score</div>
+        <div class="cit-card">
+          <div class="chart-header">
+            <div><div class="chart-title">How citable is this page?</div><div class="chart-subtitle">The higher the score the more likely AI platforms will reference it</div></div>
+          </div>
+          <div class="score-wrap">
+            <svg width="80" height="80" viewBox="0 0 80 80" style="flex-shrink:0">
+              <circle cx="40" cy="40" r="32" fill="none" stroke="#242424" stroke-width="7"/>
+              <circle id="cit-score-ring" cx="40" cy="40" r="32" fill="none" stroke="#c8f026" stroke-width="7"
+                stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="201"
+                transform="rotate(-90 40 40)" style="transition:stroke-dashoffset .8s ease"/>
+              <text x="40" y="45" text-anchor="middle" font-size="18" font-weight="700"
+                fill="#ffffff" font-family="Poppins,sans-serif" id="cit-score-num">0</text>
+            </svg>
+            <div class="score-right" id="cit-score-breakdown"></div>
+          </div>
+          <div id="cit-score-tips" style="margin-top:12px"></div>
+        </div>
+
+        <div class="section-title">AI prompt generator</div>
+        <div class="cit-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Ready to paste prompts</div><div class="chart-subtitle">Copy these directly into ChatGPT, Claude or Perplexity to encourage them to find and cite your page</div></div>
+            <div class="chart-badge lime">High impact</div>
+          </div>
+          <div class="platform-tabs" id="cit-ptabs">
+            <button class="ptab active" data-p="general">All platforms</button>
+            <button class="ptab" data-p="chatgpt">ChatGPT</button>
+            <button class="ptab" data-p="claude">Claude</button>
+            <button class="ptab" data-p="perplexity">Perplexity</button>
+          </div>
+          <div class="outbox">
+            <p class="out-label">Paste this prompt directly into the AI platform</p>
+            <p class="out-text" id="cit-prompt-text"></p>
+            <button class="copy-btn" data-target="cit-prompt-text">Copy prompt</button>
+          </div>
+        </div>
+
+        <div class="section-title">Schema markup</div>
+        <div class="cit-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Structured data for your website</div><div class="chart-subtitle">Paste into the &lt;head&gt; of your page — tells AI crawlers exactly what your content is about</div></div>
+            <div class="chart-badge">JSON-LD</div>
+          </div>
+          <div class="outbox">
+            <p class="out-label">Copy and paste into your page &lt;head&gt;</p>
+            <p class="out-text schema-out" id="cit-schema-text"></p>
+            <button class="copy-btn" data-target="cit-schema-text">Copy code</button>
+          </div>
+        </div>
+
+        <div class="section-title">What to do next</div>
+        <div class="cit-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Submission checklist</div><div class="chart-subtitle">Follow these steps to maximise your chances of being cited by AI platforms</div></div>
+          </div>
+          <div id="cit-checklist"></div>
+        </div>
+
+        <!-- BLOG SUGGESTER -->
+        <div class="section-title">Blog content planner</div>
+        <div class="cit-card" id="blog-suggester-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">What to write and how often</div>
+              <div class="chart-subtitle">AI-generated blog strategy based on your page topic and keywords — builds the citation authority needed to get found by AI platforms</div>
+            </div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:1.25rem;line-height:1.6;">Enter your topic area and target audience below. The AI will generate a recommended posting frequency, a 4-week blog calendar, and a list of high-priority article titles optimised to get your site cited by ChatGPT, Claude, and Perplexity.</p>
+
+          <div class="cit-grid-2" style="margin-bottom:10px;">
+            <div class="form-group">
+              <label class="form-label">Topic area</label>
+              <input class="form-input" id="blog-topic" type="text" placeholder="e.g. compressed air quality, nitrogen generation, water treatment">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target audience</label>
+              <input class="form-input" id="blog-audience" type="text" placeholder="e.g. plant engineers, food manufacturers, oil and gas operators">
+            </div>
+          </div>
+          <div class="cit-grid-2" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">Business / website name</label>
+              <input class="form-input" id="blog-brand" type="text" placeholder="e.g. Novograf">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Current posting frequency</label>
+              <select class="form-select" id="blog-current">
+                <option value="none">Not blogging yet</option>
+                <option value="occasional">Occasional (less than 1 per month)</option>
+                <option value="monthly">Monthly (1 per month)</option>
+                <option value="biweekly">Fortnightly (2 per month)</option>
+                <option value="weekly">Weekly</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="gen-btn" id="blog-gen-btn" style="margin-top:0;" onclick="runBlogSuggester()">Generate blog strategy</button>
+
+          <div id="blog-output" style="display:none;margin-top:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:10px;color:var(--lime);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Blog strategy</span>
+              <button class="copy-btn" data-target="blog-output-text">Copy all</button>
+            </div>
+            <div class="outbox">
+              <p class="out-text" id="blog-output-text" style="white-space:pre-wrap;"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end cit-results -->
+
+    </div>
+  </div>
+  <!-- end citation panel -->
+
+  <!-- ══════════════════════════════════════════════════════
+       LINKEDIN GROWTH PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-linkedin">
+    <iframe class="iframe-panel" id="linkedin-iframe" src="" title="LinkedIn Growth Tool"></iframe>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       POST SCHEDULER PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-scheduler">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>Post scheduler</h1>
+        <p>Plan, draft, and schedule LinkedIn posts for Novograf — attach content, set formats, track status</p>
+        <div class="period-label"><span class="period-dot"></span>Posts are saved locally in your browser</div>
+      </div>
+
+      <!-- CALENDAR NAV + NEW POST -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="cal-nav" style="margin-bottom:0;">
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8592; Prev</button>
+          <span class="cal-month-label" id="cal-month-label"></span>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">Next &#8594;</button>
+        </div>
+        <button class="add-btn" onclick="openModal()">+ New post</button>
+      </div>
+
+      <!-- CALENDAR -->
+      <div class="chart-card" style="padding:1.25rem;margin-bottom:20px;">
+        <div class="cal-grid" id="cal-day-headers"></div>
+        <div class="cal-grid" id="cal-body"></div>
+      </div>
+
+      <!-- POST LIST -->
+      <div class="section-title">All posts</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+        <button class="icon-btn" style="font-size:11px;" onclick="filterPosts('all')">All</button>
+        <button class="icon-btn" onclick="filterPosts('draft')">Draft</button>
+        <button class="icon-btn" onclick="filterPosts('scheduled')">Scheduled</button>
+        <button class="icon-btn" onclick="filterPosts('published')">Published</button>
+      </div>
+      <div class="post-list" id="post-list"></div>
+
+    </div>
+  </div>
+
+  <!-- POST MODAL -->
+  <div class="modal-overlay" id="post-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title-text">New post</span>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+
+      <input type="hidden" id="edit-post-id">
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Post title / topic</label>
+        <input class="form-input" id="post-title" placeholder="e.g. How surface emulation transforms a retail refurb without a full refit" type="text">
+      </div>
+
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Post copy</label>
+        <textarea class="sched-textarea" id="post-copy" placeholder="Write your LinkedIn post here, or paste generated copy from the Content and Social tool..."></textarea>
+      </div>
+
+      <div class="sched-row">
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <select class="form-select" id="post-format">
+            <option value="text">Text post</option>
+            <option value="carousel">Carousel</option>
+            <option value="video">Short video</option>
+            <option value="image">Image post</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="post-status">
+            <option value="draft">Draft</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sched-row">
+        <div class="form-group">
+          <label class="form-label">Scheduled date</label>
+          <input class="form-input" id="post-date" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Scheduled time</label>
+          <input class="form-input" id="post-time" type="time" value="08:30">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Hashtags</label>
+        <input class="form-input" id="post-hashtags" placeholder="#CompressedAir #NitrogenGeneration #Novograf" type="text">
+      </div>
+
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Linked content URL (optional)</label>
+        <input class="form-input" id="post-link" placeholder="https://novograf.co.uk/your-article or Google Drive link" type="url">
+      </div>
+
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Notes / brief</label>
+        <input class="form-input" id="post-notes" placeholder="e.g. Needs approval from client, attach infographic" type="text">
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:18px;">
+        <button class="add-btn" onclick="savePost()" style="flex:1;">Save post</button>
+        <button class="header-btn" onclick="closeModal()" style="flex:0 0 auto;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SEO PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-seo">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>SEO — Novograf.com</h1>
+        <p>Page-by-page performance audit, fix recommendations, and a monthly growth plan</p>
+        <div class="period-label"><span class="period-dot"></span>AI-powered analysis · enter a URL to audit any page</div>
+      </div>
+
+      <!-- ── SUB TABS ── -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--gray-700);margin-bottom:1.5rem;">
+        <button class="seo-stab active" onclick="seoTab('audit',this)">Page auditor</button>
+        <button class="seo-stab" onclick="seoTab('planner',this)">Monthly growth plan</button>
+        <button class="seo-stab" onclick="seoTab('keywords',this)">Keyword targets</button>
+        <button class="seo-stab" onclick="seoTab('technical',this)">Technical checklist</button>
+      </div>
+
+      <!-- ── PAGE AUDITOR ── -->
+      <div id="seo-panel-audit" class="seo-sub active">
+
+        <div class="chart-card" style="margin-bottom:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">Audit a page</div><div class="chart-subtitle">Enter any Novograf.com URL to get a full SEO breakdown and prioritised fix list</div></div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-bottom:12px;">
+            <div class="form-group">
+              <label class="form-label">Page URL</label>
+              <input class="form-input" id="seo-url" type="url" placeholder="https://novograf.co.uk/compressed-air-quality" style="font-family:monospace;font-size:12px;">
+            </div>
+            <button class="add-btn" onclick="runSeoAudit()" id="seo-audit-btn">Audit page</button>
+          </div>
+
+          <!-- QUICK PAGE BUTTONS -->
+          <div style="margin-bottom:4px;">
+            <div class="form-label" style="margin-bottom:8px;">Quick select — known Novograf pages</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk')">Homepage</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/compressed-air-quality')">Custom graphics and surfaces</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/nitrogen-generation')">Retail fit-outs</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/oxygen-generation')">Commercial signage</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/energy-efficiency')">Interior branding</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/services')">Services</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/contact')">Contact</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUDIT RESULTS -->
+        <div id="seo-audit-results" style="display:none;">
+
+          <!-- SCORE HEADER -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px;" id="seo-score-grid"></div>
+
+          <!-- AUDIT DETAIL -->
+          <div class="chart-grid-2">
+            <div class="chart-card" id="seo-issues-card">
+              <div class="chart-header"><div><div class="chart-title">Issues found</div><div class="chart-subtitle">Prioritised by ranking impact</div></div></div>
+              <div id="seo-issues-list"></div>
+            </div>
+            <div class="chart-card" id="seo-wins-card">
+              <div class="chart-header"><div><div class="chart-title">What is working</div><div class="chart-subtitle">Strengths to maintain and build on</div></div></div>
+              <div id="seo-wins-list"></div>
+            </div>
+          </div>
+
+          <div class="chart-card" style="margin-top:16px;" id="seo-actions-card">
+            <div class="chart-header">
+              <div><div class="chart-title">Fix list</div><div class="chart-subtitle">Exact actions to improve this page — copy directly into a task list or brief</div></div>
+              <button class="copy-btn" onclick="copySeoOutput('seo-actions-text')">Copy all</button>
+            </div>
+            <div class="out-text" id="seo-actions-text" style="font-size:12px;color:var(--gray-200);line-height:1.8;white-space:pre-wrap;"></div>
+          </div>
+
+          <div class="chart-card" style="margin-top:16px;" id="seo-meta-card">
+            <div class="chart-header">
+              <div><div class="chart-title">Suggested meta title and description</div><div class="chart-subtitle">Optimised for target keywords and click-through rate</div></div>
+              <button class="copy-btn" onclick="copySeoOutput('seo-meta-text')">Copy</button>
+            </div>
+            <div class="out-text" id="seo-meta-text" style="font-size:12px;color:var(--gray-200);line-height:1.8;white-space:pre-wrap;"></div>
+          </div>
+
+        </div>
+
+        <div id="seo-audit-loading" style="display:none;" class="loading"><div class="spinner"></div> Analysing page...</div>
+
+      </div>
+
+      <!-- ── MONTHLY GROWTH PLAN ── -->
+      <div id="seo-panel-planner" class="seo-sub" style="display:none;">
+
+        <div class="chart-card" style="margin-bottom:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">Monthly SEO growth plan generator</div><div class="chart-subtitle">AI builds a month-by-month action plan tailored to Novograf's sector and current SEO maturity</div></div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">Current stage</label>
+              <select class="form-select" id="seo-stage">
+                <option value="new">Just starting out (0 to 3 months)</option>
+                <option value="early">Early traction (3 to 12 months)</option>
+                <option value="growing" selected>Growing (1 to 2 years)</option>
+                <option value="established">Established (2 plus years)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Monthly effort available</label>
+              <select class="form-select" id="seo-effort">
+                <option value="minimal">Minimal (2 to 4 hours per month)</option>
+                <option value="moderate" selected>Moderate (1 day per month)</option>
+                <option value="active">Active (2 to 3 days per month)</option>
+                <option value="intensive">Intensive (weekly attention)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Plan length</label>
+              <select class="form-select" id="seo-plan-months">
+                <option value="3">3 months</option>
+                <option value="6" selected>6 months</option>
+                <option value="12">12 months</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label class="form-label">Primary SEO goals (optional — describe in plain language)</label>
+            <input class="form-input" id="seo-goals" type="text" placeholder="e.g. Rank for nitrogen generation Portugal, appear when food manufacturers search for on-site gas, beat Atlas Copco locally">
+          </div>
+
+          <button class="add-btn" onclick="runSeoPlanner()" id="seo-plan-btn">Generate growth plan</button>
+        </div>
+
+        <div id="seo-plan-loading" style="display:none;" class="loading"><div class="spinner"></div> Building your plan...</div>
+
+        <div id="seo-plan-output" style="display:none;">
+          <div class="chart-header" style="margin-bottom:12px;">
+            <div><div class="chart-title">Your SEO growth plan</div></div>
+            <button class="copy-btn" onclick="copySeoOutput('seo-plan-text')">Copy plan</button>
+          </div>
+          <div class="chart-card">
+            <div class="out-text" id="seo-plan-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── KEYWORD TARGETS ── -->
+      <div id="seo-panel-keywords" class="seo-sub" style="display:none;">
+
+        <!-- KEYWORD TARGET GENERATOR -->
+        <div class="chart-card" style="margin-bottom:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">Keyword target generator</div><div class="chart-subtitle">AI identifies the highest-value keyword targets for Novograf across all service areas and sectors</div></div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">Service area or sector</label>
+              <select class="form-select" id="kw-sector">
+                <option>All services (full keyword map)</option>
+                <option>Custom graphics and surfaces and audits</option>
+                <option>Retail fit-outs (PSA and membrane)</option>
+                <option>Commercial signage</option>
+                <option>Window and floor graphics</option>
+                <option>Printed wallcoverings and murals</option>
+                <option>Lift and hoarding graphics</option>
+                <option>Commercial interior branding</option>
+                <option>Hospitality and hotel graphics</option>
+                <option>Office and workplace interiors</option>
+                <option>Interior branding audits</option>
+                <option>Sustainability and eco-friendly print</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target geography</label>
+              <select class="form-select" id="kw-geo">
+                <option>Portugal (national)</option>
+                <option>Iberian Peninsula (Portugal and Spain)</option>
+                <option>Europe (broader reach)</option>
+                <option>International (English language)</option>
+              </select>
+            </div>
+          </div>
+          <button class="add-btn" onclick="runKeywordGen()" id="kw-gen-btn">Generate keyword targets</button>
+        </div>
+
+        <div id="kw-loading" style="display:none;" class="loading"><div class="spinner"></div> Researching keywords...</div>
+
+        <div id="kw-output" style="display:none;">
+          <div class="chart-header" style="margin-bottom:12px;">
+            <div><div class="chart-title" id="kw-output-title">Keyword targets</div></div>
+            <button class="copy-btn" onclick="copySeoOutput('kw-text')">Copy</button>
+          </div>
+          <div class="chart-card">
+            <div class="out-text" id="kw-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+        <!-- PAGE BUILDER RECOMMENDATIONS -->
+        <div class="chart-card" style="margin-top:20px;margin-bottom:16px;">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Recommended pages to build</div>
+              <div class="chart-subtitle">Keywords with enough search volume and low enough competition to justify a dedicated landing page on novograf.co.uk</div>
+            </div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:16px;line-height:1.6;">Each recommendation includes the target keyword, estimated monthly search volume, current competition level, the URL slug to use, and a full content brief so the page can be written and built immediately.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">Focus area</label>
+              <select class="form-select" id="pb-sector">
+                <option value="all">All Novograf services (full priority list)</option>
+                <option value="nitrogen">Retail fit-outs</option>
+                <option value="oxygen">Commercial signage</option>
+                <option value="compressed-air">Custom graphics and surfaces</option>
+                <option value="window-floor">Window and floor graphics</option>
+                <option value="wallcoverings">Printed wallcoverings and murals</option>
+                <option value="hospitality">Hospitality and hotel interiors</option>
+                <option value="office">Office and workplace branding</option>
+                <option value="sustainability">Sustainable and eco-friendly print</option>
+                <option value="retail-refurb">Retail refurbishment and resurfacing</option>
+                <option value="energy">Interior branding audits</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Market</label>
+              <select class="form-select" id="pb-geo">
+                <option value="pt">Portugal only</option>
+                <option value="iberia">Portugal and Spain</option>
+                <option value="europe">European market (English)</option>
+                <option value="both">Both Portuguese and English pages</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Number of page recommendations</label>
+              <select class="form-select" id="pb-count">
+                <option value="5">5 pages</option>
+                <option value="10" selected>10 pages</option>
+                <option value="15">15 pages</option>
+                <option value="20">20 pages</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="add-btn" onclick="runPageBuilder()" id="pb-gen-btn">Generate page recommendations</button>
+        </div>
+
+        <div id="pb-loading" style="display:none;" class="loading"><div class="spinner"></div> Building page recommendations...</div>
+
+        <div id="pb-output" style="display:none;">
+          <div class="chart-header" style="margin-bottom:12px;">
+            <div><div class="chart-title" id="pb-output-title">Recommended pages to build</div></div>
+            <button class="copy-btn" onclick="copySeoOutput('pb-text')">Copy all</button>
+          </div>
+
+          <!-- QUICK OVERVIEW TABLE -->
+          <div class="chart-card" style="margin-bottom:12px;overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;" id="pb-table">
+              <thead>
+                <tr style="border-bottom:1px solid var(--gray-700);">
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">#</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Target keyword</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Monthly searches</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Difficulty</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Suggested URL</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">Priority</th>
+                </tr>
+              </thead>
+              <tbody id="pb-table-body">
+                <tr><td colspan="6" style="padding:1rem 0;color:var(--gray-400);font-size:12px;">Generating recommendations...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- FULL BRIEFS -->
+          <div class="chart-card">
+            <div style="font-size:11px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Full page briefs</div>
+            <div class="out-text" id="pb-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── TECHNICAL CHECKLIST ── -->
+      <div id="seo-panel-technical" class="seo-sub" style="display:none;">
+
+        <div class="chart-card" style="margin-bottom:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">Technical SEO checklist — Novograf.com</div><div class="chart-subtitle">Core technical requirements for ranking in 2026. Check each item against the live site.</div></div>
+            <div id="tech-progress-text" style="font-size:12px;color:var(--gray-400);"></div>
+          </div>
+          <div id="tech-checklist"></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <div><div class="chart-title">Instant technical audit</div><div class="chart-subtitle">AI reviews your site's technical SEO signals and produces a prioritised fix list</div></div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+          <button class="add-btn" onclick="runTechAudit()" id="tech-audit-btn" style="margin-bottom:14px;">Run technical audit</button>
+          <div id="tech-audit-loading" style="display:none;" class="loading"><div class="spinner"></div> Auditing technical signals...</div>
+          <div id="tech-audit-output" style="display:none;">
+            <div class="out-text" id="tech-audit-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- end seo panel -->
+
+  <!-- ══════════════════════════════════════════════════════
+       COPYWRITER PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-copy">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>Copywriter</h1>
+        <p>NXRD Male Copywriter — direct, authoritative B2B copy across all formats and clients</p>
+        <div class="period-label"><span class="period-dot"></span>No hyphens. No emojis. No fluff. Commercial weight in every line.</div>
+      </div>
+
+      <div class="chart-grid-2">
+
+        <!-- LEFT: BRIEF BUILDER -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- STEP 1: CLIENT -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">1. Select client</div><div class="chart-subtitle">Each client has their own voice, sector, and audience baked in</div></div>
+              <button class="header-btn" onclick="openAddClient()" style="font-size:11px;">+ Add client</button>
+            </div>
+            <div class="copy-client-grid" id="copy-client-grid"></div>
+          </div>
+
+          <!-- STEP 2: FORMAT -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">2. Choose format</div><div class="chart-subtitle">Select what you need written</div></div>
+            </div>
+            <div class="copy-format-grid" id="copy-format-grid"></div>
+          </div>
+
+          <!-- STEP 3: LANGUAGE -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">3. Language</div><div class="chart-subtitle">Output language for this piece</div></div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="lang-toggle">
+                <button class="lang-btn active" onclick="setLang('en',this)">English</button>
+                <button class="lang-btn" onclick="setLang('pt',this)">Portuguese</button>
+                <button class="lang-btn" onclick="setLang('both',this)">Both</button>
+              </div>
+              <span style="font-size:11px;color:var(--gray-400);" id="copy-lang-note">Will generate in English</span>
+            </div>
+          </div>
+
+          <!-- STEP 4: BRIEF -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">4. Brief</div><div class="chart-subtitle">The more specific, the stronger the output</div></div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">Topic or subject</label>
+              <input class="form-input" id="copy-topic" type="text" placeholder="e.g. On-site nitrogen generation for food manufacturers — why on-site beats bottled">
+            </div>
+
+            <div class="cit-grid-2" style="margin-bottom:12px;">
+              <div class="form-group">
+                <label class="form-label">Target audience</label>
+                <input class="form-input" id="copy-audience" type="text" placeholder="e.g. Plant managers, food and beverage sector">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tone direction (optional)</label>
+                <select class="form-select" id="copy-tone">
+                  <option value="nxrd">NXRD default — direct, authoritative, commercial</option>
+                  <option value="provocative">Provocative and challenging</option>
+                  <option value="educational">Educational and plain-spoken</option>
+                  <option value="story">Story-led and personal</option>
+                  <option value="technical">Technical and precise</option>
+                  <option value="warm">Warm and approachable</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label">Key points to include (optional)</label>
+              <textarea id="copy-points" rows="3" placeholder="e.g. 35 years of expertise, manufacturer agnostic, cuts costs vs cylinder supply, reduces carbon footprint, PSA and membrane options available"></textarea>
+            </div>
+
+            <div class="cit-grid-2" style="margin-bottom:0;">
+              <div class="form-group">
+                <label class="form-label">CTA (optional)</label>
+                <input class="form-input" id="copy-cta" type="text" placeholder="e.g. Book a free assessment at novograf.co.uk">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Word count guide</label>
+                <select class="form-select" id="copy-length">
+                  <option value="short">Short — under 200 words</option>
+                  <option value="medium" selected>Medium — 200 to 400 words</option>
+                  <option value="long">Long — 400 to 800 words</option>
+                  <option value="extended">Extended — 800 to 1500 words</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <button class="add-btn" id="copy-gen-btn" onclick="runCopywriter()" style="width:100%;padding:12px;font-size:13px;letter-spacing:0.05em;">Generate copy</button>
+
+        </div>
+
+        <!-- RIGHT: OUTPUT + HISTORY -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- NXRD VOICE REFERENCE -->
+          <div class="chart-card" style="border-color:rgba(200,240,38,0.2);">
+            <div class="chart-header"><div><div class="chart-title">NXRD Male Copywriter — voice rules</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">01</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">No hyphens. No emojis. No bullet point lists in creative copy. No filler phrases.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">02</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Every sentence earns its place. If it does not add something, it is cut.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">03</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Opens with a statement, not a question. Hooks the reader on the problem before offering the solution.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">04</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Commercial weight behind every claim. Sector proof, named clients, and specificity over generic assertions.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">05</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Confident without being arrogant. The expert in the room, not the loudest voice in it.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">06</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Ends with direction, not decoration. The reader knows exactly what to do next.</span></div>
+            </div>
+          </div>
+
+          <!-- OUTPUT -->
+          <div id="copy-output-wrap" style="display:none;">
+            <div class="copy-output-block">
+              <div class="copy-output-header">
+                <span class="copy-output-label">
+                  <span class="spinner" id="copy-spinner" style="display:none;"></span>
+                  <span id="copy-output-title">Generated copy</span>
+                </span>
+                <div style="display:flex;gap:6px;">
+                  <button class="copy-btn" onclick="copyCopyOutput('copy-text-en')" id="copy-copy-en">Copy EN</button>
+                  <button class="copy-btn" onclick="copyCopyOutput('copy-text-pt')" id="copy-copy-pt" style="display:none;">Copy PT</button>
+                </div>
+              </div>
+
+              <!-- ENGLISH OUTPUT -->
+              <div id="copy-block-en" style="display:none;">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;"><span style="font-size:16px;">🇬🇧</span><span style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;">English</span></div>
+                <div class="copy-output-text" id="copy-text-en"></div>
+              </div>
+
+              <!-- PORTUGUESE OUTPUT -->
+              <div id="copy-block-pt" style="display:none;">
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;border-top:1px solid var(--gray-700);"><span style="font-size:16px;">🇵🇹</span><span style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;">Português</span></div>
+                <div class="copy-output-text" id="copy-text-pt"></div>
+              </div>
+
+              <div class="copy-output-footer">
+                <button class="add-btn" onclick="sendCopyToScheduler()" style="font-size:11px;padding:6px 16px;">Add to post scheduler</button>
+                <button class="header-btn" onclick="saveCopyToHistory()" style="font-size:11px;">Save to history</button>
+                <button class="header-btn" onclick="runCopywriter()" style="font-size:11px;">Regenerate</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- HISTORY -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">Recent outputs</div><div class="chart-subtitle">Saved in this browser session</div></div>
+              <button class="copy-btn" onclick="clearCopyHistory()">Clear</button>
+            </div>
+            <div id="copy-history-list">
+              <div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No history yet. Generate your first piece above.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end copywriter panel -->
+
+  <!-- ADD CLIENT MODAL -->
+  <div class="modal-overlay" id="add-client-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Add client</span>
+        <button class="modal-close" onclick="closeAddClient()">&times;</button>
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Client name</label>
+        <input class="form-input" id="new-client-name" type="text" placeholder="e.g. Earl Kendrick">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Sector</label>
+        <input class="form-input" id="new-client-sector" type="text" placeholder="e.g. Building Surveying, London">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">What they do (2 sentences max)</label>
+        <textarea id="new-client-desc" rows="2" placeholder="e.g. Building surveyors and project managers based in London. Specialist in Grade II listed buildings, dilapidations, and residential surveys."></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label class="form-label">Target audience</label>
+        <input class="form-input" id="new-client-audience" type="text" placeholder="e.g. Property owners, landlords, solicitors, property developers">
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Key differentiators or proof points</label>
+        <textarea id="new-client-proof" rows="2" placeholder="e.g. 25 years experience, RICS accredited, 500+ surveys completed, fixed fee pricing"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="add-btn" onclick="saveNewClient()" style="flex:1;">Save client</button>
+        <button class="header-btn" onclick="closeAddClient()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">Powered by <span>NXRD</span> — nx-rd.com</div>
+    <div class="footer-note">Data sourced from Google Analytics 4. Refreshes on page load.</div>
+  </footer>
+
+</div>
+<!-- end dashboard -->
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   TAB SWITCHING
+══════════════════════════════════════════════════════════════ */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  ['analytics','citation','linkedin','scheduler','seo','copy'].forEach(p => {
+    document.getElementById('panel-'+p).classList.toggle('active', p === tab);
+  });
+  if (tab === 'linkedin') {
+    const iframe = document.getElementById('linkedin-iframe');
+    if (!iframe.src || iframe.src === window.location.href) iframe.src = '/linkedin';
+  }
+  if (tab === 'scheduler') { renderCalendar(); renderPostList(); }
+  if (tab === 'seo') { initTechChecklist(); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ANALYTICS
+══════════════════════════════════════════════════════════════ */
+const CHANNEL_COLORS = {
+  'Organic Search':'#c8f026','Direct':'#60a5fa','Referral':'#a78bfa',
+  'Organic Social':'#f472b6','Email':'#fb923c','Paid Search':'#34d399','default':'#666666'
+};
+let donutInst=null,trendInst=null,aiTrendInst=null;
+
+function fmt(n){if(!n)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'m';if(n>=1000)return(n/1000).toFixed(1)+'k';return Math.round(n).toString();}
+function fmtDur(s){const m=Math.floor(s/60),sec=Math.round(s%60);return m+'m '+sec+'s';}
+function pct(a,b){if(!b)return null;return Math.round(((a-b)/b)*100);}
+function deltaHtml(c,p){const d=pct(c,p);if(d===null)return'';const cls=d>=0?'up':'down';return`<span class="metric-delta ${cls}">${d>=0?'↑':'↓'} ${Math.abs(d)}%</span>`;}
+
+async function checkAuth(){
+  try {
+    const r = await fetch('/auth/status');
+    const j = await r.json();
+    const isAuth = j.authenticated;
+
+    // Header buttons
+    document.getElementById('header-signin-btn').style.display = isAuth ? 'none' : 'inline-block';
+    document.getElementById('header-refresh-btn').style.display = isAuth ? 'inline-block' : 'none';
+    document.getElementById('header-signout-btn').style.display = isAuth ? 'inline-block' : 'none';
+
+    // Analytics panel: show content or sign-in prompt
+    document.getElementById('analytics-signin-prompt').style.display = isAuth ? 'none' : 'block';
+    document.getElementById('analytics-content').style.display = isAuth ? 'block' : 'none';
+
+    if (isAuth) {
+      document.getElementById('lastUpdated').textContent = 'Loading...';
+      loadAll();
+    }
+  } catch(e) {
+    // If auth check fails, just show the sign-in prompt
+    document.getElementById('analytics-signin-prompt').style.display = 'block';
+    document.getElementById('analytics-content').style.display = 'none';
+    document.getElementById('header-signin-btn').style.display = 'inline-block';
+  }
+}
+
+async function logout(){
+  await fetch('/auth/logout');
+  document.getElementById('analytics-signin-prompt').style.display = 'block';
+  document.getElementById('analytics-content').style.display = 'none';
+  document.getElementById('header-signin-btn').style.display = 'inline-block';
+  document.getElementById('header-refresh-btn').style.display = 'none';
+  document.getElementById('header-signout-btn').style.display = 'none';
+  document.getElementById('lastUpdated').textContent = '';
+}
+
+async function fetchData(endpoint){
+  const r=await fetch(endpoint);
+  const j=await r.json();
+  if(j.needsAuth){
+    document.getElementById('analytics-signin-prompt').style.display = 'block';
+    document.getElementById('analytics-content').style.display = 'none';
+    document.getElementById('header-signin-btn').style.display = 'inline-block';
+    return null;
+  }
+  if(!j.success)throw new Error(j.error||'Unknown error');
+  return j;
+}
+
+async function loadOverview(){
+  try{
+    const res=await fetchData('/api/overview');if(!res)return;
+    const{data,dateRanges}=res;const c=data.current||{},p=data.previous||{};
+    document.getElementById('periodText').textContent=`Current: ${dateRanges.current.startDate} to ${dateRanges.current.endDate} vs Previous: ${dateRanges.previous.startDate} to ${dateRanges.previous.endDate}`;
+    const metrics=[
+      {label:'Sessions',val:fmt(c.sessions),delta:deltaHtml(c.sessions,p.sessions),prev:fmt(p.sessions),h:true},
+      {label:'Users',val:fmt(c.users),delta:deltaHtml(c.users,p.users),prev:fmt(p.users)},
+      {label:'Pageviews',val:fmt(c.pageViews),delta:deltaHtml(c.pageViews,p.pageViews),prev:fmt(p.pageViews)},
+      {label:'Bounce rate',val:Math.round(c.bounceRate||0)+'%',delta:deltaHtml(100-(c.bounceRate||0),100-(p.bounceRate||0)),prev:Math.round(p.bounceRate||0)+'%'},
+      {label:'Engagement rate',val:Math.round(c.engagementRate||0)+'%',delta:deltaHtml(c.engagementRate,p.engagementRate),prev:Math.round(p.engagementRate||0)+'%'},
+      {label:'Avg session',val:fmtDur(c.avgDuration||0),delta:deltaHtml(c.avgDuration,p.avgDuration),prev:fmtDur(p.avgDuration||0)}
+    ];
+    document.getElementById('metricsGrid').innerHTML=metrics.map(m=>`<div class="metric-card ${m.h?'highlight':''}"><div class="metric-label">${m.label}</div><div class="metric-value">${m.val}</div><div class="metric-compare">${m.delta}<span class="metric-prev">vs ${m.prev}</span></div></div>`).join('');
+  }catch(err){document.getElementById('metricsGrid').innerHTML=`<div style="color:var(--negative);font-size:12px;padding:1rem">${err.message}</div>`;}
+}
+
+async function loadTrend(){
+  try{
+    const res=await fetchData('/api/traffic-trend');if(!res)return;
+    const{data}=res;const curr=data.current||[],prev=data.previous||[];
+    const maxLen=Math.max(curr.length,prev.length);
+    const lbl=Array.from({length:maxLen},(_,i)=>'Week '+(i+1));
+    const ctx=document.getElementById('trendChart').getContext('2d');
+    if(trendInst)trendInst.destroy();
+    trendInst=new Chart(ctx,{type:'line',data:{labels:lbl,datasets:[
+      {label:'This month',data:curr.map(d=>d.sessions),borderColor:'#c8f026',backgroundColor:'rgba(200,240,38,.07)',tension:.4,pointRadius:4,pointBackgroundColor:'#c8f026',fill:true,borderWidth:2},
+      {label:'Last month',data:prev.map(d=>d.sessions),borderColor:'#444',borderDash:[4,3],backgroundColor:'transparent',tension:.4,pointRadius:3,pointBackgroundColor:'#666',fill:false,borderWidth:1.5}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#666',font:{size:11,family:'Poppins'}}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#666',font:{size:11,family:'Poppins'},callback:v=>fmt(v)}}}}});
+  }catch(err){console.error(err);}
+}
+
+async function loadOrganic(){
+  try{
+    const res=await fetchData('/api/organic');if(!res)return;
+    const{data}=res;
+    const entries=Object.entries(data).sort((a,b)=>(b[1].current||0)-(a[1].current||0));
+    const maxVal=entries[0]?(entries[0][1].current||0):1;
+    document.getElementById('channelList').innerHTML=entries.slice(0,7).map(([name,vals])=>{
+      const cur=vals.current||0,prev=vals.previous||0;
+      const d=pct(cur,prev);const barPct=Math.round((cur/maxVal)*100);
+      const col=CHANNEL_COLORS[name]||CHANNEL_COLORS.default;
+      const dHtml=d!==null?`<span style="color:${d>=0?'#4ade80':'#f87171'};font-weight:600">${d>=0?'+':''}${d}%</span>`:'';
+      return`<div class="channel-item"><div class="channel-meta"><span class="channel-name">${name}</span><div class="channel-stats"><span class="channel-current">${fmt(cur)}</span><span class="channel-prev">/ ${fmt(prev)}</span>${dHtml}</div></div><div class="channel-bar-track"><div class="channel-bar-fill" style="width:${barPct}%;background:${col}"></div></div></div>`;
+    }).join('');
+    const top=entries.slice(0,6);const colors=top.map(([n])=>CHANNEL_COLORS[n]||CHANNEL_COLORS.default);
+    const ctx=document.getElementById('donutChart').getContext('2d');
+    if(donutInst)donutInst.destroy();
+    donutInst=new Chart(ctx,{type:'doughnut',data:{labels:top.map(([n])=>n),datasets:[{data:top.map(([,v])=>v.current||0),backgroundColor:colors,borderWidth:2,borderColor:'#1a1a1a'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}});
+    document.getElementById('donutLegend').innerHTML=top.map(([n],i)=>`<span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:2px;background:${colors[i]};flex-shrink:0"></span>${n}</span>`).join('');
+  }catch(err){console.error(err);}
+}
+
+async function loadPages(){
+  try{
+    const res=await fetchData('/api/top-pages');if(!res)return;
+    const{data}=res;
+    const entries=Object.entries(data).sort((a,b)=>(b[1].current||0)-(a[1].current||0)).slice(0,8);
+    document.getElementById('pagesList').innerHTML=entries.map(([path,vals],i)=>{
+      const d=pct(vals.current,vals.previous);
+      const dCls=d===null?'same':d>0?'up':'down';
+      const dText=d===null?'':(d>0?'+':'')+d+'%';
+      return`<div class="page-item"><span class="page-rank">${i+1}</span><span class="page-path">${path}</span><span class="page-views">${fmt(vals.current)}</span><span class="page-change ${dCls}">${dText}</span></div>`;
+    }).join('');
+  }catch(err){console.error(err);}
+}
+
+async function loadGeo(){
+  try{
+    const res=await fetchData('/api/geo');if(!res)return;
+    const{data}=res;const total=data.reduce((s,d)=>s+d.sessions,0);
+    const flags={'Portugal':'🇵🇹','United Kingdom':'🇬🇧','Spain':'🇪🇸','Germany':'🇩🇪','France':'🇫🇷','United States':'🇺🇸','Netherlands':'🇳🇱','Brazil':'🇧🇷','Italy':'🇮🇹','Belgium':'🇧🇪','Poland':'🇵🇱','Sweden':'🇸🇪','Switzerland':'🇨🇭','Australia':'🇦🇺','Canada':'🇨🇦'};
+    const tbody=data.slice(0,10).map(d=>{
+      const share=Math.round((d.sessions/total)*100);const flag=flags[d.country]||'🌍';
+      return`<tr><td>${flag} ${d.country}</td><td style="font-weight:600">${fmt(d.sessions)}</td><td><div style="display:flex;align-items:center;gap:6px"><div class="geo-bar-track"><div class="geo-bar-fill" style="width:${share}%"></div></div><span style="font-size:11px;color:var(--gray-400)">${share}%</span></div></td></tr>`;
+    }).join('');
+    document.getElementById('geoTable').querySelector('tbody').innerHTML=tbody;
+  }catch(err){console.error(err);}
+}
+
+async function loadAIReferrals(){
+  try{
+    const res=await fetchData('/api/ai-referrals');if(!res)return;
+    const{data}=res;const{current,totalCurrent,totalPrevious}=data;
+    if(!current.length){
+      document.getElementById('aiReferrals').innerHTML=`<div class="ai-empty"><div style="font-size:24px;font-weight:700;color:var(--lime)">0</div><p>No AI platform referrals detected yet.<br>This will populate as AI-driven traffic grows.</p></div>`;
+    }else{
+      document.getElementById('aiReferrals').innerHTML=`<div style="margin-bottom:12px;padding:10px 14px;background:var(--gray-700);border-radius:var(--radius-sm);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--gray-200)">Total AI referrals this month</span><span style="font-size:20px;font-weight:700;color:var(--lime)">${fmt(totalCurrent)}</span></div>${current.map(s=>`<div class="ai-source-item"><span class="ai-source-name"><span class="ai-dot"></span>${s.source}</span><span class="ai-sessions">${s.sessions}</span></div>`).join('')}`;
+    }
+    const ctx=document.getElementById('aiTrendChart').getContext('2d');
+    if(aiTrendInst)aiTrendInst.destroy();
+    aiTrendInst=new Chart(ctx,{type:'bar',data:{labels:['Previous month','Current month'],datasets:[{data:[totalPrevious,totalCurrent],backgroundColor:['#2e2e2e','#c8f026'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#666',font:{size:11,family:'Poppins'}}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{color:'#666',font:{size:11,family:'Poppins'}}}}}});
+  }catch(err){console.error(err);}
+}
+
+async function loadVisibility(){
+  try{
+    const res=await fetchData('/api/ai-visibility');if(!res)return;
+    const{data}=res;
+    const total=data.length,cited=data.filter(e=>e.cited).length;
+    const rate=total?Math.round((cited/total)*100):0;
+    const platforms=new Set(data.map(e=>e.platform)).size;
+    document.getElementById('totalTests').textContent=total;
+    document.getElementById('totalCited').textContent=cited;
+    document.getElementById('citationRate').textContent=rate+'%';
+    document.getElementById('platformsCovered').textContent=platforms;
+    if(!data.length){document.getElementById('visibilityLog').innerHTML='<div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No entries yet. Start logging above.</div>';return;}
+    document.getElementById('visibilityLog').innerHTML=data.map(e=>`<div class="log-entry"><span class="log-platform">${e.platform}</span><div class="log-query">${e.query}<span>${e.date}</span></div><div class="log-cited ${e.cited?'yes':'no'}">${e.cited?'Cited':'Not cited'}</div><button class="log-delete" onclick="deleteEntry(${e.id})">✕</button></div>`).join('');
+  }catch(err){console.error(err);}
+}
+
+async function addVisibilityEntry(){
+  const platform=document.getElementById('inputPlatform').value;
+  const query=document.getElementById('inputQuery').value.trim();
+  const cited=document.getElementById('inputCited').value;
+  if(!query){alert('Please enter the query you tested');return;}
+  await fetch('/api/ai-visibility',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({platform,query,cited,date:new Date().toISOString().split('T')[0]})});
+  document.getElementById('inputQuery').value='';
+  await loadVisibility();
+}
+
+async function deleteEntry(id){
+  await fetch('/api/ai-visibility/'+id,{method:'DELETE'});
+  await loadVisibility();
+}
+
+async function loadAll(){
+  document.getElementById('lastUpdated').textContent='Refreshing...';
+  await Promise.all([loadOverview(),loadTrend(),loadOrganic(),loadPages(),loadGeo(),loadAIReferrals(),loadVisibility()]);
+  document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-GB');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CITATION TOOL
+══════════════════════════════════════════════════════════════ */
+let citStyle = 'APA';
+let citPromptData = {};
+let citPlatform = 'general';
+
+document.querySelectorAll('.scard').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('.scard').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    citStyle = c.dataset.s;
+  });
+});
+
+document.querySelectorAll('.ptab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    citPlatform = t.dataset.p;
+    renderPrompt();
+  });
+});
+
+function renderPrompt() {
+  const el = document.getElementById('cit-prompt-text');
+  if (el) el.textContent = citPromptData[citPlatform] || citPromptData['general'] || '';
+}
+
+function citAccessDate(short) {
+  const d = new Date();
+  const ml = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const ms = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return short ? d.getDate()+' '+ms[d.getMonth()]+' '+d.getFullYear() : d.getDate()+' '+ml[d.getMonth()]+' '+d.getFullYear();
+}
+function citPubYear(s) { if(!s)return new Date().getFullYear(); const m=s.match(/\b(19|20)\d{2}\b/); return m?m[0]:new Date().getFullYear(); }
+function citStripYear(s) { if(!s)return''; return s.replace(/\b(19|20)\d{2}\b/,'').trim().replace(/^[,.\s]+|[,.\s]+$/g,''); }
+
+const CIT_STYLE_LABELS = { APA:'APA 7th edition', Harvard:'Harvard', MLA:'MLA 9th edition', Chicago:'Chicago', Vancouver:'Vancouver', IEEE:'IEEE' };
+
+document.getElementById('cit-genbtn').addEventListener('click', () => {
+  const url      = document.getElementById('cit-url').value.trim();
+  const title    = document.getElementById('cit-title').value.trim();
+  const al       = document.getElementById('cit-alast').value.trim();
+  const af       = document.getElementById('cit-afirst').value.trim();
+  const siteRaw  = document.getElementById('cit-site').value.trim();
+  const site     = siteRaw || (url ? url.replace(/^https?:\/\/(www\.)?/,'').split('/')[0] : '');
+  const pd       = document.getElementById('cit-pubdate').value.trim();
+  const kw       = document.getElementById('cit-keywords').value.trim();
+  const errEl    = document.getElementById('cit-err');
+
+  errEl.style.display = 'none';
+  if (!url)   { errEl.textContent='Please enter a URL.';          errEl.style.display='block'; return; }
+  if (!title) { errEl.textContent='Please enter the page title.'; errEl.style.display='block'; return; }
+
+  const hasA      = al || af;
+  const authorStr = al && af ? al+', '+af : (al||af||'');
+  const py        = citPubYear(pd);
+  const acc       = citAccessDate(false);
+  const accS      = citAccessDate(true);
+
+  let cit = '';
+  if (citStyle==='APA')       { const a=hasA?authorStr+'. ':''; const d=pd?'('+py+', '+citStripYear(pd)+')':'('+py+')'; cit=a+d+'. '+title+'. '+site+'. '+url; }
+  if (citStyle==='Harvard')   { const a=hasA?authorStr+' ':''; cit=a+'('+py+') \u2018'+title+'\u2019, '+site+'. Available at: '+url+' (Accessed: '+acc+').'; }
+  if (citStyle==='MLA')       { const a=hasA?(al&&af?al+', '+af:authorStr)+'. ':''; const d=pd?pd+', ':''; cit=a+'\u201c'+title+'.\u201d '+site+', '+d+url+'. Accessed '+acc+'.'; }
+  if (citStyle==='Chicago')   { const a=hasA?(af?af+' ':'')+al+'. ':''; const d=pd?pd+'. ':''; cit=a+'\u201c'+title+'.\u201d '+site+'. '+d+url+'.'; }
+  if (citStyle==='Vancouver')  { const a=hasA?al+' '+(af?af.charAt(0):'')+'. ':''; cit=a+title+' [Internet]. '+site+'; '+py+' [cited '+accS+']. Available from: '+url; }
+  if (citStyle==='IEEE')      { const a=hasA?(af?af.charAt(0)+'. ':'')+al+', ':''; cit=a+'\u201c'+title+',\u201d '+site+'. [Online]. Available: '+url+'. [Accessed: '+acc+'].'; }
+
+  document.getElementById('cit-out-label').textContent  = CIT_STYLE_LABELS[citStyle]+' citation';
+  document.getElementById('cit-style-badge').textContent = CIT_STYLE_LABELS[citStyle];
+  document.getElementById('cit-out-text').textContent   = cit;
+
+  // SCORE
+  const maxMap = { 'URL':25, 'Title':25, 'Author':20, 'Date':20, 'Keywords':10 };
+  const scores = { 'URL':url?25:0, 'Title':title?25:0, 'Author':hasA?20:0, 'Date':pd?20:0, 'Keywords':kw?10:0 };
+  const total  = Object.values(scores).reduce((a,b)=>a+b,0);
+
+  const ring = document.getElementById('cit-score-ring');
+  ring.style.strokeDashoffset = 201-(201*total/100);
+  ring.style.stroke = total>=80?'#4ade80':total>=50?'#f59e0b':'#f87171';
+  document.getElementById('cit-score-num').textContent = total;
+
+  let bdHtml = '';
+  Object.entries(scores).forEach(([k,v]) => {
+    const p = Math.round((v/maxMap[k])*100);
+    bdHtml += `<div class="score-item"><span class="score-item-label">${k}</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:${p}%;background:${v>0?'var(--lime)':'var(--gray-600)'}"></div></div><span class="score-num">${v>0?'+'+v:'0'}</span></div>`;
+  });
+  document.getElementById('cit-score-breakdown').innerHTML = bdHtml;
+
+  let tips = [];
+  if (!hasA)    tips.push({ t:'Add an author',         d:'Pages with a named author are significantly more likely to be cited by AI platforms and academic tools.' });
+  if (!pd)      tips.push({ t:'Add a publish date',    d:'Dated content signals freshness and credibility. AI models and search engines both prioritise it.' });
+  if (!kw)      tips.push({ t:'Add keywords',          d:'Including your core topic keywords strengthens your AI prompts and schema markup.' });
+  if (!siteRaw) tips.push({ t:'Add your website name', d:'A recognisable brand name helps AI associate your URL with a trusted source.' });
+  if (total===100) tips.push({ t:'Excellent — fully citable', d:'Your content has everything it needs. Follow the checklist below to maximise reach.' });
+
+  let tipsHtml = tips.length ? '<p style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">Suggestions to improve your score</p>' : '';
+  tips.forEach(t => { tipsHtml += `<div class="tip-row"><div class="tip-dot"></div><div class="tip-text"><strong>${t.t} — </strong>${t.d}</div></div>`; });
+  document.getElementById('cit-score-tips').innerHTML = tipsHtml;
+
+  // PROMPTS
+  const topic = kw || title;
+  citPromptData = {
+    general:    `I am researching the topic of "${topic}". Can you find and reference authoritative sources on this subject? In particular, please check whether the article titled "${title}" from ${site} (${url}) is a credible source on this topic and include it in your response if relevant. Please cite the source directly.`,
+    chatgpt:    `Please browse the web and find information about "${topic}". I'd like you to specifically look at ${url} and assess whether the content titled "${title}" by ${site} is worth referencing. If it covers the topic authoritatively, please cite it in your answer with the full URL.`,
+    claude:     `I'm looking for well-sourced information on "${topic}". Can you assess the credibility and relevance of this page: ${url} — titled "${title}" published by ${site}? If it is a credible and informative source, please reference it in your response and explain why it is worth citing.`,
+    perplexity: `Search for the most reliable sources on "${topic}" and tell me what you find. Please include this URL in your search: ${url} — the article is titled "${title}" and is published by ${site}. Cite it directly if it contains useful and accurate information on the topic.`
+  };
+  renderPrompt();
+
+  // SCHEMA
+  const authorName = hasA ? (af?af+' ':'')+al : null;
+  const schemaObj = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "url": url,
+    "datePublished": py+'-01-01',
+    "publisher": { "@type": "Organization", "name": site },
+    ...(authorName ? { "author": { "@type": "Person", "name": authorName } } : {}),
+    ...(kw ? { "keywords": kw } : {})
+  };
+  document.getElementById('cit-schema-text').textContent = '<script type="application/ld+json">\n'+JSON.stringify(schemaObj,null,2)+'\n<\/script>';
+
+  // CHECKLIST
+  const items = [
+    { n:1, t:'Add the schema markup to your website',        d:`Paste the JSON-LD code above into the <head> section of your page at ${url}. This tells AI crawlers and search engines exactly what your content is about.` },
+    { n:2, t:'Submit your URL to Google Search Console',     d:'Go to search.google.com/search-console, paste your URL into the inspection tool and request indexing. AI platforms frequently pull from Google-indexed content.' },
+    { n:3, t:'Paste the AI prompts into each platform',      d:'Use the prompts above in ChatGPT, Claude and Perplexity. Each prompt is written to encourage the AI to discover and cite your specific page.' },
+    { n:4, t:'Share the page on LinkedIn',                   d:`Post about "${title}" on LinkedIn with your URL. LinkedIn content is crawled by AI platforms and increases the authority signal around your domain.` },
+    { n:5, t:'Build at least 3 backlinks to this page',      d:'Ask partners, suppliers or industry directories to link to this URL. Backlinks remain one of the strongest signals for both search engines and AI citation models.' },
+    { n:6, t:'Repeat the AI prompt test in 30 days',         d:'AI platforms update their knowledge regularly. Paste the prompts again in a month and log the result in the AI citation tracker on the Analytics tab to track progress.' }
+  ];
+  document.getElementById('cit-checklist').innerHTML = items.map(i =>
+    `<div class="checklist-item"><div class="check-num">${i.n}</div><div><div class="check-title">${i.t}</div><div class="check-desc">${i.d}</div></div></div>`
+  ).join('');
+
+  const res = document.getElementById('cit-results');
+  res.style.display = 'block';
+  setTimeout(() => res.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+});
+
+// COPY BUTTONS
+document.addEventListener('click', e => {
+  if (!e.target.classList.contains('copy-btn')) return;
+  const target = document.getElementById(e.target.dataset.target);
+  if (!target) return;
+  navigator.clipboard.writeText(target.textContent).then(() => {
+    const orig = e.target.textContent;
+    e.target.textContent = 'Copied';
+    setTimeout(() => { e.target.textContent = orig; }, 2000);
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════
+   BLOG SUGGESTER
+══════════════════════════════════════════════════════════════ */
+async function runBlogSuggester() {
+  const topic = document.getElementById('blog-topic').value.trim();
+  const audience = document.getElementById('blog-audience').value.trim();
+  const brand = document.getElementById('blog-brand').value.trim();
+  const current = document.getElementById('blog-current').value;
+
+  if (!topic) { alert('Please enter a topic area'); return; }
+
+  const btn = document.getElementById('blog-gen-btn');
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+
+  const output = document.getElementById('blog-output');
+  const text = document.getElementById('blog-output-text');
+  output.style.display = 'block';
+  text.textContent = 'Building your blog strategy...';
+
+  const currentMap = {
+    none: 'not currently blogging',
+    occasional: 'posting occasionally (less than once a month)',
+    monthly: 'posting roughly once a month',
+    biweekly: 'posting fortnightly',
+    weekly: 'posting weekly'
+  };
+
+  const prompt = `You are an expert B2B content strategist and SEO consultant. Generate a complete blog content strategy for ${brand || 'this business'} with the following details:
+
+Topic area: ${topic}
+Target audience: ${audience || 'industrial professionals and B2B buyers'}
+Current blogging frequency: ${currentMap[current] || 'not specified'}
+
+Your response must include ALL of the following sections:
+
+1. RECOMMENDED POSTING FREQUENCY
+Recommend how many blog posts per week or month they should publish, with a clear rationale based on their industry competitiveness, target audience search behaviour, and the goal of getting cited by AI platforms like ChatGPT, Claude, and Perplexity. Be specific and realistic for a small to mid-size B2B business.
+
+2. WHY THIS FREQUENCY BUILDS AI CITATION AUTHORITY
+2 to 3 sentences on how consistent, high-quality blogging signals authority to AI models and improves the likelihood of being cited as a source.
+
+3. 4-WEEK BLOG CALENDAR
+A week-by-week content plan with 1 to 2 article titles per week. For each article include:
+- The title (specific and search-intent driven)
+- The target keyword phrase (2 to 4 words)
+- The audience segment it targets
+- One sentence on why this article will get cited by AI platforms
+
+4. 10 HIGH-PRIORITY ARTICLE TITLES FOR THE NEXT QUARTER
+These should be the highest-value articles for AI citation, covering educational, comparison, and problem-solving formats. Mix short-tail and long-tail keyword targets.
+
+5. QUICK WINS — 3 ARTICLES TO PUBLISH FIRST
+The three articles most likely to generate AI citations and inbound traffic within 60 days. Explain why each one is a quick win.
+
+Write in plain, direct language. No fluff. Format with clear section headers. No bullet points — use numbered lists and paragraphs.`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, max_tokens: 1000 })
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+    text.textContent = data.text || 'No response received.';
+  } catch(e) {
+    text.textContent = 'Error generating blog strategy: ' + e.message;
+  }
+
+  btn.textContent = 'Generate blog strategy';
+  btn.disabled = false;
+}
+
+/* ══ BOOT ══ */
+checkAuth();
+
+/* ══════════════════════════════════════════════════════════════
+   POST SCHEDULER
+══════════════════════════════════════════════════════════════ */
+const STORAGE_KEY = 'novograf_posts_v1';
+let calYear, calMonth, editingId = null, filterStatus = 'all';
+
+function getPosts() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; } }
+function savePosts(posts) { localStorage.setItem(STORAGE_KEY, JSON.stringify(posts)); }
+
+function initCal() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  document.getElementById('cal-day-headers').innerHTML = days.map(d =>
+    `<div class="cal-header-cell">${d}</div>`).join('');
+}
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const posts = getPosts();
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-label').textContent = monthNames[calMonth] + ' ' + calYear;
+
+  const first = new Date(calYear, calMonth, 1);
+  const last = new Date(calYear, calMonth + 1, 0);
+  // Monday-first offset
+  let startDow = first.getDay(); if (startDow === 0) startDow = 7; startDow--;
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let cells = [];
+  // Prev month padding
+  const prevLast = new Date(calYear, calMonth, 0);
+  for (let i = startDow - 1; i >= 0; i--) {
+    cells.push({ day: prevLast.getDate() - i, cur: false });
+  }
+  for (let d = 1; d <= last.getDate(); d++) cells.push({ day: d, cur: true });
+  // Next month padding to complete grid
+  let rem = cells.length % 7;
+  if (rem > 0) { for (let d = 1; d <= 7 - rem; d++) cells.push({ day: d, cur: false }); }
+
+  const fmt = (d, m, y) => `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+  document.getElementById('cal-body').innerHTML = cells.map(c => {
+    const dateStr = c.cur ? fmt(c.day, calMonth, calYear) : '';
+    const dayPosts = posts.filter(p => p.date === dateStr);
+    const isToday = c.cur && new Date(calYear, calMonth, c.day).getTime() === today.getTime();
+    const chips = dayPosts.slice(0,3).map(p => {
+      const fmtCls = {text:'fmt-text',carousel:'fmt-carousel',video:'fmt-video',image:'fmt-image'}[p.format]||'fmt-text';
+      return `<div class="cal-post-chip chip-${p.status}" onclick="event.stopPropagation();openModal('${p.id}')" title="${p.title}">
+        <span class="format-badge ${fmtCls}">${p.format}</span>${p.title}
+      </div>`;
+    }).join('');
+    const extra = dayPosts.length > 3 ? `<div style="font-size:9px;color:var(--gray-400)">+${dayPosts.length-3} more</div>` : '';
+    return `<div class="cal-day ${isToday?'today':''} ${c.cur?'':'other-month'}" onclick="${c.cur?`openModal(null,'${dateStr}')`:''}" >
+      <div class="cal-day-num">${c.day}</div>
+      ${chips}${extra}
+    </div>`;
+  }).join('');
+}
+
+function renderPostList(status) {
+  if (status !== undefined) filterStatus = status;
+  let posts = getPosts();
+  if (filterStatus !== 'all') posts = posts.filter(p => p.status === filterStatus);
+  posts.sort((a,b) => (a.date||'9999') < (b.date||'9999') ? -1 : 1);
+
+  const fmtLabels = {text:'Text post',carousel:'Carousel',video:'Short video',image:'Image post'};
+  const fmtCls = {text:'fmt-text',carousel:'fmt-carousel',video:'fmt-video',image:'fmt-image'};
+
+  if (!posts.length) {
+    document.getElementById('post-list').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No posts yet. Click "+ New post" to add one.</div>';
+    return;
+  }
+
+  document.getElementById('post-list').innerHTML = posts.map(p => {
+    const dotCls = {draft:'dot-draft',scheduled:'dot-scheduled',published:'dot-published'}[p.status]||'dot-draft';
+    const linkChip = p.link ? `<a class="content-link-chip" href="${p.link}" target="_blank">🔗 Linked content</a>` : '';
+    const excerpt = (p.copy||'').length > 100 ? (p.copy||'').slice(0,100)+'...' : (p.copy||'No copy added yet');
+    return `<div class="post-card">
+      <div class="status-dot ${dotCls}"></div>
+      <div class="post-card-body">
+        <div class="post-card-title">
+          <span class="format-badge ${fmtCls[p.format]||'fmt-text'}">${fmtLabels[p.format]||p.format}</span>
+          ${p.title||'Untitled post'}
+        </div>
+        <div class="post-card-meta">${p.date||'No date'} ${p.time?'at '+p.time:''} &nbsp;·&nbsp; ${p.status}</div>
+        <div style="font-size:11px;color:var(--gray-300);margin-top:4px;line-height:1.5;">${excerpt}</div>
+        ${p.hashtags ? `<div style="font-size:10px;color:var(--gray-400);margin-top:3px;">${p.hashtags}</div>` : ''}
+        ${linkChip}
+        ${p.notes ? `<div style="font-size:10px;color:var(--gray-400);margin-top:3px;">Notes: ${p.notes}</div>` : ''}
+      </div>
+      <div class="post-card-actions">
+        <button class="icon-btn" onclick="openModal('${p.id}')">Edit</button>
+        <button class="icon-btn del" onclick="deletePost('${p.id}')">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterPosts(status) {
+  renderPostList(status);
+}
+
+function openModal(id, prefillDate) {
+  editingId = id || null;
+  const modal = document.getElementById('post-modal');
+  modal.classList.add('open');
+
+  if (id) {
+    const posts = getPosts();
+    const p = posts.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('modal-title-text').textContent = 'Edit post';
+    document.getElementById('edit-post-id').value = p.id;
+    document.getElementById('post-title').value = p.title || '';
+    document.getElementById('post-copy').value = p.copy || '';
+    document.getElementById('post-format').value = p.format || 'text';
+    document.getElementById('post-status').value = p.status || 'draft';
+    document.getElementById('post-date').value = p.date || '';
+    document.getElementById('post-time').value = p.time || '08:30';
+    document.getElementById('post-hashtags').value = p.hashtags || '';
+    document.getElementById('post-link').value = p.link || '';
+    document.getElementById('post-notes').value = p.notes || '';
+  } else {
+    document.getElementById('modal-title-text').textContent = 'New post';
+    document.getElementById('edit-post-id').value = '';
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-copy').value = '';
+    document.getElementById('post-format').value = 'text';
+    document.getElementById('post-status').value = 'draft';
+    document.getElementById('post-date').value = prefillDate || '';
+    document.getElementById('post-time').value = '08:30';
+    document.getElementById('post-hashtags').value = '';
+    document.getElementById('post-link').value = '';
+    document.getElementById('post-notes').value = '';
+  }
+}
+
+function closeModal() {
+  document.getElementById('post-modal').classList.remove('open');
+  editingId = null;
+}
+
+function savePost() {
+  const title = document.getElementById('post-title').value.trim();
+  if (!title) { alert('Please add a post title'); return; }
+
+  const posts = getPosts();
+  const postData = {
+    id: editingId || 'post_' + Date.now(),
+    title,
+    copy: document.getElementById('post-copy').value,
+    format: document.getElementById('post-format').value,
+    status: document.getElementById('post-status').value,
+    date: document.getElementById('post-date').value,
+    time: document.getElementById('post-time').value,
+    hashtags: document.getElementById('post-hashtags').value,
+    link: document.getElementById('post-link').value,
+    notes: document.getElementById('post-notes').value,
+    updatedAt: new Date().toISOString()
+  };
+
+  if (editingId) {
+    const idx = posts.findIndex(p => p.id === editingId);
+    if (idx !== -1) posts[idx] = postData; else posts.push(postData);
+  } else {
+    posts.push(postData);
+  }
+
+  savePosts(posts);
+  closeModal();
+  renderCalendar();
+  renderPostList();
+}
+
+function deletePost(id) {
+  if (!confirm('Delete this post?')) return;
+  savePosts(getPosts().filter(p => p.id !== id));
+  renderCalendar();
+  renderPostList();
+}
+
+// Close modal on overlay click
+document.getElementById('post-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('post-modal')) closeModal();
+});
+
+initCal();
+
+// -- RECEIVE POSTS FROM LINKEDIN GROWTH TOOL IFRAME --
+window.addEventListener('message', e => {
+  if (!e.data || e.data.type !== 'BRISKFIL_ADD_POST') return;
+  const post = e.data.post;
+  if (!post || !post.id) return;
+  const posts = getPosts();
+  // Avoid duplicates
+  if (!posts.find(p => p.id === post.id)) {
+    posts.push(post);
+    savePosts(posts);
+  }
+  // If scheduler tab is active, re-render
+  if (document.getElementById('panel-scheduler').classList.contains('active')) {
+    renderCalendar();
+    renderPostList();
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   SEO TOOL
+══════════════════════════════════════════════════════════════ */
+
+// -- SUB TAB SWITCHING --
+function seoTab(name, btn) {
+  document.querySelectorAll('.seo-stab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.seo-sub').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById('seo-panel-' + name);
+  if (panel) { panel.style.display = 'block'; panel.classList.add('active'); }
+  if (name === 'technical') initTechChecklist();
+}
+
+// -- GENERIC SEO API CALL --
+async function seoGenerate(prompt, outputId, loadingId, wrapId) {
+  const loading = document.getElementById(loadingId);
+  const wrap = document.getElementById(wrapId);
+  const out = document.getElementById(outputId);
+  if (loading) loading.style.display = 'flex';
+  if (wrap) wrap.style.display = 'none';
+
+  const system = `You are an expert SEO strategist and technical SEO consultant working for NXRD, a UK-based digital marketing agency. You are auditing and building SEO strategy for Novograf (novograf.co.uk), a Portuguese B2B industrial consultancy based in Esposende, Portugal, founded in 2021. Novograf specialises in: compressed air quality analysis, on-site nitrogen generation (PSA and membrane), on-site oxygen generation, industrial fluid filtration, energy efficiency audits (ISO 11011), Industry 4.0 consulting, and machinery maintenance. Their target customers are plant engineers, procurement managers, energy managers, and factory directors across Portugal and Europe, in sectors including food and beverage, wine, water treatment, laser cutting, metal fabrication, oil and gas, pharmaceutical, electronics, and medical oxygen. Their primary competitor is Atlas Copco. The website is built on WordPress. Be direct, specific, and actionable. Use clear section headers. Write in plain English. No generic advice — every recommendation must be specific to Novograf's industry, sector, and competitive situation.`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system, prompt, max_tokens: 1000 })
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+    if (out) out.textContent = data.text || '';
+    if (loading) loading.style.display = 'none';
+    if (wrap) wrap.style.display = 'block';
+    return data.text || '';
+  } catch(e) {
+    if (out) out.textContent = 'Error: ' + e.message;
+    if (loading) loading.style.display = 'none';
+    if (wrap) wrap.style.display = 'block';
+    return '';
+  }
+}
+
+// -- COPY --
+function copySeoOutput(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    // brief flash confirmation
+    const orig = el.style.opacity;
+    el.style.opacity = '0.5';
+    setTimeout(() => { el.style.opacity = orig || '1'; }, 300);
+  });
+}
+
+// -- PAGE AUDITOR --
+function quickAudit(url) {
+  document.getElementById('seo-url').value = url;
+  runSeoAudit();
+}
+
+async function runSeoAudit() {
+  const url = document.getElementById('seo-url').value.trim();
+  if (!url) { alert('Please enter a URL'); return; }
+
+  const btn = document.getElementById('seo-audit-btn');
+  btn.disabled = true; btn.textContent = 'Auditing...';
+
+  document.getElementById('seo-audit-results').style.display = 'none';
+  document.getElementById('seo-audit-loading').style.display = 'flex';
+
+  const prompt = `Perform a comprehensive SEO audit of this page: ${url}
+
+Return your response in this exact structure:
+
+SCORE SUMMARY
+Overall SEO score: [X/100]
+Content quality: [X/10]
+Technical signals: [X/10]
+Keyword targeting: [X/10]
+User experience: [X/10]
+One sentence explaining the overall score.
+
+CRITICAL ISSUES (fix within 7 days)
+List up to 4 critical issues. For each: issue name | specific problem on this URL | exact fix required.
+
+IMPORTANT IMPROVEMENTS (fix within 30 days)
+List up to 5 improvements. Same format.
+
+QUICK WINS (easy improvements, high impact)
+List up to 4. Same format.
+
+WHAT IS WORKING WELL
+List up to 5 genuine strengths of this page's SEO. Be specific.
+
+COMPLETE FIX LIST
+Write a numbered list of every action needed on this page in priority order. Be specific enough that a developer or content editor could action each item without asking a follow-up question.
+
+SUGGESTED META TITLE
+Write the optimised meta title (under 60 characters) for this page.
+
+SUGGESTED META DESCRIPTION
+Write the optimised meta description (under 155 characters) for this page.
+
+BASE YOUR ANALYSIS on what you know about Novograf's business, their target keywords (compressed air quality, nitrogen generation Portugal, on-site gas generation, industrial gas audits, etc.), and best SEO practice for B2B industrial websites in 2026.`;
+
+  const system = `You are an expert SEO strategist working for NXRD on the Novograf.com account. Novograf is a Portuguese B2B industrial gas consultancy. Be specific about this site and industry — no generic advice.`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system, prompt, max_tokens: 1000 })
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    parseSeoAudit(data.text || '', url);
+  } catch(e) {
+    document.getElementById('seo-audit-loading').style.display = 'none';
+    alert('Error: ' + e.message);
+  }
+
+  btn.disabled = false; btn.textContent = 'Audit page';
+}
+
+function parseSeoAudit(text, url) {
+  document.getElementById('seo-audit-loading').style.display = 'none';
+  document.getElementById('seo-audit-results').style.display = 'block';
+
+  // Extract scores with regex
+  const overallMatch = text.match(/Overall SEO score:\s*(\d+)/i);
+  const contentMatch = text.match(/Content quality:\s*(\d+)/i);
+  const techMatch    = text.match(/Technical signals:\s*(\d+)/i);
+  const kwMatch      = text.match(/Keyword targeting:\s*(\d+)/i);
+  const uxMatch      = text.match(/User experience:\s*(\d+)/i);
+
+  const scores = [
+    { label:'Overall score', val: overallMatch?overallMatch[1]+'/100':'—', color: scoreColor(overallMatch?parseInt(overallMatch[1]):0,100) },
+    { label:'Content quality', val: contentMatch?contentMatch[1]+'/10':'—', color: scoreColor(contentMatch?parseInt(contentMatch[1]):0,10) },
+    { label:'Technical signals', val: techMatch?techMatch[1]+'/10':'—', color: scoreColor(techMatch?parseInt(techMatch[1]):0,10) },
+    { label:'Keyword targeting', val: kwMatch?kwMatch[1]+'/10':'—', color: scoreColor(kwMatch?parseInt(kwMatch[1]):0,10) },
+    { label:'User experience', val: uxMatch?uxMatch[1]+'/10':'—', color: scoreColor(uxMatch?parseInt(uxMatch[1]):0,10) },
+    { label:'Page audited', val: new URL(url.startsWith('http')?url:'https://'+url).pathname||'/', color:'var(--gray-200)' }
+  ];
+
+  document.getElementById('seo-score-grid').innerHTML = scores.map(s => `
+    <div class="seo-score-card">
+      <div class="seo-score-label">${s.label}</div>
+      <div class="seo-score-val" style="color:${s.color};font-size:${s.label==='Page audited'?'13px':'24px'}">${s.val}</div>
+    </div>`).join('');
+
+  // Issues section — extract lines from CRITICAL ISSUES and IMPORTANT IMPROVEMENTS
+  const issueBlocks = extractSection(text, ['CRITICAL ISSUES','IMPORTANT IMPROVEMENTS','QUICK WINS']);
+  const lines = issueBlocks.split('\n').filter(l => l.trim() && l.includes('|'));
+  const priorities = ['critical','critical','critical','critical','important','important','important','important','important','quick','quick','quick','quick'];
+
+  document.getElementById('seo-issues-list').innerHTML = lines.slice(0,9).map((l, i) => {
+    const parts = l.replace(/^\d+\.\s*/,'').split('|').map(s => s.trim());
+    const pri = priorities[i] || 'quick';
+    const priCfg = { critical:{col:'var(--negative)',bg:'var(--red-dim)',icon:'⚠'}, important:{col:'#f59e0b',bg:'rgba(245,158,11,0.1)',icon:'◎'}, quick:{col:'var(--positive)',bg:'var(--green-dim)',icon:'✓'} }[pri];
+    return `<div class="seo-issue-row">
+      <div class="seo-issue-icon" style="background:${priCfg.bg}">${priCfg.icon}</div>
+      <div class="seo-issue-body">
+        <div class="seo-issue-title">${parts[0]||''}</div>
+        <div class="seo-issue-desc">${parts[1]||''}</div>
+        ${parts[2]?`<div class="seo-issue-desc" style="color:var(--lime);margin-top:3px;">Fix: ${parts[2]}</div>`:''}
+      </div>
+      <span class="seo-priority" style="background:${priCfg.bg};color:${priCfg.col}">${pri}</span>
+    </div>`;
+  }).join('') || '<div class="loading" style="padding:1rem;">No structured issues returned — see full fix list below.</div>';
+
+  // Wins
+  const winsSection = extractSection(text, ['WHAT IS WORKING WELL','COMPLETE FIX LIST']);
+  document.getElementById('seo-wins-list').innerHTML = winsSection.split('\n').filter(l => l.trim() && l.length > 10).slice(0,6).map(l =>
+    `<div class="seo-issue-row">
+      <div class="seo-issue-icon" style="background:var(--green-dim)">✓</div>
+      <div class="seo-issue-body"><div class="seo-issue-desc">${l.replace(/^[\d\-\.\*\•]+\s*/,'').trim()}</div></div>
+    </div>`
+  ).join('') || '<div style="padding:1rem;font-size:12px;color:var(--gray-400)">Audit this page to see strengths.</div>';
+
+  // Fix list
+  const fixSection = extractSection(text, ['COMPLETE FIX LIST','SUGGESTED META']);
+  document.getElementById('seo-actions-text').textContent = fixSection.trim() || extractSection(text, ['FIX LIST','SUGGESTED META']).trim();
+
+  // Meta
+  const metaSection = extractSection(text, ['SUGGESTED META']);
+  document.getElementById('seo-meta-text').textContent = metaSection.trim() || 'See full output above for meta suggestions.';
+
+  document.getElementById('seo-audit-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function scoreColor(val, max) {
+  const pct = val / max;
+  if (pct >= 0.75) return 'var(--positive)';
+  if (pct >= 0.5) return '#f59e0b';
+  return 'var(--negative)';
+}
+
+function extractSection(text, startMarkers, endMarkers) {
+  const upper = text.toUpperCase();
+  let start = -1;
+  for (const m of startMarkers) {
+    const idx = upper.indexOf(m.toUpperCase());
+    if (idx !== -1) { start = idx; break; }
+  }
+  if (start === -1) return text;
+
+  // Move past the header line
+  const afterHeader = text.indexOf('\n', start);
+  if (afterHeader === -1) return '';
+  start = afterHeader + 1;
+
+  // Find end
+  if (!endMarkers || endMarkers.length === 0) return text.slice(start);
+  let end = text.length;
+  for (const m of endMarkers) {
+    const idx = upper.indexOf(m.toUpperCase(), start);
+    if (idx !== -1 && idx < end) end = idx;
+  }
+  return text.slice(start, end);
+}
+
+// -- MONTHLY GROWTH PLANNER --
+async function runSeoPlanner() {
+  const stage = document.getElementById('seo-stage').value;
+  const effort = document.getElementById('seo-effort').value;
+  const months = document.getElementById('seo-plan-months').value;
+  const goals = document.getElementById('seo-goals').value.trim();
+
+  const btn = document.getElementById('seo-plan-btn');
+  btn.disabled = true; btn.textContent = 'Generating...';
+
+  const stageMap = { new:'brand new website, very little domain authority', early:'some pages indexed, limited backlinks, starting to get clicks', growing:'established presence, some rankings, needs acceleration', established:'good foundation, optimising and scaling' };
+  const effortMap = { minimal:'2 to 4 hours per month (NXRD handles most tasks)', moderate:'roughly 1 day per month of combined NXRD and client effort', active:'2 to 3 days per month of focused activity', intensive:'weekly ongoing attention from NXRD' };
+
+  const prompt = `Build a ${months}-month SEO growth plan for Novograf.com with the following parameters:
+
+Current SEO stage: ${stageMap[stage]}
+Available monthly effort: ${effortMap[effort]}
+Primary goals: ${goals || 'rank for industrial gas and compressed air services in Portugal, beat Atlas Copco in local search, generate qualified B2B leads'}
+
+Structure the plan as follows:
+
+PLAN OVERVIEW
+2 to 3 sentences on the strategic approach and what success looks like at the end of the plan period.
+
+MONTH-BY-MONTH BREAKDOWN
+For each month, provide:
+Month [N]: [Theme title]
+Priority tasks (3 to 5 specific actions)
+Expected outcome by end of month
+KPI to track
+
+CONTENT PRIORITIES
+List the top 6 blog posts or landing pages to create during this period, with target keyword, estimated monthly search volume (rough), and why this piece matters for Novograf specifically.
+
+QUICK WINS — DO THESE FIRST
+3 actions that can be completed in the first 2 weeks and will show results fastest.
+
+COMPETITIVE NOTES
+Specific opportunities to take rankings from Atlas Copco and other industrial gas competitors in Portuguese and Iberian search results.
+
+Make every task specific and actionable. No generic SEO advice. Reference Novograf's actual services and sectors throughout.`;
+
+  await seoGenerate(prompt, 'seo-plan-text', 'seo-plan-loading', 'seo-plan-output');
+  btn.disabled = false; btn.textContent = 'Generate growth plan';
+}
+
+// -- KEYWORD GENERATOR --
+async function runKeywordGen() {
+  const sector = document.getElementById('kw-sector').value;
+  const geo = document.getElementById('kw-geo').value;
+
+  const btn = document.getElementById('kw-gen-btn');
+  btn.disabled = true; btn.textContent = 'Researching...';
+  document.getElementById('kw-output-title').textContent = sector + ' — ' + geo;
+
+  const prompt = `Generate a comprehensive keyword target list for Novograf.com for the following:
+
+Service area: ${sector}
+Target geography: ${geo}
+
+Structure your output as:
+
+TIER 1 — PRIMARY KEYWORDS (highest commercial intent, direct service queries)
+For each keyword: keyword phrase | estimated monthly searches | difficulty (low/medium/high) | current page to target or "new page needed" | why this matters for Novograf
+
+TIER 2 — SECONDARY KEYWORDS (informational, comparison, problem-aware)
+Same format. 8 to 10 keywords.
+
+TIER 3 — LONG-TAIL AND NICHE KEYWORDS (low competition, highly specific)
+Same format. 8 to 10 keywords.
+
+COMPETITOR KEYWORDS TO STEAL
+Keywords where Atlas Copco or other industrial gas competitors are currently ranking that Novograf could target. Include why Novograf has a genuine chance of outranking them.
+
+PORTUGUESE LANGUAGE KEYWORDS
+The same intent keywords but in European Portuguese as a potential customer in Portugal would actually type them. Include both formal and informal search phrasing.
+
+CONTENT GAP KEYWORDS
+Topics that potential Novograf customers are searching for but no good answer exists yet in Portuguese or for the Iberian market specifically.
+
+Be specific to Novograf's actual business and the ${geo} market. Estimated volumes can be rough ranges, clearly marked as estimates.`;
+
+  await seoGenerate(prompt, 'kw-text', 'kw-loading', 'kw-output');
+  btn.disabled = false; btn.textContent = 'Generate keyword targets';
+}
+
+// -- PAGE BUILDER RECOMMENDATIONS --
+async function runPageBuilder() {
+  const sector = document.getElementById('pb-sector').value;
+  const geo = document.getElementById('pb-geo').value;
+  const count = document.getElementById('pb-count').value;
+
+  const btn = document.getElementById('pb-gen-btn');
+  btn.disabled = true; btn.textContent = 'Generating...';
+
+  document.getElementById('pb-loading').style.display = 'flex';
+  document.getElementById('pb-output').style.display = 'none';
+
+  const geoMap = {
+    pt: 'Portugal only — include Portuguese-language keyword variants',
+    iberia: 'Portugal and Spain — include both Portuguese and Spanish keyword variants',
+    europe: 'European market in English — target international buyers searching in English',
+    both: 'Both Portuguese market pages and English international pages — recommend a mix'
+  };
+
+  const sectorMap = {
+    all: 'all Novograf service areas (compressed air, nitrogen generation, oxygen generation, water treatment, food and beverage, wine, laser cutting, oil and gas, medical oxygen, energy efficiency, industrial fluid filtration)',
+    nitrogen: 'on-site nitrogen generation (PSA and membrane systems) including food, pharma, electronics, laser cutting, and chemical applications',
+    oxygen: 'on-site oxygen generation including biogas, wastewater, medical adjacent, and metal fabrication applications',
+    'compressed-air': 'compressed air quality analysis, ISO 8573 compliance, and energy audits (ISO 11011)',
+    water: 'water treatment and wastewater applications using on-site oxygen',
+    food: 'food and beverage nitrogen applications including modified atmosphere packaging and storage',
+    wine: 'wine and viticulture nitrogen applications including blanketing, transfer, and bottling',
+    laser: 'laser cutting nitrogen supply including PSA generation vs cylinder comparison',
+    'oil-gas': 'oil and gas nitrogen applications including pipeline inerting, purging, and well intervention',
+    medical: 'medical oxygen generation for clinical and healthcare applications',
+    energy: 'industrial energy efficiency audits and compressed air energy management'
+  };
+
+  const prompt = `You are an expert SEO strategist working for NXRD on the Novograf.com account. Novograf is a Portuguese B2B industrial gas consultancy based in Esposende, Portugal. They specialise in compressed air quality, on-site nitrogen and oxygen generation, energy efficiency audits, and industrial gas consulting. Their primary competitors include Atlas Copco, CompAir, Noxerior, Groupe Novair, and Ultra Controlo.
+
+Generate ${count} recommended pages for Novograf to build on their WordPress website, targeting: ${sectorMap[sector] || sector}.
+
+Target geography: ${geoMap[geo] || geo}
+
+For each page, provide the following in this exact format:
+
+PAGE [N]
+Target keyword: [primary keyword phrase]
+Secondary keywords: [2 to 3 related terms]
+Monthly search volume: [estimated range, e.g. 50 to 200 searches/month in Portugal]
+Keyword difficulty: [Low / Medium / High] — [one sentence explanation]
+Search intent: [Informational / Commercial / Transactional]
+Suggested URL: novograf.co.uk/[slug]
+Page title tag: [under 60 characters]
+Meta description: [under 155 characters]
+Priority: [High / Medium / Low] — [one sentence why]
+Content brief: [3 to 5 sentences describing exactly what this page should cover, what questions it answers, what the target reader wants to know, and what the CTA should be]
+Competitor gap: [Which competitor currently ranks for this and why Novograf can outrank them]
+
+After all page recommendations, add a section:
+
+QUICK WINS — BUILD THESE FIRST
+List the 3 pages from your recommendations that will generate ranking results fastest, with a single sentence on why each is a quick win.
+
+CONTENT ARCHITECTURE NOTE
+One paragraph on how these pages should link to each other and to existing Novograf service pages to build topical authority.
+
+Be specific to Novograf's actual business, the Portuguese and Iberian industrial market, and realistic search volumes for a specialist B2B industrial consultancy in a relatively small national market. Do not recommend pages that Novograf cannot credibly rank for given their domain authority as a relatively new site (founded 2021).`;
+
+  document.getElementById('pb-output-title').textContent = `${count} recommended pages — ${sectorMap[sector] ? sectorMap[sector].split('(')[0].trim() : sector}`;
+
+  const system = `You are an expert SEO strategist working for NXRD on the Novograf.com account. Be specific about this site, this industry, and the Portuguese B2B market. No generic SEO advice.`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system, prompt, max_tokens: 1000 })
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+
+    const text = data.text || '';
+    document.getElementById('pb-text').textContent = text;
+
+    // Parse table rows from output
+    const tableBody = document.getElementById('pb-table-body');
+    const pageMatches = [...text.matchAll(/PAGE (\d+)[\s\S]*?Target keyword:\s*([^\n]+)[\s\S]*?Monthly search volume:\s*([^\n]+)[\s\S]*?Keyword difficulty:\s*([^\n]+)[\s\S]*?Suggested URL:\s*([^\n]+)[\s\S]*?Priority:\s*([^\n]+)/gi)];
+
+    if (pageMatches.length) {
+      tableBody.innerHTML = pageMatches.map(m => {
+        const difficulty = m[4].trim().split(' ')[0].toLowerCase();
+        const priority = m[6].trim().split(' ')[0].toLowerCase();
+        const diffCol = { low: 'var(--positive)', medium: '#f59e0b', high: 'var(--negative)' }[difficulty] || 'var(--gray-400)';
+        const priCol = { high: 'var(--positive)', medium: '#f59e0b', low: 'var(--gray-400)' }[priority] || 'var(--gray-400)';
+        return `<tr style="border-bottom:1px solid var(--gray-700);">
+          <td style="padding:9px 0;font-size:12px;color:var(--gray-400);font-weight:600;">${m[1]}</td>
+          <td style="padding:9px 12px;font-size:12px;font-weight:600;color:var(--white);">${m[2].trim()}</td>
+          <td style="padding:9px 12px;font-size:12px;color:var(--gray-300);">${m[3].trim()}</td>
+          <td style="padding:9px 12px;font-size:12px;font-weight:600;color:${diffCol};">${m[4].trim().split(' ')[0]}</td>
+          <td style="padding:9px 12px;font-size:11px;color:var(--lime);font-family:monospace;">${m[5].trim()}</td>
+          <td style="padding:9px 0;font-size:11px;font-weight:700;color:${priCol};text-transform:uppercase;">${m[6].trim().split(' ')[0]}</td>
+        </tr>`;
+      }).join('');
+    } else {
+      tableBody.innerHTML = '<tr><td colspan="6" style="padding:1rem 0;color:var(--gray-400);font-size:12px;">See full briefs below for page details.</td></tr>';
+    }
+
+    document.getElementById('pb-loading').style.display = 'none';
+    document.getElementById('pb-output').style.display = 'block';
+    document.getElementById('pb-output').scrollIntoView({ behavior:'smooth', block:'start' });
+  } catch(e) {
+    document.getElementById('pb-text').textContent = 'Error: ' + e.message;
+    document.getElementById('pb-loading').style.display = 'none';
+    document.getElementById('pb-output').style.display = 'block';
+  }
+
+  btn.disabled = false; btn.textContent = 'Generate page recommendations';
+}
+
+// -- TECHNICAL CHECKLIST --
+const TECH_ITEMS = [
+  { id:'t1', title:'XML sitemap submitted to Google Search Console', desc:'Confirms novograf.co.uk/sitemap.xml exists and is submitted in GSC. Critical for WordPress sites.', impact:'high' },
+  { id:'t2', title:'Robots.txt is correctly configured', desc:'Check novograf.co.uk/robots.txt — should not be blocking key pages or the whole site.', impact:'high' },
+  { id:'t3', title:'SSL certificate active (HTTPS)', desc:'All pages load on HTTPS. HTTP redirects to HTTPS. Mixed content warnings resolved.', impact:'high' },
+  { id:'t4', title:'Core Web Vitals passing', desc:'LCP under 2.5s, FID/INP under 200ms, CLS under 0.1. Check in Google Search Console or PageSpeed Insights.', impact:'high' },
+  { id:'t5', title:'Mobile responsive on all pages', desc:'Every page passes Google Mobile-Friendly Test. No horizontal scroll, readable text, tappable buttons.', impact:'high' },
+  { id:'t6', title:'Page speed under 3 seconds', desc:'Test at PageSpeed Insights. Images compressed, JS deferred, caching enabled, CDN in use if possible.', impact:'high' },
+  { id:'t7', title:'All pages have unique meta titles', desc:'No duplicate or missing titles. Each title is under 60 characters and contains the target keyword.', impact:'high' },
+  { id:'t8', title:'All pages have unique meta descriptions', desc:'No duplicate or missing descriptions. Each is under 155 characters with a clear value proposition.', impact:'medium' },
+  { id:'t9', title:'H1 tags present and unique on every page', desc:'One H1 per page, matching the primary keyword. No pages missing H1.', impact:'high' },
+  { id:'t10', title:'Image alt text on all images', desc:'Every image has descriptive alt text containing relevant keywords where natural. No empty alt attributes.', impact:'medium' },
+  { id:'t11', title:'Internal linking structure in place', desc:'Key service pages link to each other. Blog posts link to relevant service pages. No orphan pages.', impact:'high' },
+  { id:'t12', title:'Schema markup implemented', desc:'Organization schema on homepage. Service schema on service pages. BreadcrumbList schema on inner pages.', impact:'medium' },
+  { id:'t13', title:'Google Search Console verified and active', desc:'Property verified, no coverage errors, sitemaps submitted, Core Web Vitals monitored.', impact:'high' },
+  { id:'t14', title:'Google Analytics 4 connected', desc:'GA4 tracking confirmed across all pages. Events firing correctly.', impact:'medium' },
+  { id:'t15', title:'No broken links (404 errors)', desc:'Run a crawl or use Search Console coverage report. All internal links resolve correctly.', impact:'medium' },
+  { id:'t16', title:'Canonical tags correctly set', desc:'Self-referencing canonicals on all pages. No canonicalisation conflicts between www and non-www.', impact:'medium' },
+  { id:'t17', title:'WordPress Yoast or RankMath SEO plugin active', desc:'SEO plugin configured with site name, social profiles, and sitemap generation enabled.', impact:'medium' },
+  { id:'t18', title:'Blog section active with regular posts', desc:'At minimum 2 posts per month being published. Posts target keywords from the keyword plan.', impact:'high' },
+  { id:'t19', title:'Contact page with local address and phone', desc:'NAP (Name, Address, Phone) consistent across site and Google Business Profile. Helps local SEO.', impact:'medium' },
+  { id:'t20', title:'Google Business Profile claimed and optimised', desc:'Novograf listed on Google Maps, with correct category (Industrial Consultant), photos, and description.', impact:'high' }
+];
+
+let techChecked = JSON.parse(localStorage.getItem('novograf_tech_seo') || '{}');
+
+function initTechChecklist() {
+  const list = document.getElementById('tech-checklist');
+  if (!list || list.children.length > 0) return;
+
+  list.innerHTML = TECH_ITEMS.map(item => {
+    const checked = techChecked[item.id];
+    const impCfg = { high:{col:'var(--negative)',bg:'var(--red-dim)',label:'High impact'}, medium:{col:'#f59e0b',bg:'rgba(245,158,11,0.1)',label:'Medium impact'} }[item.impact];
+    return `<div class="tech-item" onclick="toggleTech('${item.id}')">
+      <div class="tech-checkbox ${checked ? 'checked' : ''}" id="tech-cb-${item.id}">${checked ? '✓' : ''}</div>
+      <div class="tech-item-body">
+        <div class="tech-item-title" style="text-decoration:${checked?'line-through':'none'};color:${checked?'var(--gray-400)':'var(--white)'}">${item.title}</div>
+        <div class="tech-item-desc">${item.desc}</div>
+      </div>
+      <span class="tech-impact" style="background:${impCfg.bg};color:${impCfg.col}">${impCfg.label}</span>
+    </div>`;
+  }).join('');
+
+  updateTechProgress();
+}
+
+function toggleTech(id) {
+  techChecked[id] = !techChecked[id];
+  localStorage.setItem('novograf_tech_seo', JSON.stringify(techChecked));
+  const cb = document.getElementById('tech-cb-' + id);
+  const row = cb.closest('.tech-item');
+  const titleEl = row.querySelector('.tech-item-title');
+  if (techChecked[id]) {
+    cb.classList.add('checked'); cb.textContent = '✓';
+    titleEl.style.textDecoration = 'line-through'; titleEl.style.color = 'var(--gray-400)';
+  } else {
+    cb.classList.remove('checked'); cb.textContent = '';
+    titleEl.style.textDecoration = 'none'; titleEl.style.color = 'var(--white)';
+  }
+  updateTechProgress();
+}
+
+function updateTechProgress() {
+  const done = Object.values(techChecked).filter(Boolean).length;
+  const total = TECH_ITEMS.length;
+  const pct = Math.round((done / total) * 100);
+  const el = document.getElementById('tech-progress-text');
+  if (el) el.textContent = `${done} of ${total} complete — ${pct}%`;
+}
+
+async function runTechAudit() {
+  const done = Object.keys(techChecked).filter(k => techChecked[k]);
+  const notDone = TECH_ITEMS.filter(i => !techChecked[i.id]).map(i => i.title);
+
+  const btn = document.getElementById('tech-audit-btn');
+  btn.disabled = true; btn.textContent = 'Auditing...';
+
+  const prompt = `Perform a technical SEO audit for Novograf.com (WordPress B2B industrial site, Portugal).
+
+Based on the technical checklist, the following items have NOT yet been completed:
+${notDone.length ? notDone.map((t,i) => `${i+1}. ${t}`).join('\n') : 'All checklist items marked as complete.'}
+
+Provide:
+
+TECHNICAL PRIORITY LIST
+Rank the outstanding items by ranking impact for a B2B industrial site in Portugal. For each: item | why it matters for Novograf specifically | exact steps to fix it on WordPress.
+
+ESTIMATED IMPACT
+For each fix, rate the expected ranking improvement (Low / Medium / High / Critical) and the estimated time to implement.
+
+WORDPRESS-SPECIFIC INSTRUCTIONS
+For items that have a specific WordPress or Yoast/RankMath implementation, give the exact menu path and settings to use.
+
+QUICK WINS THIS WEEK
+The 3 technical fixes that will have the fastest positive impact if done immediately.
+
+Be specific. No generic SEO advice. Everything must be implementable by a WordPress developer or a capable site manager.`;
+
+  await seoGenerate(prompt, 'tech-audit-text', 'tech-audit-loading', 'tech-audit-output');
+  btn.disabled = false; btn.textContent = 'Run technical audit';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   COPYWRITER
+══════════════════════════════════════════════════════════════ */
+
+// ── DEFAULT CLIENTS ──────────────────────────────────────────
+const DEFAULT_CLIENTS = [
+  {
+    id: 'novograf',
+    name: 'Novograf',
+    sector: 'Signage and Graphics · UK',
+    desc: 'Employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland. 35+ years delivering commercial fit-outs, custom graphics, printed wallcoverings, floor graphics, window graphics, and murals for retail, hospitality, and office environments.',
+    audience: 'Retail property directors, brand managers, store development leads, fit-out contractors, interior designers, and facilities managers at national retail chains, hospitality groups, and commercial office developers across the UK',
+    proof: 'Employee-owned and independently run, 35 years experience, national rollout capability, ISO 9001 and ISO 14001 accredited, Altius, Construction Line and Safe Contractor approved, Considerate Constructors accredited, own Lamigraf PVC-free surface product, trusted by Co-op, Sainsbury\'s, Greggs, NatWest, M&S, Waitrose, Iceland, Travelodge and more'
+  },
+  {
+    id: 'archway',
+    name: 'Archway',
+    sector: 'Building Consultancy · UK',
+    desc: 'Building consultancy and project management firm. Specialists in commercial building surveys, dilapidations, contract administration, and project monitoring.',
+    audience: 'Commercial property owners, landlords, developers, solicitors, and asset managers across the UK',
+    proof: 'RICS accredited, independent advice, commercial and residential expertise, track record across complex listed and heritage buildings'
+  },
+  {
+    id: 'earl-kendrick',
+    name: 'Earl Kendrick',
+    sector: 'Building Surveying · London',
+    desc: 'Chartered building surveyors based in London. Specialist expertise in Grade II listed buildings, residential surveys, dilapidations, and party wall matters.',
+    audience: 'Property owners, landlords, solicitors, property developers, and residential buyers in London and the South East',
+    proof: 'RICS chartered, specialist in listed and heritage buildings, 25 plus years experience, fixed fee approach'
+  },
+  {
+    id: 'nxrd',
+    name: 'NXRD',
+    sector: 'Marketing Agency · UK',
+    desc: 'End-to-end B2B digital marketing agency. Strategy, SEO, AEO, paid search, social media, website design, and content production for B2B brands in regional and international markets.',
+    audience: 'B2B business owners, marketing directors, and commercial leaders looking to grow revenue through integrated digital marketing',
+    proof: '22 years of hands-on regional and international marketing experience, 50M+ in opportunity revenue created for clients, 45,000 plus new social followers grown'
+  }
+];
+
+const COPY_FORMATS = [
+  { id: 'linkedin', icon: '💼', label: 'LinkedIn post' },
+  { id: 'website', icon: '🌐', label: 'Website / landing page' },
+  { id: 'email', icon: '✉', label: 'Email campaign' },
+  { id: 'blog', icon: '✍', label: 'Blog article' },
+  { id: 'brochure', icon: '📋', label: 'Brochure copy' },
+  { id: 'product', icon: '◎', label: 'Product description' },
+  { id: 'press', icon: '📢', label: 'Press release' },
+  { id: 'proposal', icon: '◈', label: 'Proposal / pitch copy' },
+];
+
+const BRISKFIL_ONLY = [DEFAULT_CLIENTS[0]];
+let copyClients = BRISKFIL_ONLY;
+// Reset any previously saved multi-client list
+localStorage.setItem('novograf_copy_clients', JSON.stringify(BRISKFIL_ONLY));
+let selectedClient = 'novograf';
+let selectedFormat = 'linkedin';
+let selectedLang = 'en';
+let copyHistory = JSON.parse(localStorage.getItem('novograf_copy_history') || '[]');
+
+function initCopywriter() {
+  renderCopyClients();
+  renderCopyFormats();
+  renderCopyHistory();
+}
+
+function renderCopyClients() {
+  document.getElementById('copy-client-grid').innerHTML = copyClients.map(c => `
+    <div class="copy-client-tile ${c.id === selectedClient ? 'selected' : ''}" onclick="selectCopyClient('${c.id}')">
+      <div class="cct-name">${c.name}</div>
+      <div class="cct-sector">${c.sector}</div>
+    </div>`).join('');
+}
+
+function renderCopyFormats() {
+  document.getElementById('copy-format-grid').innerHTML = COPY_FORMATS.map(f => `
+    <div class="copy-format-tile ${f.id === selectedFormat ? 'selected' : ''}" onclick="selectCopyFormat('${f.id}')">
+      <span class="cft-icon">${f.icon}</span>
+      <span class="cft-label">${f.label}</span>
+    </div>`).join('');
+}
+
+function selectCopyClient(id) {
+  selectedClient = id;
+  renderCopyClients();
+}
+
+function selectCopyFormat(id) {
+  selectedFormat = id;
+  renderCopyFormats();
+}
+
+function setLang(lang, btn) {
+  selectedLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const notes = { en: 'Will generate in English', pt: 'Will generate in European Portuguese', both: 'Will generate both English and Portuguese' };
+  document.getElementById('copy-lang-note').textContent = notes[lang];
+}
+
+// ── ADD CLIENT ────────────────────────────────────────────────
+function openAddClient() {
+  document.getElementById('add-client-modal').classList.add('open');
+}
+function closeAddClient() {
+  document.getElementById('add-client-modal').classList.remove('open');
+}
+function saveNewClient() {
+  const name = document.getElementById('new-client-name').value.trim();
+  if (!name) { alert('Please enter a client name'); return; }
+  const client = {
+    id: 'custom_' + Date.now(),
+    name,
+    sector: document.getElementById('new-client-sector').value.trim(),
+    desc: document.getElementById('new-client-desc').value.trim(),
+    audience: document.getElementById('new-client-audience').value.trim(),
+    proof: document.getElementById('new-client-proof').value.trim()
+  };
+  copyClients.push(client);
+  localStorage.setItem('novograf_copy_clients', JSON.stringify(copyClients));
+  selectedClient = client.id;
+  renderCopyClients();
+  closeAddClient();
+  ['new-client-name','new-client-sector','new-client-desc','new-client-audience','new-client-proof']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+}
+
+// ── GENERATE ─────────────────────────────────────────────────
+async function runCopywriter() {
+  const client = copyClients.find(c => c.id === selectedClient);
+  const format = COPY_FORMATS.find(f => f.id === selectedFormat);
+  const topic = document.getElementById('copy-topic').value.trim();
+  const audience = document.getElementById('copy-audience').value.trim();
+  const tone = document.getElementById('copy-tone').value;
+  const points = document.getElementById('copy-points').value.trim();
+  const cta = document.getElementById('copy-cta').value.trim();
+  const length = document.getElementById('copy-length').value;
+
+  if (!topic) { alert('Please enter a topic or subject'); return; }
+  if (!client) { alert('Please select a client'); return; }
+
+  const btn = document.getElementById('copy-gen-btn');
+  btn.disabled = true; btn.textContent = 'Writing...';
+
+  const wrap = document.getElementById('copy-output-wrap');
+  wrap.style.display = 'block';
+  document.getElementById('copy-spinner').style.display = 'inline-block';
+
+  const lengthMap = { short: 'under 200 words', medium: '200 to 400 words', long: '400 to 800 words', extended: '800 to 1500 words' };
+  const toneMap = {
+    nxrd: 'NXRD default: direct, authoritative, commercially weighted. Opens on a statement not a question. No filler. No hype. Confident without being arrogant. Every sentence earns its place.',
+    provocative: 'Provocative and challenging. Confronts a comfortable assumption the reader holds. Makes them feel slightly uncomfortable before presenting the solution.',
+    educational: 'Educational and plain-spoken. Demystifies a complex topic. Expert but approachable. Written for smart people who are not specialists.',
+    story: 'Story-led and personal. First person or narrative driven. Warm but commercially grounded. Ends with a point, not a sentiment.',
+    technical: 'Technical and precise. Written for specialists. Uses correct terminology. Demonstrates deep domain knowledge. Numbers and specifics throughout.',
+    warm: 'Warm and approachable. Professional but human. Conversational without being casual. Builds relationship before building argument.'
+  };
+
+  const system = `You are the NXRD Male Copywriter. You write B2B copy for NXRD, a UK-based digital marketing agency, and their clients. Your voice is direct, authoritative, and commercially grounded. You write with confidence and precision. You never use hyphens. You never use emojis. You never use bullet point lists in creative copy. You never use filler phrases like "in today's world", "in the ever-changing landscape", or "it goes without saying". You open statements with force. Every sentence earns its place. You write for B2B decision makers who are pressed for time and immune to marketing fluff. Commercial weight behind every claim. Proof over assertion. Direction over decoration.`;
+
+  const clientContext = `Client: ${client.name}
+Sector: ${client.sector}
+What they do: ${client.desc}
+Target audience: ${client.audience}
+Key proof points: ${client.proof}`;
+
+  const buildPrompt = (lang) => `Write ${format.label} copy for ${client.name}.
+
+${clientContext}
+
+Topic: ${topic}
+${audience ? `Specific target audience for this piece: ${audience}` : ''}
+${points ? `Key points to include: ${points}` : ''}
+${cta ? `Call to action: ${cta}` : ''}
+Tone: ${toneMap[tone]}
+Length: ${lengthMap[length]}
+${lang === 'pt' ? 'Write entirely in European Portuguese as spoken in Portugal. Natural, professional, direct.' : 'Write in English.'}
+
+Deliver only the finished copy, ready to use. No preamble, no notes, no explanation. No hyphens. No emojis.`;
+
+  // Show/hide blocks
+  document.getElementById('copy-block-en').style.display = (selectedLang === 'en' || selectedLang === 'both') ? 'block' : 'none';
+  document.getElementById('copy-block-pt').style.display = (selectedLang === 'pt' || selectedLang === 'both') ? 'block' : 'none';
+  document.getElementById('copy-copy-pt').style.display = (selectedLang === 'pt' || selectedLang === 'both') ? 'inline-block' : 'none';
+  document.getElementById('copy-copy-en').style.display = (selectedLang === 'en' || selectedLang === 'both') ? 'inline-block' : 'none';
+
+  const formatLabel = format.label;
+  document.getElementById('copy-output-title').textContent = `${formatLabel} — ${client.name}`;
+
+  if (selectedLang === 'en') {
+    document.getElementById('copy-text-en').textContent = 'Writing...';
+    document.getElementById('copy-text-pt').textContent = '';
+    const text = await callCopyAPI(buildPrompt('en'), system);
+    document.getElementById('copy-text-en').textContent = text;
+  } else if (selectedLang === 'pt') {
+    document.getElementById('copy-text-pt').textContent = 'A escrever...';
+    document.getElementById('copy-text-en').textContent = '';
+    const text = await callCopyAPI(buildPrompt('pt'), system);
+    document.getElementById('copy-text-pt').textContent = text;
+  } else {
+    document.getElementById('copy-text-en').textContent = 'Writing...';
+    document.getElementById('copy-text-pt').textContent = 'A escrever...';
+    const [en, pt] = await Promise.all([
+      callCopyAPI(buildPrompt('en'), system),
+      callCopyAPI(buildPrompt('pt'), system)
+    ]);
+    document.getElementById('copy-text-en').textContent = en;
+    document.getElementById('copy-text-pt').textContent = pt;
+  }
+
+  document.getElementById('copy-spinner').style.display = 'none';
+  btn.disabled = false; btn.textContent = 'Generate copy';
+}
+
+async function callCopyAPI(prompt, system) {
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system, prompt, max_tokens: 1000 })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    return data.text || '';
+  } catch(e) {
+    return 'Error: ' + e.message;
+  }
+}
+
+function copyCopyOutput(id) {
+  const el = document.getElementById(id);
+  if (!el || !el.textContent.trim()) return;
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const orig = el.style.opacity;
+    el.style.opacity = '0.5';
+    setTimeout(() => { el.style.opacity = orig || '1'; }, 300);
+  });
+}
+
+// ── HISTORY ──────────────────────────────────────────────────
+function saveCopyToHistory() {
+  const client = copyClients.find(c => c.id === selectedClient);
+  const format = COPY_FORMATS.find(f => f.id === selectedFormat);
+  const topic = document.getElementById('copy-topic').value.trim();
+  const enText = document.getElementById('copy-text-en').textContent;
+  const ptText = document.getElementById('copy-text-pt').textContent;
+  if (!enText && !ptText) return;
+
+  const entry = {
+    id: 'copy_' + Date.now(),
+    client: client ? client.name : 'Unknown',
+    format: format ? format.label : selectedFormat,
+    topic,
+    lang: selectedLang,
+    en: enText,
+    pt: ptText,
+    date: new Date().toLocaleDateString('en-GB')
+  };
+  copyHistory.unshift(entry);
+  copyHistory = copyHistory.slice(0, 30);
+  localStorage.setItem('novograf_copy_history', JSON.stringify(copyHistory));
+  renderCopyHistory();
+}
+
+function renderCopyHistory() {
+  const list = document.getElementById('copy-history-list');
+  if (!copyHistory.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No history yet. Generate your first piece above.</div>';
+    return;
+  }
+  list.innerHTML = copyHistory.map(h => `
+    <div class="copy-history-item" onclick="loadFromHistory('${h.id}')">
+      <div class="copy-history-dot"></div>
+      <div>
+        <div class="copy-history-title">${h.format} — ${h.client}</div>
+        <div class="copy-history-meta">${h.topic ? h.topic.slice(0,50) + (h.topic.length>50?'...':'') : ''} · ${h.date} · ${h.lang.toUpperCase()}</div>
+      </div>
+    </div>`).join('');
+}
+
+function loadFromHistory(id) {
+  const h = copyHistory.find(e => e.id === id);
+  if (!h) return;
+  document.getElementById('copy-output-wrap').style.display = 'block';
+  document.getElementById('copy-block-en').style.display = h.en ? 'block' : 'none';
+  document.getElementById('copy-block-pt').style.display = h.pt ? 'block' : 'none';
+  document.getElementById('copy-text-en').textContent = h.en || '';
+  document.getElementById('copy-text-pt').textContent = h.pt || '';
+  document.getElementById('copy-output-title').textContent = `${h.format} — ${h.client}`;
+  document.getElementById('copy-topic').value = h.topic || '';
+}
+
+function clearCopyHistory() {
+  if (!confirm('Clear all saved copy history?')) return;
+  copyHistory = [];
+  localStorage.removeItem('novograf_copy_history');
+  renderCopyHistory();
+}
+
+// ── SEND TO SCHEDULER ─────────────────────────────────────────
+function sendCopyToScheduler() {
+  const enText = document.getElementById('copy-text-en').textContent.trim();
+  const ptText = document.getElementById('copy-text-pt').textContent.trim();
+  const topic = document.getElementById('copy-topic').value.trim();
+  const client = copyClients.find(c => c.id === selectedClient);
+  const format = COPY_FORMATS.find(f => f.id === selectedFormat);
+
+  const combined = selectedLang === 'both'
+    ? `🇬🇧 ENGLISH\n\n${enText}\n\n---\n\n🇵🇹 PORTUGUÊS\n\n${ptText}`
+    : (selectedLang === 'pt' ? ptText : enText);
+
+  if (!combined) { alert('Nothing to schedule — generate copy first'); return; }
+
+  let fmt = 'text';
+  if (selectedFormat === 'linkedin') fmt = 'text';
+  else if (selectedFormat === 'email') fmt = 'text';
+
+  const post = {
+    id: 'post_' + Date.now(),
+    title: (client ? client.name + ' — ' : '') + (format ? format.label : '') + (topic ? ': ' + topic.slice(0,40) : ''),
+    copy: combined,
+    format: fmt,
+    status: 'draft',
+    date: '',
+    time: '08:30',
+    hashtags: '',
+    notes: 'Generated by Copywriter tab',
+    updatedAt: new Date().toISOString()
+  };
+
+  const posts = getPosts();
+  posts.push(post);
+  savePosts(posts);
+
+  // Switch to scheduler tab
+  const schedBtn = document.querySelector('.nav-tab:nth-child(4)');
+  switchTab('scheduler', schedBtn);
+  renderCalendar();
+  renderPostList();
+}
+
+// Initialise on first load
+document.addEventListener('DOMContentLoaded', () => { initCopywriter(); });
+</script>
+</body>
+</html>

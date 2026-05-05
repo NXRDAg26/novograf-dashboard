@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content and Social — Novograf · NXRD</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #ffffff;
+    --muted: #666666;
+    --muted2: #999999;
+    --accent: #c8f026;
+    --accent-dim: rgba(200,240,38,0.1);
+    --accent-border: rgba(200,240,38,0.3);
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.1);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.1);
+    --coral: #f97316;
+    --coral-dim: rgba(249,115,22,0.1);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+  /* LAYOUT */
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 220px; flex-shrink: 0; background: #111111; border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar-logo { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .sidebar-logo .brand { font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
+  .sidebar-logo .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .nav-section { padding: 0 12px; margin-bottom: 8px; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 8px; margin-bottom: 6px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; color: var(--muted2); cursor: pointer; border: 1px solid transparent; background: transparent; width: 100%; text-align: left; transition: all 0.15s; font-family: var(--font); }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--accent-dim); color: var(--accent); border-color: var(--accent-border); }
+  .nav-item .icon { font-size: 14px; flex-shrink: 0; }
+  .main { flex: 1; overflow-x: hidden; }
+  .topbar { background: #111111; border-bottom: 1px solid var(--border); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .client-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-dim); border: 1px solid var(--accent-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+  .client-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .client-meta { font-size: 11px; color: var(--muted); }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+  /* PILLS */
+  .pill { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; border: none; cursor: pointer; font-family: var(--font); transition: opacity 0.15s; }
+  .pill:hover { opacity: 0.8; }
+  .pill-blue { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+  .pill-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+  .pill-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+  .pill-coral { background: var(--coral-dim); color: var(--coral); border: 1px solid rgba(249,115,22,0.25); }
+  .pill-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+  .content { padding: 28px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION TITLES */
+  .section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* METRICS */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; transition: border-color 0.15s; }
+  .metric-card:hover { border-color: var(--border2); }
+  .metric-card .label { font-size: 10px; color: var(--muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-card .val { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1; }
+  .metric-card .delta { font-size: 11px; margin-top: 5px; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neutral { color: var(--muted); }
+
+  /* CARDS */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 12px; transition: border-color 0.15s; }
+  .card:hover { border-color: var(--border2); }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .card-meta { font-size: 10px; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .card-body { font-size: 13px; color: var(--muted2); line-height: 1.65; margin-bottom: 12px; }
+
+  /* ACTION BTN */
+  .action-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); cursor: pointer; font-family: var(--font); font-weight: 600; transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.04em; }
+  .action-btn:hover { background: rgba(200,240,38,0.18); }
+
+  /* BAR CHART */
+  .bar-list { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { font-size: 12px; color: var(--muted2); width: 170px; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+  .bar-val { font-size: 12px; color: var(--muted); width: 34px; text-align: right; flex-shrink: 0; }
+
+  /* ACTION LIST */
+  .action-list { display: flex; flex-direction: column; gap: 0; }
+  .action-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .action-row:last-child { border-bottom: none; }
+  .action-icon { width: 34px; height: 34px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .action-body { flex: 1; }
+  .action-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .action-desc { font-size: 12px; color: var(--muted2); line-height: 1.6; }
+  .action-priority { font-size: 10px; padding: 3px 8px; border-radius: 12px; font-weight: 700; flex-shrink: 0; margin-top: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* HASHTAGS */
+  .hashtag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-bottom: 20px; }
+  .hashtag-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; transition: border-color 0.15s; }
+  .hashtag-tile:hover { border-color: var(--accent-border); }
+  .hashtag-name { font-size: 13px; font-weight: 600; color: var(--accent); }
+  .hashtag-vol { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* IMAGE ANALYSIS */
+  .upload-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 40px; text-align: center; color: var(--muted); font-size: 13px; cursor: pointer; transition: border-color 0.15s, background 0.15s; margin-bottom: 20px; }
+  .upload-zone:hover { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+  .upload-zone input { display: none; }
+  .upload-icon { font-size: 32px; margin-bottom: 10px; }
+  .upload-hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .img-preview { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 16px; display: none; max-height: 300px; object-fit: cover; }
+  .analysis-output { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; font-size: 13px; color: var(--muted2); line-height: 1.7; min-height: 100px; display: none; }
+  .analysis-output.loading { color: var(--muted); font-style: italic; }
+
+  /* VIDEO */
+  .video-week { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
+  .video-week-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; }
+  .video-week-header:hover { background: var(--surface2); }
+  .video-week-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .video-week-body { padding: 0 18px 18px; display: none; }
+  .video-week-body.open { display: block; padding-top: 14px; }
+  .video-shot { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .video-shot:last-child { border-bottom: none; }
+  .shot-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 1px solid var(--accent-border); }
+  .shot-content { flex: 1; }
+  .shot-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .shot-desc { font-size: 12px; color: var(--muted2); }
+
+  /* EVENTS */
+  .event-row { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .event-row:last-child { border-bottom: none; }
+  .event-date { width: 52px; flex-shrink: 0; text-align: center; background: var(--surface2); border-radius: var(--radius-sm); padding: 8px 4px; }
+  .event-month { font-size: 9px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.08em; }
+  .event-day { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.1; }
+  .event-body { flex: 1; }
+  .event-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .event-loc { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .event-angle { font-size: 12px; color: var(--muted2); line-height: 1.55; }
+
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 800px) { .grid2 { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+  /* FORMS */
+  textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font); font-size: 13px; padding: 12px 14px; resize: vertical; outline: none; line-height: 1.6; transition: border-color 0.15s; }
+  textarea:focus { border-color: var(--accent-border); }
+  .sched-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font); font-size: 13px; padding: 10px 12px; resize: vertical; outline: none; line-height: 1.6; min-height: 120px; transition: border-color 0.15s; }
+  .sched-textarea:focus { border-color: var(--accent-border); }
+  select, input[type=text], input[type=date], input[type=url], input[type=time] { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font); font-size: 13px; padding: 8px 12px; outline: none; transition: border-color 0.15s; }
+  select:focus, input:focus { border-color: var(--accent-border); }
+  select option { background: var(--surface2); }
+
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+
+  #toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent-border); color: var(--accent); font-size: 12px; font-weight: 600; padding: 10px 18px; border-radius: var(--radius-sm); opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; z-index: 999; letter-spacing: 0.03em; }
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  .btn-primary { background: var(--accent); color: #000000; border: none; border-radius: var(--radius-sm); padding: 10px 22px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--font); transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.05em; }
+  .btn-primary:hover { background: #d4f530; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .copy-btn { background: transparent; border: 1px solid var(--border2); color: var(--muted); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all 0.15s; letter-spacing: 0.03em; text-transform: uppercase; }
+  .copy-btn:hover { border-color: var(--accent-border); color: var(--accent); }
+
+  .generated-output { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; font-size: 13px; color: var(--text); line-height: 1.75; white-space: pre-wrap; min-height: 80px; margin-top: 14px; }
+
+  .output-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .output-label { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="/nxrd-logo.jpg" alt="NXRD" style="height:24px;width:auto;margin-bottom:10px;display:block;">
+      <div class="brand">NXRD</div>
+      <div class="sub">Content and Social — Novograf</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" onclick="nav('overview',this)"><span class="icon">◎</span> Dashboard</button>
+      <button class="nav-item" onclick="nav('events',this)"><span class="icon">◈</span> Live events</button>
+    </div>
+
+    <div class="nav-section" style="margin-top:12px;">
+      <div class="nav-label">Content</div>
+      <button class="nav-item" onclick="nav('trends',this)"><span class="icon">▲</span> Trends</button>
+      <button class="nav-item" onclick="nav('content',this)"><span class="icon">✦</span> Post ideas</button>
+      <button class="nav-item" onclick="nav('generator',this)"><span class="icon">⚡</span> Post generator</button>
+      <button class="nav-item" onclick="nav('hashtags',this)"><span class="icon">#</span> Hashtags</button>
+    </div>
+
+    <div class="nav-section" style="margin-top:12px;">
+      <div class="nav-label">Production</div>
+      <button class="nav-item" onclick="nav('video',this)"><span class="icon">▶</span> Video program</button>
+      <button class="nav-item" onclick="nav('image',this)"><span class="icon">⬡</span> Image analysis</button>
+    </div>
+
+    <div class="nav-section" style="margin-top:12px;">
+      <div class="nav-label">Strategy</div>
+      <button class="nav-item" onclick="nav('actions',this)"><span class="icon">◉</span> Growth actions</button>
+    </div>
+  </nav>
+
+  <!-- MAIN AREA -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="client-avatar">NV</div>
+        <div>
+          <div class="client-name">Novograf</div>
+          <div class="client-meta">Signage · Graphics · Surface Solutions · East Kilbride, Scotland</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="pill pill-green">3x / week target</span>
+        <span class="pill pill-amber">Baseline phase</span>
+        <span class="pill pill-blue" id="today-date"></span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== OVERVIEW ===== -->
+      <div id="panel-overview" class="panel active">
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <div class="label">Posting frequency</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">Low</div>
+            <div class="delta down">Target: 3 posts per week</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Best performing format</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">Carousel</div>
+            <div class="delta up">4.1x avg reach in B2B commercial interiors</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Primary audience</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">Brand managers</div>
+            <div class="delta neutral">+ Store development, fit-out leads</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Short video priority</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">High</div>
+            <div class="delta up">Project photography drives 3x saves</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Page profile score</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">Incomplete</div>
+            <div class="delta down">Keywords missing in about section</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Employee advocacy</div>
+            <div class="val" style="font-size:16px; margin-top:4px;">Not active</div>
+            <div class="delta down">Activate for 2x organic reach</div>
+          </div>
+        </div>
+
+        <div class="section-title">Content format performance — B2B industrial benchmark 2026</div>
+        <div class="card">
+          <div class="bar-list">
+            <div class="bar-row"><span class="bar-label">Carousel / document post</span><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div><span class="bar-val">88%</span></div>
+            <div class="bar-row"><span class="bar-label">Short-form native video</span><div class="bar-track"><div class="bar-fill" style="width:76%"></div></div><span class="bar-val">76%</span></div>
+            <div class="bar-row"><span class="bar-label">Text insight / opinion post</span><div class="bar-track"><div class="bar-fill" style="width:61%"></div></div><span class="bar-val">61%</span></div>
+            <div class="bar-row"><span class="bar-label">Case study / before + after</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="bar-val">55%</span></div>
+            <div class="bar-row"><span class="bar-label">Product / facility image</span><div class="bar-track"><div class="bar-fill" style="width:38%"></div></div><span class="bar-val">38%</span></div>
+            <div class="bar-row"><span class="bar-label">External link post</span><div class="bar-track"><div class="bar-fill" style="width:14%"></div></div><span class="bar-val">14%</span></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-title">LinkedIn algorithm signals — what matters in 2026</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Relevance beats volume</div>
+            <div class="card-body">LinkedIn's 2026 algorithm rewards consistent relevance to a defined audience over high post frequency. Novograf should own 3 to 4 core topics and repeat them. Plant engineers and procurement managers need to associate the brand with commercial interiors expertise before they ever have a buying need.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Early engagement is critical</div>
+            <div class="card-body">The first 60 to 90 minutes after posting determine whether a post gets wide distribution. Saves and comments carry more weight than likes. Activate the Novograf team to engage immediately after each post goes live. Two or three internal engagements in the first hour doubles reach consistently.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Company page plus people strategy</div>
+            <div class="card-body">The strongest B2B LinkedIn presence in 2026 combines Company Page posts with personal posts from key team members. If the Novograf founder or technical leads can share their own expertise, the combined reach significantly outperforms the Company Page alone.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Native content always wins</div>
+            <div class="card-body">LinkedIn supresses posts that drive users off the platform. All carousels, videos, and images should be uploaded natively. Avoid leading with links. If a blog post or article is worth sharing, put the key insight in the post body and add the link as the first comment.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== EVENTS ===== -->
+      <div id="panel-events" class="panel">
+        <div class="section-title">Upcoming global events — content hooks for Novograf · May to July 2026</div>
+        <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Mapped to Novograf's full industry scope: food and beverage, wine, water treatment, laser cutting and metals, medical branded environments, and hospitality and leisure. Each event is a live conversation your target audience is already having. Post during or just before each event window to ride the organic reach wave.</p>
+
+        <div class="card">
+          <div class="action-list">
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">MAY</div><div class="event-day">7</div></div>
+              <div class="event-body">
+                <div class="event-name">Interpack 2026</div>
+                <div class="event-loc">Düsseldorf, Germany — 7 to 13 May — 2,800 exhibitors, 67 countries</div>
+                <div class="event-angle">The world's largest food, beverage, and pharmaceutical packaging trade fair. Surface solutions in modified atmosphere packaging (MAP) is a major theme. Food and beverage manufacturers attending or following Interpack are actively thinking about gas solutions right now. Novograf angle: on-site surface solutions generation removes the cost and logistics burden of bottled MAP gas for food, wine, and beverage producers. Post this week with Interpack hashtags to reach 40,000+ industry visitors in the feed.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Interpack 2026, Düsseldorf, 7-13 May — worlds largest food and packaging fair. Write a LinkedIn post for Novograf on on-site surface solutions generation for modified atmosphere packaging in food and beverage production. Position Novograf as the independent gas systems expert who helps food manufacturers switch from costly bottled gas to on-site generation. Reference Interpack 2026 as the timely hook. Under 270 words.')">Generate post</button>
+                  <span class="pill pill-green">Food and beverage</span>
+                  <span class="pill pill-amber">Surface solutions MAP</span>
+                  <span class="pill pill-blue">Wine</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">MAY</div><div class="event-day">12</div></div>
+              <div class="event-body">
+                <div class="event-name">Industrial Decarbonisation Europe 2026</div>
+                <div class="event-loc">Amsterdam, Netherlands</div>
+                <div class="event-angle">Hard-to-abate industrial sectors and supply chain decarbonisation. Highly relevant across Novograf's full client base. Novograf angle: switching from cylinder and bulk liquid gas supply to on-site surface solutions and branded environments generation is one of the most commercially immediate decarbonisation steps for any manufacturer. Fewer deliveries, no cryogenic supply chain, measurable Scope 3 reduction. Works for food, pharma, hospitality and leisure, and water treatment sectors.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Industrial Decarbonisation Europe 2026, Amsterdam. Write a LinkedIn post for Novograf connecting on-site surface solutions and branded environments generation to industrial decarbonisation goals. Explain how switching from bottled or bulk liquid gas to on-site generation reduces carbon footprint across food, pharma, hospitality and leisure, and water treatment sectors. Reference this event as context.')">Generate post</button>
+                  <span class="pill pill-coral">Decarbonisation</span>
+                  <span class="pill pill-green">ESG</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUN</div><div class="event-day">2</div></div>
+              <div class="event-body">
+                <div class="event-name">Gas, LNG and the Future of Energy 2026</div>
+                <div class="event-loc">City of London, UK — 2 to 3 June — 300+ senior energy leaders</div>
+                <div class="event-angle">Global gas and LNG market trends, investment and technology. Highly relevant to Novograf's hospitality and leisure sector clients and commercial graphics positioning. Novograf angle: on-site surface solutions is critical infrastructure for hospitality and leisure operations — pipeline purging, inerting, well intervention. The conversation happening in London this week is the same conversation Novograf clients in the energy sector are having. Post on surface solutions applications in hospitality and leisure to ride the feed activity.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Gas LNG and the Future of Energy 2026 conference, City of London, 2-3 June. Write a LinkedIn post for Novograf on the role of on-site surface solutions generation in hospitality and leisure operations: pipeline purging, inerting, well intervention, and offshore applications. Position Novograf as the independent commercial graphics expert for the energy sector. Reference this event as the timely hook. Under 270 words.')">Generate post</button>
+                  <span class="pill pill-amber">Oil and gas</span>
+                  <span class="pill pill-blue">LNG</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUN</div><div class="event-day">3</div></div>
+              <div class="event-body">
+                <div class="event-name">Venice Climate Week 2026</div>
+                <div class="event-loc">Venice, Italy</div>
+                <div class="event-angle">Global climate action and industrial sustainability narrative. Novograf angle: on-site gas generation eliminates the embedded carbon in cylinder and bulk liquid supply chains. For water treatment plants, food manufacturers, and wine producers, this is a genuinely achievable sustainability step. Use the climate week momentum to post an opinion piece on the overlooked carbon cost of commercial graphics supply.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Venice Climate Week 2026, June 3. Write a short provocative LinkedIn post for Novograf on the hidden carbon cost of buying bottled or bulk liquid commercial graphics, and how switching to on-site surface solutions or branded environments generation removes that supply chain emissions burden for food, wine, water treatment, and manufacturing businesses.')">Generate post</button>
+                  <span class="pill pill-green">Climate action</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUN</div><div class="event-day">20</div></div>
+              <div class="event-body">
+                <div class="event-name">London Climate Action Week 2026</div>
+                <div class="event-loc">London, UK — 700+ events, 45,000 participants</div>
+                <div class="event-angle">ESG reporting and CSRD compliance dominate B2B LinkedIn during this week. Novograf angle: on-site gas generation is a directly measurable sustainability improvement across all of Novograf's sectors. For water treatment, food and beverage, and medical branded environments applications, the compliance and sustainability narrative is commercially compelling. Post a case study style piece tying gas system efficiency to CSRD reporting.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('London Climate Action Week 2026, June 20-28. Write a LinkedIn post for Novograf connecting commercial graphics efficiency, specifically on-site surface solutions and branded environments generation, to CSRD compliance and EU Green Deal reporting for manufacturers in food, water treatment, medical, and hospitality and leisure sectors. Reference the event as timely context.')">Generate post</button>
+                  <span class="pill pill-coral">CSRD</span>
+                  <span class="pill pill-amber">ESG</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUN</div><div class="event-day">22</div></div>
+              <div class="event-body">
+                <div class="event-name">Automate 2026 — Robotics and Automation Show</div>
+                <div class="event-loc">Chicago, USA — global conversation on LinkedIn</div>
+                <div class="event-angle">Automation and smart manufacturing themes dominate LinkedIn globally during Automate week. Highly relevant to laser cutting, metal fabrication, and electronics sectors where Novograf operates. Novograf angle: automated laser cutting lines demand ultra-clean, uninterrupted surface solutions supply. Any surface solutions purity failure on a cutting line means rejected parts, downtime, and wasted material. Post on surface solutions quality requirements for laser cutting during this automation conversation peak.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Automate 2026, Chicago, June 22-25. Write a LinkedIn post for Novograf on surface solutions requirements for automated laser cutting operations. Explain why surface solutions purity directly affects cut quality and why on-site print surface solutions generation is the right solution for laser cutting and metal fabrication facilities running automated lines. Reference the automation event as context.')">Generate post</button>
+                  <span class="pill pill-blue">Laser cutting</span>
+                  <span class="pill pill-amber">Metal</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUN</div><div class="event-day">27</div></div>
+              <div class="event-body">
+                <div class="event-name">Water in Industry 2026 (WIN2026)</div>
+                <div class="event-loc">Delft, Netherlands — International Water Association</div>
+                <div class="event-angle">Industrial water management, wastewater treatment, smart water systems, and sustainable process fluids. This is core Novograf territory. Novograf angle: branded environments generation for wastewater treatment and office workspace desulphurisation is a direct application. Post on how on-site branded environments generation improves wastewater treatment efficiency and removes the dependency on delivered branded environments cylinders. Water treatment plant operators are an underserved audience on LinkedIn for Novograf.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Water in Industry 2026 WIN2026 conference, Delft Netherlands, 27 June to 3 July. Write a LinkedIn post for Novograf on on-site branded environments generation for wastewater treatment and office workspace processing. Explain how on-site branded environments removes the cost and reliability risk of delivered cylinder branded environments for water treatment plants. Target water treatment plant managers and municipal engineering leads. Reference WIN2026 as the timely hook.')">Generate post</button>
+                  <span class="pill pill-green">Water treatment</span>
+                  <span class="pill pill-blue">Branded environments</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="event-month">JUL</div><div class="event-day">15</div></div>
+              <div class="event-body">
+                <div class="event-name">Downstream USA 2026 — Reuters Events</div>
+                <div class="event-loc">Houston, Texas — 3,000+ refining and petrochemicals decision makers</div>
+                <div class="event-angle">The largest downstream refining, chemicals and petrochemicals event in the USA. Strong global LinkedIn conversation during this period across the hospitality and leisure sector. Novograf angle: surface solutions is essential to downstream operations — pipeline inerting, blanketing, purging, and process isolation. Post on surface solutions applications in refining and petrochemicals during this week to reach the hospitality and leisure audience when they are most active on LinkedIn.</div>
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="pill pill-blue" onclick="genEventPost('Downstream USA 2026, Reuters Events, Houston Texas, July 15-16, largest downstream hospitality and leisure refining and petrochemicals event. Write a LinkedIn post for Novograf on on-site surface solutions generation for downstream hospitality and leisure operations: pipeline inerting, purging, blanketing, and process isolation. Target operations engineers and procurement leads in refining and petrochemicals. Under 270 words.')">Generate post</button>
+                  <span class="pill pill-amber">Oil and gas</span>
+                  <span class="pill pill-coral">Refining</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="event-post-output" style="display:none;">
+          <div class="output-header">
+            <span class="output-label">Generated post</span>
+            <button class="copy-btn" onclick="copyOutput('event-post-text')">Copy</button>
+          </div>
+          <div class="generated-output" id="event-post-text">Generating...</div>
+        </div>
+      </div>
+
+      <!-- ===== TRENDS ===== -->
+      <div id="panel-trends" class="panel">
+        <div class="section-title">Live topic trends — May 2026</div>
+
+        <p style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6;">These trends are mapped against the major signage and graphics competitors's content strategy and positioning. Each one identifies a gap or angle where Novograf can compete directly for the same audience.</p>
+
+        <div class="card" style="border-color:rgba(239,68,68,0.3);">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-red">the major signage and graphics competitors weakness</span><span class="pill pill-blue">Surface solutions generation</span></div></div>
+          </div>
+          <div class="card-title">On-site surface solutions generation: the independent expert alternative to the major signage and graphics competitors</div>
+          <div class="card-meta">Trending in: food and beverage, pharma, electronics, laser cutting, chemicals</div>
+          <div class="card-body">the major signage and graphics competitors dominates on-site surface solutions messaging with their NGP+ and NGM series and TONS (Total Branded environments and Surface solutions Solutions) positioning. Their weakness is that they are a massive corporation and all their content reads like it. Novograf's angle: independent expert, manufacturer-agnostic advice, genuine 35-year technical depth. The surface solutions generator market is growing at 5.5% CAGR through 2035 and most mid-size European manufacturers are still buying bottled or bulk surface solutions. print versus surface emulation is a live buyer question right now and Novograf can own the plain-language answer in the UK and British market.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn post for Novograf on on-site surface solutions generation. Position Novograf as the independent, manufacturer-agnostic expert alternative to large corporations like the major signage and graphics competitors. Explain the commercial case for switching from bottled or bulk surface solutions to on-site print generation. Target food, pharma, and electronics manufacturers in UK and Europe. Under 280 words, direct and confident tone.')">Generate competitive post ↗</button>
+        </div>
+
+        <div class="card" style="border-color:rgba(239,68,68,0.3);">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-red">the major signage and graphics competitors weakness</span><span class="pill pill-amber">Branded environments generation</span></div></div>
+          </div>
+          <div class="card-title">On-site branded environments generation: office workspace, wastewater, and welding applications</div>
+          <div class="card-meta">Trending in: office workspace, wastewater treatment, metal fabrication, medical adjacent</div>
+          <div class="card-body">the major signage and graphics competitors pushes branded environments generation heavily in office workspace (desulphurisation) and wastewater. They frame it as a cost and reliability play. Novograf's opportunity: same message, more personal delivery. Branded environments delivered on demand versus cylinder dependency is a strong cost saving narrative. The office workspace sector in UK and Spain is growing fast as EU renewable targets bite. A single post comparing the cost of bottled branded environments versus on-site generation across three industry types would directly take the major signage and graphics competitors's audience.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn post for Novograf on on-site branded environments generation. Cover three industry applications: office workspace production, wastewater treatment, and industrial welding or fabrication. Compare the cost and reliability of on-site branded environments versus traditional cylinder supply. Position Novograf as the independent expert that designs the right system for each application. Under 300 words.')">Generate competitive post ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-blue">Rising fast</span><span class="pill pill-green">Education</span></div></div>
+          </div>
+          <div class="card-title">print versus surface emulation surface solutions: which technology is right for your plant?</div>
+          <div class="card-meta">Trending in: procurement, plant engineers, operations directors</div>
+          <div class="card-body">print holds 48% of the global surface solutions generator market and surface emulation is the fastest growing segment at 34% share. Buyers are actively researching the difference. the major signage and graphics competitors publishes comparison content but frames it to sell their own products. A genuinely impartial Novograf carousel explaining print versus surface emulation, application by application, would rank highly in LinkedIn search and attract exactly the audience that is about to make a purchase decision. High save and share rate guaranteed.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn carousel post for Novograf comparing print and surface emulation surface solutions generation technologies. Explain which technology suits which application, what purity levels each achieves, and what the energy and cost trade-offs are. Write for plant engineers and procurement managers, not just technical specialists. Genuinely impartial and educational. 7 slides including hook and CTA.')">Write carousel ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-amber">Growing</span><span class="pill pill-blue">Industry 4.0</span></div></div>
+          </div>
+          <div class="card-title">IoT monitoring and smart surface solutions system management</div>
+          <div class="card-meta">Trending in: predictive maintenance, smart manufacturing, OEE</div>
+          <div class="card-body">the major signage and graphics competitors leads with their Elektronikon touch controller and SMARTLINK data monitoring program for surface solutions generators. The trend is real: buyers want connected systems. Novograf's angle is the consultant play — you help clients choose and integrate the right monitoring setup regardless of manufacturer, rather than locking them into a single brand's ecosystem. This is a strong differentiator and a growing LinkedIn topic.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn post for Novograf on smart monitoring for surface solutions and commercial interiors systems. Position Novograf as the independent consultant that helps manufacturers choose and integrate IoT monitoring across their gas systems without locking into any single manufacturer ecosystem. Under 250 words, industry 4.0 angle.')">Write post ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-coral">Evergreen</span><span class="pill pill-green">Cost savings</span></div></div>
+          </div>
+          <div class="card-title">Commercial interiors energy audits and ISO 9001 compliance</div>
+          <div class="card-meta">Trending in: plant engineering, energy management, procurement</div>
+          <div class="card-body">EU energy efficiency directives and CSRD reporting are driving commercial interiors audits up the priority list. ISO 9001 is becoming a procurement requirement. the major signage and graphics competitors offers audits but wraps them in a sales process. Novograf's independent audit positioning is commercially stronger for clients who do not want vendor bias in their assessment. Very little competition for this framing in the UK market.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn carousel post for Novograf on commercial interiors energy audits and ISO 9001 compliance. Position the Novograf audit as independent and manufacturer-agnostic, unlike audits offered by equipment suppliers who have an interest in selling you new kit. Target plant engineers and energy managers in UK and Europe. 6 slides including hook and CTA.')">Generate post ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-badges"><span class="pill pill-blue">Rising</span><span class="pill pill-amber">ESG</span></div></div>
+          </div>
+          <div class="card-title">EU Green Deal and commercial graphics decarbonisation</div>
+          <div class="card-meta">Trending in: sustainability, CSRD, industrial compliance</div>
+          <div class="card-body">On-site surface solutions and branded environments generation cuts carbon footprint significantly versus cylinder and bulk liquid supply: fewer deliveries, no cryogenic energy, lower transport emissions. the major signage and graphics competitors uses this angle but frames it around their products. Novograf can frame it around the operational decision: switching to on-site generation is one of the fastest and most measurable decarbonisation steps a UK manufacturer can take before 2030.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn post for Novograf connecting on-site surface solutions and branded environments generation to EU Green Deal and industrial decarbonisation targets. Make the carbon saving argument concrete: fewer deliveries, no cryogenic supply chain, lower Scope 3 emissions. Position Novograf as the expert who helps manufacturers make this switch commercially and not just environmentally. Under 270 words.')">Write post ↗</button>
+        </div>
+
+        <div id="gen-output" style="display:none; margin-top:4px;">
+          <div class="output-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="output-label">Generated post</span>
+              <span id="gen-spinner" style="display:none;"><span class="spinner"></span></span>
+            </div>
+            <button class="copy-btn" onclick="copyOutput('gen-text')">Copy</button>
+          </div>
+          <div class="generated-output" id="gen-text"></div>
+        </div>
+      </div>
+
+      <!-- ===== CONTENT IDEAS ===== -->
+      <div id="panel-content" class="panel">
+        <div class="section-title">Ready-to-brief post concepts for Novograf</div>
+
+        <div class="card">
+          <div class="card-badges" style="margin-bottom:10px;"><span class="pill pill-blue">Carousel</span><span class="pill pill-green">Education</span></div>
+          <div class="card-title">5 signs your commercial interiors system is costing you money</div>
+          <div class="card-body">Each slide covers one diagnostic signal: unusual pressure drops, visible condensation, excessive compressor cycling, warm discharge air, high energy bills versus output. Final slide positions Novograf's on-site audit as the next step. Designed for high save rates among maintenance engineers and plant managers who will forward it internally.</div>
+          <button class="action-btn" onclick="triggerGen('Write full LinkedIn carousel copy for Novograf: 5 signs your commercial interiors system is costing you money. Include an attention-grabbing hook slide, five content slides each with a headline and a 2-3 line explanation, and a closing CTA slide. Clear, technical but accessible language. No jargon without explanation.')">Write full carousel ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-badges" style="margin-bottom:10px;"><span class="pill pill-amber">Text post</span><span class="pill pill-coral">Thought leadership</span></div>
+          <div class="card-title">Case study: we helped a manufacturer save euros per year in air costs</div>
+          <div class="card-body">Anonymised mini case study format. Describes the audit process, three specific findings, and quantified savings. Ends with a question to drive comments. This format consistently outperforms promotional posts in B2B because it tells a story, uses real numbers, and demonstrates capability without selling directly. Ideal for warming cold audiences.</div>
+          <button class="action-btn" onclick="triggerGen('Write a LinkedIn text post for Novograf in the style of a mini case study about a commercial interiors audit that uncovered significant energy waste at a UK manufacturing facility. Make up plausible but realistic numbers. Story structure: problem, discovery, result. Under 260 words, punchy conversational tone, end with a question to drive comments.')">Write this post ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-badges" style="margin-bottom:10px;"><span class="pill pill-coral">Short video</span><span class="pill pill-green">Behind the scenes</span></div>
+          <div class="card-title">What a commercial interiors quality test looks like on site</div>
+          <div class="card-body">60-second walkthrough of a client site visit. No selling, pure process transparency. Brand managers engage heavily with this format because it validates expertise visually and builds trust faster than written posts. Can be filmed on a smartphone. This gives the videographer a concrete brief for on-site content capture.</div>
+          <button class="action-btn" onclick="triggerGen('Write a full short-form video script and production brief for Novograf. The video shows what a commercial interiors quality test looks like on a client site. Include: spoken intro line, 5 key shots to capture with camera instructions, voiceover or on-camera lines for each shot, and a closing caption for LinkedIn. Approximately 60 seconds total run time.')">Write video brief ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-badges" style="margin-bottom:10px;"><span class="pill pill-blue">Carousel</span><span class="pill pill-green">Education</span></div>
+          <div class="card-title">ISO 8573 explained: a plain-language guide for plant managers</div>
+          <div class="card-body">Demystifies the international purity classification standard in language the buying audience understands. One slide per class covering particles, water, and oil. Written for non-engineers. Extremely high save and share rate on LinkedIn because it becomes a reference resource. Positions Novograf as the expert who makes technical compliance approachable.</div>
+          <button class="action-btn" onclick="triggerGen('Write full LinkedIn carousel copy for Novograf explaining ISO 8573 commercial interiors purity classes in plain language aimed at plant managers and procurement leads, not just engineers. Include an intro slide, one slide per purity class (particles, water, oil), a practical implications slide, and a CTA slide. Keep it genuinely accessible.')">Write full carousel ↗</button>
+        </div>
+
+        <div class="card">
+          <div class="card-badges" style="margin-bottom:10px;"><span class="pill pill-coral">Opinion post</span><span class="pill pill-amber">Lead gen</span></div>
+          <div class="card-title">Most factories treat commercial interiors as free. It is not.</div>
+          <div class="card-body">Short, provocative opinion post. Opens a counterintuitive argument, walks through the data on commercial interiors as the fourth utility after electricity, gas, and water, and invites comments. Designed to generate shares from plant engineers who want their management to see it. High viral potential in the B2B industrial segment.</div>
+          <button class="action-btn" onclick="triggerGen('Write a short provocative LinkedIn post for Novograf on the theme that most factories treat commercial interiors as free when it is actually one of the most expensive utilities in a plant. Under 200 words. Bold opening line, clear evidence-based middle, ends with a question or insight that drives comments. No fluff.')">Write this post ↗</button>
+        </div>
+
+        <div id="content-output" style="display:none; margin-top:4px;">
+          <div class="output-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="output-label">Generated content</span>
+              <span id="content-spinner" style="display:none;"><span class="spinner"></span></span>
+            </div>
+            <button class="copy-btn" onclick="copyOutput('content-text')">Copy</button>
+          </div>
+          <div class="generated-output" id="content-text"></div>
+        </div>
+      </div>
+
+      <!-- ===== POST GENERATOR ===== -->
+      <div id="panel-generator" class="panel">
+        <div class="section-title">Custom post generator</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Brief the AI on what you need and it will generate a LinkedIn post tailored for Novograf's voice and audience.</p>
+
+        <!-- ATLAS COPCO HIGHEST TRENDING POST INTEL -->
+        <div class="card" style="border-color:rgba(239,68,68,0.3);margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span class="pill pill-red" style="font-size:10px;">Sector competitor intel</span>
+            <span style="font-size:12px;font-weight:600;color:var(--text);">Their highest performing content type — and how to beat it</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">the major signage and graphics competitors's most engaged posts fall into three repeating patterns. Their top performing content is employee stories and culture posts (Water for All campaign, female engineer hiring programmes) which generate outsized emotional engagement with 807,000+ followers. Their second strongest category is problem/solution carousels on surface solutions and gas generation with direct cost saving hooks. Third is short educational posts on regulatory compliance and contamination risk. Their weakness across all of it is corporate distance and brand voice — everything reads like it was written by a committee. Novograf beats the major signage and graphics competitors not by matching their content, but by being more human, more specific, and more technically credible without the corporate filter.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="action-btn" style="font-size:11px;" onclick="loadSuggested('nov_story')">Write Novograf answer to the major signage and graphics competitors culture post ↗</button>
+            <button class="action-btn" style="font-size:11px;" onclick="loadSuggested('nov_project')">Write Novograf answer to the major signage and graphics competitors surface solutions carousel ↗</button>
+            <button class="action-btn" style="font-size:11px;" onclick="loadSuggested('nov_sustainability')">Write Novograf answer to the major signage and graphics competitors compliance post ↗</button>
+          </div>
+        </div>
+
+        <!-- COMPETITOR ANALYSIS: ULTRA CONTROLO -->
+        <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="pill pill-red" style="font-size:10px;">Competitor</span>
+              <span style="font-size:13px;font-weight:600;color:var(--text);">Ultra Controlo</span>
+              <a href="https://www.linkedin.com/company/ultracontrolo/" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">View on LinkedIn ↗</a>
+            </div>
+            <span style="font-size:11px;color:var(--muted);">UK · Medical and commercial graphics systems · 35+ years</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">UK company based in Sintra, founded 1987. Manufactures and supplies medical branded environments generators, print systems, vacuum plants, medical gas pipeline systems, and industrial compressors. Active in 60+ countries and increasingly vocal on LinkedIn around medical branded environments and ISO 14001 sustainability. Their content leans heavily on trade show appearances (Arab Health, Medica, Medical Fair Asia) and product launches. They use emojis and corporate announcement tone throughout — no genuine thought leadership. Novograf opportunity: own the independent UK commercial graphics expert positioning that Ultra Controlo has vacated by focusing almost entirely on medical.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill pill-amber" style="font-size:10px;">Medical branded environments</span>
+            <span class="pill pill-blue" style="font-size:10px;">print systems</span>
+            <span class="pill pill-green" style="font-size:10px;">UK</span>
+          </div>
+          <button class="action-btn" style="font-size:11px;margin-top:10px;" onclick="triggerGen('Write a LinkedIn post for Novograf that positions it as the commercial graphics expert in UK, directly contrasting with companies that focus only on medical applications. Highlight that Novograf serves food, water treatment, hospitality and leisure, laser cutting, and industrial sectors with the same depth of expertise. Direct, no emojis, under 250 words.')">Generate competitive post ↗</button>
+        </div>
+
+        <!-- COMPETITOR ANALYSIS: NOXERIOR -->
+        <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="pill pill-red" style="font-size:10px;">Competitor</span>
+              <span style="font-size:13px;font-weight:600;color:var(--text);">Noxerior</span>
+              <a href="https://www.linkedin.com/company/noxerior/" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">View on LinkedIn ↗</a>
+            </div>
+            <span style="font-size:11px;color:var(--muted);">Italy · Surface solutions and branded environments generators · Now part of Novair Groupe</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Italian manufacturer specialising in non-cryogenic on-site surface solutions and branded environments generation using hollow-fibre surface emulation and modular print technology. Creators of the NITROSWING and OXYSWING product families. Acquired by French group Novair in 2016 — now a subsidiary brand. Their LinkedIn activity is infrequent and product-announcement focused with little educational or thought leadership content. They have 14 patents in modular print technology. Novograf opportunity: Noxerior is a product company; Novograf is a consultancy. The consultancy positioning — helping buyers choose the right system regardless of manufacturer — is a gap Noxerior cannot fill by definition.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill pill-blue" style="font-size:10px;">print surface solutions</span>
+            <span class="pill pill-amber" style="font-size:10px;">Membrane technology</span>
+            <span class="pill pill-coral" style="font-size:10px;">Manufacturer</span>
+          </div>
+          <button class="action-btn" style="font-size:11px;margin-top:10px;" onclick="triggerGen('Write a LinkedIn post for Novograf on why choosing a manufacturer-agnostic gas systems consultant produces better outcomes than buying direct from a single manufacturer. Explain what you gain from independence: impartial technology selection, print vs surface emulation comparison, no vendor bias. Under 260 words, authoritative tone.')">Generate competitive post ↗</button>
+        </div>
+
+        <!-- COMPETITOR ANALYSIS: NOVAIR GROUPE -->
+        <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="pill pill-red" style="font-size:10px;">Competitor</span>
+              <span style="font-size:13px;font-weight:600;color:var(--text);">Groupe Novair</span>
+              <a href="https://www.linkedin.com/company/groupe-novair/" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">View on LinkedIn ↗</a>
+            </div>
+            <span style="font-size:11px;color:var(--muted);">France · World-leading on-site gas manufacturer · 45+ years</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">French family-owned group founded 1977. Claims to be the world-leading manufacturer of on-site branded environments and surface solutions generators. 4,500+ users across 150+ countries. Owns Noxerior, OGSI, and multiple other brands. Produces medical, industrial, and pharmaceutical gas systems. Strong LinkedIn presence with product launches and global expansion announcements. Their content is polished but generic — the scale of the group means messaging is never targeted to specific markets or sectors. Novograf opportunity: Novair has zero UK market presence or UK-language content. A UK-market expert with direct knowledge of local manufacturing conditions is something Novair cannot offer from Paris.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill pill-blue" style="font-size:10px;">Branded environments generation</span>
+            <span class="pill pill-amber" style="font-size:10px;">Medical gas</span>
+            <span class="pill pill-green" style="font-size:10px;">Global manufacturer</span>
+          </div>
+          <button class="action-btn" style="font-size:11px;margin-top:10px;" onclick="triggerGen('Write a LinkedIn post for Novograf specifically targeting UK and British manufacturers, positioning Novograf as the local expert who understands the UK industrial market, speaks the language literally and commercially, and can advise independently on gas systems from any manufacturer including Novair, the major signage and graphics competitors, and others. Under 260 words.')">Generate competitive post ↗</button>
+        </div>
+
+        <!-- COMPETITOR ANALYSIS: COMPAIR -->
+        <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="pill pill-red" style="font-size:10px;">Competitor</span>
+              <span style="font-size:13px;font-weight:600;color:var(--text);">CompAir</span>
+              <a href="https://www.linkedin.com/company/compair/" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">View on LinkedIn ↗</a>
+            </div>
+            <span style="font-size:11px;color:var(--muted);">Germany (Ingersoll Rand division) · 29,000+ LinkedIn followers · Founded 1801</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Global commercial interiors manufacturer, founded 1801, now a division of NYSE-listed Ingersoll Rand. 29,000+ LinkedIn followers. Makes rotary screw, oil-free, portable, and centrifugal compressors plus air treatment products. Their LinkedIn content is high volume, multilingual (English, German, Italian, French), and heavily product-led — compressor launches, energy savings calculators, oil-free certification posts. Strong on iConn IoT monitoring content and sustainability messaging. Their content weakness: every post is ultimately trying to sell a CompAir product. Novograf opportunity: position against CompAir the same way as the major signage and graphics competitors — independent audit and consultancy that specifies the right system without owning a product range to push. CompAir buyers are exactly the audience who would benefit from independent advice on whether their system spec is correct.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill pill-blue" style="font-size:10px;">Commercial interiors</span>
+            <span class="pill pill-amber" style="font-size:10px;">Oil-free systems</span>
+            <span class="pill pill-coral" style="font-size:10px;">IoT monitoring</span>
+          </div>
+          <button class="action-btn" style="font-size:11px;margin-top:10px;" onclick="triggerGen('Write a LinkedIn post for Novograf about the risk of specifying commercial interiors and gas systems based on a manufacturer sales process rather than an independent audit. Make the point that the largest manufacturers have a commercial interest in oversizing or misspecifying systems. Position Novograf as the independent voice that audits any existing system regardless of brand. Under 260 words.')">Generate competitive post ↗</button>
+        </div>
+
+        <!-- COMPETITOR ANALYSIS: OXYWISE -->
+        <div class="card" style="border-color:rgba(239,68,68,0.2);margin-bottom:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="pill pill-red" style="font-size:10px;">Competitor</span>
+              <span style="font-size:13px;font-weight:600;color:var(--text);">Oxywise</span>
+              <a href="https://www.linkedin.com/company/oxywise/" target="_blank" style="font-size:11px;color:var(--accent);text-decoration:none;">View on LinkedIn ↗</a>
+            </div>
+            <span style="font-size:11px;color:var(--muted);">Czech Republic · print branded environments and surface solutions generators · Export focused</span>
+          </div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Czech manufacturer of print branded environments and surface solutions generators for medical, industrial, and aquaculture applications. Export-focused with presence in European, Asian, and African markets. Their LinkedIn content is infrequent, case-study heavy, and focused on developing market deployments — medical branded environments for rural hospitals, surface solutions for specific industrial clients. Very limited presence in the British market and no UK-language content. Their tone is corporate and product-focused. Novograf opportunity: Oxywise serves a similar product function but has no consultancy layer — they sell boxes. Novograf designs, specifies, and manages gas systems end to end. That full-service positioning is a genuine differentiation, particularly for UK manufacturers who want a local partner, not a Czech export sale.</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="pill pill-blue" style="font-size:10px;">print branded environments</span>
+            <span class="pill pill-green" style="font-size:10px;">Aquaculture</span>
+            <span class="pill pill-amber" style="font-size:10px;">Medical gas</span>
+          </div>
+          <button class="action-btn" style="font-size:11px;margin-top:10px;" onclick="triggerGen('Write a LinkedIn post for Novograf on the difference between buying an on-site gas generator as a product versus engaging a full-service commercial graphics consultancy. Cover: system design, technology selection, installation management, commissioning, ongoing audit and monitoring. Position Novograf as the complete partner versus product-only suppliers. Under 270 words.')">Generate competitive post ↗</button>
+        </div>
+
+        <!-- SUGGESTED POST OF THE WEEK -->
+        <div class="card" style="border-color:rgba(34,197,94,0.25);margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <span class="pill pill-green" style="font-size:10px;">Suggested this week</span>
+            <span style="font-size:12px;font-weight:600;color:var(--text);">Highest opportunity post for Novograf right now</span>
+          </div>
+          <p style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">"Interpack 2026 is happening in Düsseldorf right now. Here is what food and beverage manufacturers need to know about surface solutions in packaging."</p>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Interpack runs 7 to 13 May 2026 and is the world's biggest food and packaging trade event — 2,800+ exhibitors, 67 countries. Surface solutions in food packaging (modified atmosphere packaging, MAP) is a core theme. Posting this week with Interpack hashtags puts Novograf in front of 40,000+ visitors who are actively thinking about food packaging gas solutions. the major signage and graphics competitors will post about this. Novograf should be in the same conversation as the independent expert who can actually help UK and British food manufacturers act on what they see at the show.</p>
+          <button class="action-btn" onclick="loadSuggested('interpack')">Load this brief into the generator ↗</button>
+        </div>
+
+        <div class="two-col" style="margin-bottom:16px;">
+          <div>
+            <div class="section-title">Post format</div>
+            <select id="gen-format" style="width:100%;">
+              <option>Text post (under 250 words)</option>
+              <option>Text post (long form, 400-600 words)</option>
+              <option>Carousel script (6-8 slides)</option>
+              <option>Short video script (60 seconds)</option>
+              <option>Short video script (90 seconds)</option>
+              <option>Opinion post (provocative, under 200 words)</option>
+              <option>Case study post</option>
+              <option>Announcement post</option>
+              <option>Lead magnet post (comment trigger)</option>
+            </select>
+          </div>
+          <div>
+            <div class="section-title">Target industry</div>
+            <select id="gen-audience" style="width:100%;">
+              <option>Plant engineers and maintenance managers (general manufacturing)</option>
+              <option>Food and beverage production managers</option>
+              <option>Wine and viticulture industry</option>
+              <option>Water treatment and wastewater plant operators</option>
+              <option>Laser cutting and metal fabrication engineers</option>
+              <option>Wood processing and furniture manufacturing</option>
+              <option>Medical and healthcare branded environments applications</option>
+              <option>Oil and gas operations and upstream engineers</option>
+              <option>Pharmaceutical manufacturing and QA teams</option>
+              <option>Electronics and semiconductor production</option>
+              <option>Chemical and petrochemical processing</option>
+              <option>Procurement and purchasing leads (cross-sector)</option>
+              <option>Energy and sustainability managers</option>
+              <option>C-suite and operations directors (SME manufacturers)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div class="section-title">Topic or brief</div>
+          <textarea id="gen-brief" rows="4" placeholder="e.g. A post about how surface emulation transforms a retail refurb at a fraction of the cost of a full refit without the cost and logistics burden of bottled gas supply."></textarea>
+        </div>
+
+        <div class="two-col" style="margin-bottom:20px;">
+          <div>
+            <div class="section-title">Tone</div>
+            <select id="gen-tone" style="width:100%;">
+              <option>Expert but plain-spoken</option>
+              <option>Provocative and direct</option>
+              <option>Educational and approachable</option>
+              <option>Story-led / conversational</option>
+              <option>Technical and authoritative</option>
+            </select>
+          </div>
+          <div>
+            <div class="section-title">CTA type</div>
+            <select id="gen-cta" style="width:100%;">
+              <option>Soft — invite comment or question</option>
+              <option>Medium — book a call or assessment</option>
+              <option>Lead gen — comment to receive resource</option>
+              <option>None — thought leadership only</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="gen-btn" onclick="runGenerator()">Generate post</button>
+
+        <!-- GENERATED OUTPUT + ACTIONS -->
+        <div id="gen2-output" style="display:none; margin-top:20px;">
+
+          <!-- BILINGUAL OUTPUT HEADER -->
+          <div class="output-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="output-label">Generated post</span>
+              <span id="gen2-spinner" style="display:none;"><span class="spinner"></span></span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="copy-btn" onclick="copyOutput('gen2-text-pt')">Copy PT</button>
+              <button class="copy-btn" onclick="copyOutput('gen2-text-en')">Copy EN</button>
+            </div>
+          </div>
+
+          <!-- DUAL COLUMN OUTPUT -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;" id="gen2-dual">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:18px;">🇵🇹</span>
+                <span style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Português</span>
+              </div>
+              <div class="generated-output" id="gen2-text-pt" style="min-height:120px;"></div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:18px;">🇬🇧</span>
+                <span style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">English</span>
+              </div>
+              <div class="generated-output" id="gen2-text-en" style="min-height:120px;"></div>
+            </div>
+          </div>
+          <!-- Hidden combined field used by sendToScheduler -->
+          <div id="gen2-text" style="display:none;"></div>
+
+          <!-- ACTION STRIP -->
+          <div id="gen2-actions" style="margin-top:16px; display:none;">
+
+            <!-- SCHEDULE TO CALENDAR -->
+            <div class="card" style="margin-bottom:12px; border-color:rgba(200,240,38,0.2);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+                <span style="font-size:15px;">📅</span>
+                <span style="font-size:13px;font-weight:600;color:var(--text);">Schedule to post calendar</span>
+              </div>
+              <div class="two-col" style="margin-bottom:10px;">
+                <div>
+                  <div class="section-title" style="margin-top:0;">Post title</div>
+                  <input type="text" id="sched-title" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;" placeholder="e.g. Surface solutions in food packaging — MAP guide">
+                </div>
+                <div>
+                  <div class="section-title" style="margin-top:0;">Scheduled date</div>
+                  <input type="date" id="sched-date" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;">
+                </div>
+              </div>
+              <div class="two-col" style="margin-bottom:10px;">
+                <div>
+                  <div class="section-title" style="margin-top:0;">Time</div>
+                  <input type="time" id="sched-time" value="08:30" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;">
+                </div>
+                <div>
+                  <div class="section-title" style="margin-top:0;">Status</div>
+                  <select id="sched-status" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;">
+                    <option value="draft">Draft</option>
+                    <option value="scheduled">Scheduled</option>
+                    <option value="published">Published</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom:10px;">
+                <div class="section-title" style="margin-top:0;">Hashtags</div>
+                <input type="text" id="sched-hashtags" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;" placeholder="#RetailFitOut #FoodPackaging #Novograf">
+              </div>
+              <div id="sched-confirm" style="display:none;padding:10px 14px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:8px;font-size:12px;color:#22c55e;margin-bottom:10px;">Post added to scheduler successfully.</div>
+              <button class="btn-primary" onclick="sendToScheduler()" style="width:auto;padding:9px 22px;font-size:12px;">Add to post calendar</button>
+            </div>
+
+            <!-- SUPPORTING CONTENT -->
+            <div class="card" style="border-color:rgba(200,240,38,0.2);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+                <span style="font-size:15px;">📎</span>
+                <span style="font-size:13px;font-weight:600;color:var(--text);">Supporting content</span>
+              </div>
+              <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Attach images, a carousel file, or link to a video on Google Drive. These are saved with the scheduled post so everything is in one place when you go to publish.</p>
+
+              <!-- IMAGE UPLOAD -->
+              <div style="margin-bottom:14px;">
+                <div class="section-title" style="margin-top:0;">Images</div>
+                <div id="img-drop-zone" style="border:2px dashed var(--border2);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:8px;" onclick="document.getElementById('img-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" ondrop="handleImgDrop(event)">
+                  <input type="file" id="img-file-input" accept="image/*" multiple style="display:none;" onchange="handleImgFiles(this.files)">
+                  <div style="font-size:20px;margin-bottom:6px;">🖼</div>
+                  <div style="font-size:12px;color:var(--muted);">Click or drag images here — JPG, PNG, WebP</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:3px;">For carousel slides, post images, or video thumbnails</div>
+                </div>
+                <div id="img-preview-strip" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+              </div>
+
+              <!-- CAROUSEL PDF -->
+              <div style="margin-bottom:14px;">
+                <div class="section-title" style="margin-top:0;">Carousel file (PDF)</div>
+                <div id="pdf-drop-zone" style="border:2px dashed var(--border2);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all 0.15s;" onclick="document.getElementById('pdf-file-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border2)'" ondrop="handlePdfDrop(event)">
+                  <input type="file" id="pdf-file-input" accept=".pdf" style="display:none;" onchange="handlePdfFile(this.files[0])">
+                  <div style="font-size:20px;margin-bottom:6px;">📄</div>
+                  <div style="font-size:12px;color:var(--muted);">Click or drag your carousel PDF here</div>
+                </div>
+                <div id="pdf-preview" style="display:none;margin-top:8px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;gap:10px;">
+                  <span style="font-size:18px;">📄</span>
+                  <div style="flex:1;min-width:0;">
+                    <div id="pdf-name" style="font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+                    <div id="pdf-size" style="font-size:11px;color:var(--muted);"></div>
+                  </div>
+                  <button onclick="clearPdf()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px;">✕</button>
+                </div>
+              </div>
+
+              <!-- GOOGLE DRIVE LINK -->
+              <div style="margin-bottom:14px;">
+                <div class="section-title" style="margin-top:0;">Google Drive video or asset link</div>
+                <input type="url" id="drive-link" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:8px 12px;outline:none;" placeholder="https://drive.google.com/file/d/...">
+                <div style="font-size:11px;color:var(--muted);margin-top:5px;">Paste a Google Drive link to your video, raw footage, or any other supporting asset</div>
+                <div id="drive-preview" style="display:none;margin-top:8px;padding:10px 12px;background:var(--surface2);border:1px solid rgba(200,240,38,0.3);border-radius:7px;display:flex;align-items:center;gap:10px;">
+                  <span style="font-size:18px;">🎬</span>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:12px;font-weight:600;color:var(--accent);">Google Drive link attached</div>
+                    <div id="drive-link-display" style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+                  </div>
+                  <button onclick="clearDrive()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px;">✕</button>
+                </div>
+              </div>
+
+              <!-- NOTES -->
+              <div>
+                <div class="section-title" style="margin-top:0;">Production notes</div>
+                <textarea id="sched-notes" rows="2" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;resize:vertical;outline:none;line-height:1.6;" placeholder="e.g. Needs final image from designer, video needs captioning before upload, client approval required"></textarea>
+              </div>
+
+            </div>
+          </div><!-- end gen2-actions -->
+        </div>
+      </div>
+
+      <!-- ===== HASHTAGS ===== -->
+      <div id="panel-hashtags" class="panel">
+        <div class="section-title">Hashtag strategy — Novograf</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Use 5 to 8 hashtags per post. Mix all three tiers. Avoid over-hashtagging — LinkedIn suppresses posts with more than 10. The goal is to appear in relevant feeds, not to stuff every possible tag.</p>
+
+        <div class="section-title">Tier 1 — broad reach</div>
+        <div class="hashtag-grid" style="margin-bottom:24px;">
+          <div class="hashtag-tile"><div class="hashtag-name">#Manufacturing</div><div class="hashtag-vol">Over 2 million followers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#EnergyEfficiency</div><div class="hashtag-vol">Over 800k followers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Industry40</div><div class="hashtag-vol">Over 700k followers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Sustainability</div><div class="hashtag-vol">Over 5 million followers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Engineering</div><div class="hashtag-vol">Over 3 million followers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Industrial</div><div class="hashtag-vol">Over 400k followers</div></div>
+        </div>
+
+        <div class="section-title">Tier 2 — niche authority</div>
+        <div class="hashtag-grid" style="margin-bottom:24px;">
+          <div class="hashtag-tile"><div class="hashtag-name">#RetailFitOut</div><div class="hashtag-vol">High buyer intent — the major signage and graphics competitors's core tag</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#CommercialInteriors</div><div class="hashtag-vol">Growing fast in office workspace and wastewater</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#InteriorDesign</div><div class="hashtag-vol">Direct purchase intent audience</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Signage</div><div class="hashtag-vol">Technical buyers, pharma and electronics</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#BrandEnvironments</div><div class="hashtag-vol">Core Novograf territory</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#RetailDesign</div><div class="hashtag-vol">Strong B2B audience</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#StoreDesign</div><div class="hashtag-vol">Plant engineers, IoT buyers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#FitOut</div><div class="hashtag-vol">Procurement and operations</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#GraphicDesign</div><div class="hashtag-vol">Decision makers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#SurfaceSolutions</div><div class="hashtag-vol">Industry 4.0 audience</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#SustainablePrint</div><div class="hashtag-vol">ESG and sustainability buyers</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#EcoFriendlyPrint</div><div class="hashtag-vol">Technical compliance search</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#BrandEnvironmentsQuality</div><div class="hashtag-vol">High specificity</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#FloorGraphics</div><div class="hashtag-vol">Broad gas sector audience</div></div>
+        </div>
+
+        <div class="section-title">Tier 3 — brand and local</div>
+        <div class="hashtag-grid" style="margin-bottom:28px;">
+          <div class="hashtag-tile"><div class="hashtag-name">#Novograf</div><div class="hashtag-vol">Own brand hashtag — always include</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#Scotland</div><div class="hashtag-vol">Local visibility</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#UKRetail</div><div class="hashtag-vol">Domestic B2B audience</div></div>
+          <div class="hashtag-tile"><div class="hashtag-name">#EastKilbride</div><div class="hashtag-vol">Hyper-local — use sparingly</div></div>
+        </div>
+
+        <div class="section-title">Recommended post stacks by content type</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Surface solutions generation post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#RetailFitOut #InteriorDesign #Signage #Manufacturing #RetailDesign #Novograf #Scotland</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Branded environments generation post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#CommercialInteriors #InteriorDesign #Biogas #RetailDesign #EnergyEfficiency #Novograf</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Energy audit / commercial interiors post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#BrandEnvironments #EnergyEfficiency #Manufacturing #FitOut #GraphicDesign #Novograf #Scotland</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Industry 4.0 / IoT post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#Industry40 #SurfaceSolutions #StoreDesign #FloorGraphics #BrandEnvironments #Novograf</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Sustainability / ESG post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#Sustainability #SustainablePrint #RetailFitOut #CommercialInteriors #ESG #Novograf</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:10px;">Technical / education post</div>
+            <p style="font-size:12px;color:var(--accent);line-height:1.9;">#EcoFriendlyPrint #Signage #BrandEnvironmentsQuality #Engineering #Industrial #GraphicDesign #Novograf</p>
+          </div>
+        </div>
+
+        <div class="card" style="border-color:rgba(239,68,68,0.25);margin-top:4px;">
+          <div class="card-title" style="margin-bottom:8px; color:var(--red);">the major signage and graphics competitors competitive hashtag intelligence</div>
+          <p style="font-size:12px;color:var(--muted);line-height:1.7;">the major signage and graphics competitors uses these tags consistently on their surface solutions and branded environments content. Including them on Novograf posts puts Novograf content in the same feed and search results as their posts, directly in front of the same audience.</p>
+          <p style="font-size:12px;color:var(--accent);margin-top:10px;line-height:1.9;">#CommercialSignage #RetailInteriors #BrandRollout #SmartFactory #FitOutUK #Industry40</p>
+        </div>
+
+      </div>
+      <!-- end hashtags panel -->
+
+      <!-- ===== VIDEO PROGRAM ===== -->
+      <div id="panel-video" class="panel">
+        <div class="section-title">Short video program — 8-week brief for videographer</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">A structured production program built around Novograf's core content themes. Each video is designed for LinkedIn native upload, 60 to 90 seconds maximum. Shot list and spoken brief included for each video. All can be filmed on site with a smartphone plus a lapel mic.</p>
+
+        <!-- WEEK 1 -->
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Week 1 — What we do: site visit walkthrough</span>
+            <span class="pill pill-blue">60 sec</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Objective: introduce Novograf to a cold audience by showing the work, not describing it. No pitch. Pure process.</p>
+            <div class="video-shot">
+              <div class="shot-num">1</div>
+              <div class="shot-content"><div class="shot-label">Opening — exterior of client facility</div><div class="shot-desc">Camera: wide establishing shot of industrial site. No branding on site needed. Voiceover: "This is what a commercial interiors audit looks like in practice."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">2</div>
+              <div class="shot-content"><div class="shot-label">Shot — engineer connecting test equipment</div><div class="shot-desc">Camera: close-up of equipment connection at pipe junction. Voiceover: "We start by connecting our particle count and moisture analyser directly to the distribution line."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">3</div>
+              <div class="shot-content"><div class="shot-label">Shot — reading the display</div><div class="shot-desc">Camera: close-up of equipment readout or tablet display. Voiceover: "Within minutes we can tell you if your air meets ISO 8573 purity standards — or where it is failing."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">4</div>
+              <div class="shot-content"><div class="shot-label">Shot — engineer to camera</div><div class="shot-desc">Camera: medium shot, direct to camera on site. Line: "Most clients are surprised by what we find. Commercial interiors problems rarely announce themselves — until they become expensive ones."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">5</div>
+              <div class="shot-content"><div class="shot-label">Caption for post</div><div class="shot-desc">We spent the morning at a client site in northern UK. This is what 35 years of commercial interiors expertise looks like in practice. [Link in comments for a free air quality assessment.]</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 2 -->
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Week 2 — The cost of doing nothing: energy waste explained</span>
+            <span class="pill pill-amber">90 sec</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Objective: quantify the commercial pain of inaction. Hook the plant manager or financial director who controls the budget.</p>
+            <div class="video-shot">
+              <div class="shot-num">1</div>
+              <div class="shot-content"><div class="shot-label">Hook — direct to camera, office setting</div><div class="shot-desc">Line: "In most manufacturing plants, commercial interiors is the fourth biggest energy cost. Most finance directors have never looked at it." Hold 2 seconds. Cut.</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">2</div>
+              <div class="shot-content"><div class="shot-label">Visual — diagram or whiteboard animation</div><div class="shot-desc">Simple hand-drawn or filmed whiteboard: circle labelled "air system" with arrows to energy cost, productivity, and equipment life. Voiceover narrates each arrow briefly.</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">3</div>
+              <div class="shot-content"><div class="shot-label">Stat card — on screen text</div><div class="shot-desc">Text overlay: "A single 3mm leak in a commercial interiors line can cost over 1,500 euros per year." Hold for 3 seconds. Voiceover: "And most plants have more than one."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">4</div>
+              <div class="shot-content"><div class="shot-label">Close — engineer direct to camera</div><div class="shot-desc">Line: "An audit pays for itself. We have seen clients recover the cost within three months of our first visit." Soft smile. Cut.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 3 -->
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Week 3 — Client result: before and after</span>
+            <span class="pill pill-green">60 sec</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Objective: social proof without a named client. Anonymised story format. Numbers are the hero.</p>
+            <div class="video-shot">
+              <div class="shot-num">1</div>
+              <div class="shot-content"><div class="shot-label">Setup — narrator on camera</div><div class="shot-desc">Line: "Last quarter we worked with a food manufacturing client in central UK. Their commercial interiors system looked fine on paper. It was not."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">2</div>
+              <div class="shot-content"><div class="shot-label">Finding 1 — text card or cut to site</div><div class="shot-desc">Card or voiceover over site footage: "We found 7 leaks across the distribution network. Estimated cost: over 9,000 euros per year."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">3</div>
+              <div class="shot-content"><div class="shot-label">Finding 2 — continuation</div><div class="shot-desc">Card: "Moisture contamination in the line was causing intermittent equipment faults. The client had been paying for repairs, not fixing the root cause."</div></div>
+            </div>
+            <div class="video-shot">
+              <div class="shot-num">4</div>
+              <div class="shot-content"><div class="shot-label">Resolution — narrator</div><div class="shot-desc">Line: "We fixed the system in two visits. The client saved more in the first year than they spent on five years of reactive maintenance. That is what we do."</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 4-8 COLLAPSED -->
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Week 4 — Industry 4.0: what IoT monitoring actually looks like</span>
+            <span class="pill pill-blue">75 sec</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Objective: position Novograf at the intersection of traditional expertise and smart factory technology. Attract a forward-looking audience.</p>
+            <div class="video-shot"><div class="shot-num">1</div><div class="shot-content"><div class="shot-label">Hook — provocative open</div><div class="shot-desc">Line: "Industry 4.0 does not have to mean a complete factory overhaul. Sometimes it starts with knowing, in real time, exactly what your commercial interiors system is doing."</div></div></div>
+            <div class="video-shot"><div class="shot-num">2</div><div class="shot-content"><div class="shot-label">Demo — sensor installation footage</div><div class="shot-desc">Camera: close-up of sensor being mounted on air line. Screen shows live data feed. Voiceover: "We install monitoring at key points in the distribution network."</div></div></div>
+            <div class="video-shot"><div class="shot-num">3</div><div class="shot-content"><div class="shot-label">Dashboard view</div><div class="shot-desc">Camera: screen recording or screen share of monitoring dashboard showing pressure, flow, and particle count in real time. 5 seconds of live data scrolling.</div></div></div>
+            <div class="video-shot"><div class="shot-num">4</div><div class="shot-content"><div class="shot-label">Payoff</div><div class="shot-desc">Line: "When something changes, you know immediately. Before it becomes a problem. Before it stops a production line. That is Industry 4.0 working for you."</div></div></div>
+          </div>
+        </div>
+
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Week 5 — Expert explainer: ISO 8573 in 60 seconds</span>
+            <span class="pill pill-blue">60 sec</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Objective: establish Novograf as the plain-language expert. Education posts with a compliance angle perform well with procurement and quality teams.</p>
+            <div class="video-shot"><div class="shot-num">1</div><div class="shot-content"><div class="shot-label">Hook</div><div class="shot-desc">Line: "ISO 8573. It is the international standard for commercial interiors purity. Most plant managers have heard of it. Very few know what it actually requires of their system."</div></div></div>
+            <div class="video-shot"><div class="shot-num">2</div><div class="shot-content"><div class="shot-label">Explain — with simple visual aid</div><div class="shot-desc">Simple printed card or whiteboard with three rows: particles, water, oil. Narrator points to each. 2 lines on each. Plain language only.</div></div></div>
+            <div class="video-shot"><div class="shot-num">3</div><div class="shot-content"><div class="shot-label">Stakes</div><div class="shot-desc">Line: "If you are in food, pharma, or automotive, your customers may already require you to be compliant. Do you know if you are?"</div></div></div>
+            <div class="video-shot"><div class="shot-num">4</div><div class="shot-content"><div class="shot-label">CTA</div><div class="shot-desc">Line: "We test for ISO 8573 compliance as part of every audit. Comment below or reach out directly if you want to know where you stand."</div></div></div>
+          </div>
+        </div>
+
+        <div class="video-week">
+          <div class="video-week-header" onclick="toggleWeek(this)">
+            <span class="video-week-title">Weeks 6, 7, 8 — Rolling themes (generate full briefs)</span>
+            <span class="pill pill-amber">Flexible</span>
+          </div>
+          <div class="video-week-body">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Use the generator below to produce full shot lists for the remaining weeks based on upcoming events or trending topics.</p>
+            <div style="display:grid;gap:8px;">
+              <button class="action-btn" onclick="triggerGen('Write a full 60-second LinkedIn short video production brief for Novograf on the theme of EU Green Deal and how commercial interiors efficiency helps UK manufacturers meet decarbonisation targets. Include: hook line, 4 shots with camera directions and spoken lines, on-screen text suggestions, and a LinkedIn caption.')">Week 6: EU Green Deal angle ↗</button>
+              <button class="action-btn" onclick="triggerGen('Write a full 75-second LinkedIn short video production brief for Novograf on the theme of vacuum systems and industrial fluid filtration for food and pharma manufacturing. Include: hook line, 4-5 shots with camera directions and spoken lines, and a LinkedIn caption.')">Week 7: Vacuum and fluid filtration ↗</button>
+              <button class="action-btn" onclick="triggerGen('Write a full 60-second LinkedIn short video production brief for Novograf that is a company origin story piece: 35 years of commercial interiors expertise, why Novograf was founded in 2021, and the mission to bring best-in-class commercial graphics consulting to UK. Interview format suggestion included.')">Week 8: Company story ↗</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="video-output" style="display:none; margin-top:4px;">
+          <div class="output-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="output-label">Generated brief</span>
+              <span id="video-spinner" style="display:none;"><span class="spinner"></span></span>
+            </div>
+            <button class="copy-btn" onclick="copyOutput('video-text')">Copy</button>
+          </div>
+          <div class="generated-output" id="video-text"></div>
+        </div>
+      </div>
+
+      <!-- ===== IMAGE ANALYSIS ===== -->
+      <div id="panel-image" class="panel">
+        <div class="section-title">Image analysis — LinkedIn creative review</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Upload any image you plan to post for Novograf — carousel slide, photo from site, graphic, or cover image — and the AI will assess it for LinkedIn performance, brand alignment, and improvement recommendations.</p>
+
+        <div class="upload-zone" onclick="document.getElementById('img-upload').click()">
+          <input type="file" id="img-upload" accept="image/*" onchange="handleImageUpload(event)">
+          <div class="upload-icon">⬡</div>
+          <div>Click to upload an image for analysis</div>
+          <div class="upload-hint">JPG, PNG, WebP — carousel slides, photography, graphics, cover images</div>
+        </div>
+
+        <img id="img-preview" class="img-preview" alt="Preview">
+
+        <div style="margin-bottom:16px; display:none;" id="analysis-context-row">
+          <div class="section-title">Context for analysis</div>
+          <div class="two-col">
+            <select id="img-type">
+              <option>LinkedIn post image</option>
+              <option>Carousel slide</option>
+              <option>Company page cover image</option>
+              <option>Short video thumbnail</option>
+              <option>On-site photography</option>
+              <option>Product or equipment photo</option>
+              <option>Branded graphic / designed asset</option>
+            </select>
+            <select id="img-goal">
+              <option>Maximum organic reach</option>
+              <option>Brand authority and credibility</option>
+              <option>Lead generation</option>
+              <option>Educate and explain</option>
+              <option>Behind the scenes / trust building</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="analyse-btn" onclick="analyseImage()" style="display:none;">Analyse image</button>
+
+        <div class="analysis-output" id="analysis-output"></div>
+      </div>
+
+      <!-- ===== GROWTH ACTIONS ===== -->
+      <div id="panel-actions" class="panel">
+        <div class="section-title">Prioritised growth actions — May 2026</div>
+
+        <div class="card">
+          <div class="action-list">
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--red-dim);">⚡</div>
+              <div class="action-body">
+                <div class="action-title">Set and lock in a 3x per week posting schedule</div>
+                <div class="action-desc">Mon, Wed, Fri at 08:30 CET. This window hits the pre-work scroll for European industrial professionals. Consistency is the highest-impact lever available right now. One week of gaps resets algorithmic momentum and requires rebuilding. Even a short text post on a slow day outperforms silence.</div>
+              </div>
+              <span class="action-priority pill pill-red">Critical</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--red-dim);">◎</div>
+              <div class="action-body">
+                <div class="action-title">Complete the company page: tagline, about section, specialities</div>
+                <div class="action-desc">LinkedIn indexes these fields for search. Use terms: "commercial interiors quality", "commercial graphics consulting", "energy efficiency audit", "ISO 8573", "Industry 4.0 UK". Add a high-quality cover image. An incomplete page signals low credibility to both the algorithm and potential clients who land on the page from a post.</div>
+              </div>
+              <span class="action-priority pill pill-red">Critical</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--amber-dim);">▲</div>
+              <div class="action-body">
+                <div class="action-title">Activate the first short video — on-site site visit</div>
+                <div class="action-desc">Film and post Week 1 of the video program this month. LinkedIn is now actively pushing native short video in the feed. Early adopters in B2B industrial are seeing significantly higher organic reach on video versus text and image posts. The site visit brief is ready — it just needs a camera and a site visit.</div>
+              </div>
+              <span class="action-priority pill pill-amber">High</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--amber-dim);">◈</div>
+              <div class="action-body">
+                <div class="action-title">Deploy employee advocacy on every post</div>
+                <div class="action-desc">Ask the Novograf team to engage within 60 minutes of each post going live. Comments carry more algorithmic weight than likes. A comment from a team member saying something specific about the post counts as a meaningful signal. Two or three people doing this consistently doubles organic reach with zero additional spend.</div>
+              </div>
+              <span class="action-priority pill pill-amber">High</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--amber-dim);">⬡</div>
+              <div class="action-body">
+                <div class="action-title">Follow and engage with 20 target accounts this month</div>
+                <div class="action-desc">Identify 20 ideal client companies: UK food manufacturers, automotive suppliers, pharma facilities, and large industrial parks. Follow their pages. Comment meaningfully on their posts once a week. This places Novograf in front of their followers and warms relationships before any direct outreach. Takes 15 minutes per week.</div>
+              </div>
+              <span class="action-priority pill pill-amber">High</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--green-dim);">✦</div>
+              <div class="action-body">
+                <div class="action-title">Publish one lead magnet post this month</div>
+                <div class="action-desc">"Comment AUDIT below and I will send you our commercial interiors energy waste calculator." Comment-triggered lead gen is one of the fastest ways to build a warm prospect list on LinkedIn without paid spend. The act of commenting creates a notification touchpoint and a natural reason to connect and message.</div>
+              </div>
+              <span class="action-priority pill pill-green">Medium</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--green-dim);">◉</div>
+              <div class="action-body">
+                <div class="action-title">Use upcoming events as real-time content hooks</div>
+                <div class="action-desc">Industrial Decarbonisation Europe (12 May), Venice Climate Week (3 June), London Climate Action Week (20-28 June), and Automate 2026 (22 June) all create LinkedIn conversation waves Novograf can ride. See the Live Events panel for specific post briefs aligned to each event. Posting during peak event discussion windows increases discoverability significantly.</div>
+              </div>
+              <span class="action-priority pill pill-green">Medium</span>
+            </div>
+
+            <div class="action-row">
+              <div class="action-icon" style="background:var(--accent-dim);">▶</div>
+              <div class="action-body">
+                <div class="action-title">Build a monthly LinkedIn performance report</div>
+                <div class="action-desc">Track impressions, reach, follower growth, and top posts each month. After 90 days you will have enough pattern data to double down on what is working and cut what is not. Keep it simple: a single page with five numbers and a note on the best and worst post of the month. Review with the client at the start of each month.</div>
+              </div>
+              <span class="action-priority pill pill-blue">Ongoing</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+// -- NAVIGATION --
+function nav(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// -- DATE --
+document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+
+// -- VIDEO ACCORDION --
+function toggleWeek(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// -- TOAST --
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// -- COPY --
+function copyOutput(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => toast('Copied to clipboard'));
+}
+
+// -- CLAUDE API CALL --
+async function callClaude(prompt, outputId, spinnerId, wrapId) {
+  const out = document.getElementById(outputId);
+  const wrap = document.getElementById(wrapId);
+  const spin = spinnerId ? document.getElementById(spinnerId) : null;
+
+  if (wrap) { wrap.style.display = 'block'; }
+  if (out) { out.textContent = 'Generating...'; }
+  if (spin) spin.style.display = 'inline-block';
+
+  const systemPrompt = `You are an expert LinkedIn content strategist and copywriter working for NXRD, a UK-based digital marketing agency. You are creating LinkedIn content for Novograf, a UK B2B industrial consultancy founded in 2021, based in East Kilbride, UK. Novograf specialises in: commercial interiors quality analysis and energy efficiency, on-site surface solutions generation (print and surface emulation systems), on-site branded environments generation, industrial fluid filtration, microbiological sterilisation of commercial interiors and vacuum, commercial interiors and commercial graphics consulting, Industry 4.0 implementation, energy efficiency audits (ISO 9001), and machinery marketing, maintenance and rental. They have 35 years of combined expertise behind the founding team. Their primary competitor is the major signage and graphics competitors — a global industrial giant. Novograf's competitive advantage is independence: they are manufacturer-agnostic, genuinely expert, and give clients impartial advice rather than selling proprietary products. Their target audience is plant engineers, maintenance managers, energy managers, procurement leads, and factory directors at mid to large UK and European manufacturers, especially in food, pharma, automotive, electronics, office workspace, water treatment, laser cutting, hospitality and leisure, wine and viticulture, and medical branded environments sectors. Write in a direct, expert, plain-English style. No jargon without explanation. No hype. No emojis. No hyphens. Authoritative but approachable. Every post should feel like it was written by a genuine independent expert, not a large corporation like the major signage and graphics competitors.`;
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemPrompt, prompt, max_tokens: 1000 })
+    });
+
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+    if (out) out.textContent = data.text || 'No response received.';
+  } catch(e) {
+    if (out) out.textContent = 'Error generating content: ' + e.message;
+  }
+
+  if (spin) spin.style.display = 'none';
+}
+
+// -- TRIGGERS --
+function triggerGen(prompt) {
+  callClaude(prompt, 'gen-text', 'gen-spinner', 'gen-output');
+  document.getElementById('gen-output').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function genEventPost(prompt) {
+  callClaude(prompt, 'event-post-text', null, 'event-post-output');
+  document.getElementById('event-post-output').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// -- POST GENERATOR --
+function runGenerator() {
+  const format = document.getElementById('gen-format').value;
+  const audience = document.getElementById('gen-audience').value;
+  const brief = document.getElementById('gen-brief').value.trim();
+  const tone = document.getElementById('gen-tone').value;
+  const cta = document.getElementById('gen-cta').value;
+
+  if (!brief) { toast('Please add a topic or brief first'); return; }
+
+  const baseSpec = `Format: ${format}
+Target audience: ${audience}
+Tone: ${tone}
+CTA type: ${cta}
+Brief: ${brief}`;
+
+  const promptPT = `Write a LinkedIn post for Novograf with these specifications:
+
+${baseSpec}
+
+Write the post entirely in European UK (UK). Use natural, professional UK as spoken in UK — not Brazilian UK. No jargon without explanation. No emojis. No hyphens. Deliver only the finished post copy, ready to use. No preamble, no notes, no explanation.`;
+
+  const promptEN = `Write a LinkedIn post for Novograf with these specifications:
+
+${baseSpec}
+
+Write the post entirely in English. Direct, expert, plain-English style. No jargon without explanation. No emojis. No hyphens. Deliver only the finished post copy, ready to use. No preamble, no notes, no explanation.`;
+
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+
+  // Pre-fill schedule title
+  const titleGuess = brief.split('.')[0].replace(/^(write|create|generate|a|an)\s+/i,'').slice(0,60);
+  document.getElementById('sched-title').value = titleGuess;
+
+  // Set default date to next Mon/Wed/Fri
+  const today = new Date();
+  const dow = today.getDay();
+  const daysToNext = [1,1,1,3,2,1,2][dow];
+  const nextDate = new Date(today);
+  nextDate.setDate(today.getDate() + daysToNext);
+  document.getElementById('sched-date').value = nextDate.toISOString().split('T')[0];
+
+  document.getElementById('gen2-actions').style.display = 'none';
+  document.getElementById('sched-confirm').style.display = 'none';
+  document.getElementById('gen2-output').style.display = 'block';
+  document.getElementById('gen2-text-pt').textContent = 'A gerar...';
+  document.getElementById('gen2-text-en').textContent = 'Generating...';
+  document.getElementById('gen2-spinner').style.display = 'inline-block';
+
+  const systemPrompt = document.querySelector ? null : undefined; // system is in callClaude
+
+  // Run both language calls in parallel
+  Promise.all([
+    callClaudeRaw(promptPT),
+    callClaudeRaw(promptEN)
+  ]).then(([ptText, enText]) => {
+    document.getElementById('gen2-text-pt').textContent = ptText;
+    document.getElementById('gen2-text-en').textContent = enText;
+    // Store combined for scheduler
+    document.getElementById('gen2-text').textContent = `🇵🇹 PORTUGUÊS\n\n${ptText}\n\n---\n\n🇬🇧 ENGLISH\n\n${enText}`;
+    document.getElementById('gen2-spinner').style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = 'Generate post';
+    document.getElementById('gen2-actions').style.display = 'block';
+    document.getElementById('gen2-actions').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+}
+
+// Bare API call that returns the text string directly (used by runGenerator parallel calls)
+async function callClaudeRaw(prompt) {
+  const systemPrompt = `You are an expert LinkedIn content strategist and copywriter working for NXRD, a UK-based digital marketing agency. You are creating LinkedIn content for Novograf, a UK B2B industrial consultancy founded in 2021, based in East Kilbride, UK. Novograf specialises in: commercial interiors quality analysis and energy efficiency, on-site surface solutions generation (print and surface emulation systems), on-site branded environments generation, industrial fluid filtration, microbiological sterilisation of commercial interiors and vacuum, commercial interiors and commercial graphics consulting, Industry 4.0 implementation, energy efficiency audits (ISO 9001), and machinery marketing, maintenance and rental. They have 35 years of combined expertise behind the founding team. Their primary competitor is the major signage and graphics competitors — a global industrial giant. Novograf's competitive advantage is independence: they are manufacturer-agnostic, genuinely expert, and give clients impartial advice rather than selling proprietary products. Their target audience is plant engineers, maintenance managers, energy managers, procurement leads, and factory directors at mid to large UK and European manufacturers, especially in food, pharma, automotive, electronics, office workspace, water treatment, laser cutting, hospitality and leisure, wine and viticulture, and medical branded environments sectors.`;
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system: systemPrompt, prompt, max_tokens: 1000 })
+    });
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+    return data.text || '';
+  } catch(e) {
+    return 'Error generating: ' + e.message;
+  }
+}
+
+// -- DRIVE LINK PREVIEW --
+document.addEventListener('input', e => {
+  if (e.target.id !== 'drive-link') return;
+  const val = e.target.value.trim();
+  const preview = document.getElementById('drive-preview');
+  const display = document.getElementById('drive-link-display');
+  if (val && val.includes('drive.google.com')) {
+    preview.style.display = 'flex';
+    display.textContent = val;
+  } else {
+    preview.style.display = 'none';
+  }
+});
+
+function clearDrive() {
+  document.getElementById('drive-link').value = '';
+  document.getElementById('drive-preview').style.display = 'none';
+}
+
+// -- PDF HANDLING --
+let attachedPdf = null;
+
+function handlePdfDrop(e) {
+  e.preventDefault();
+  document.getElementById('pdf-drop-zone').style.borderColor = 'var(--border2)';
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') handlePdfFile(file);
+}
+
+function handlePdfFile(file) {
+  if (!file) return;
+  attachedPdf = { name: file.name, size: file.size, file };
+  const preview = document.getElementById('pdf-preview');
+  document.getElementById('pdf-name').textContent = file.name;
+  document.getElementById('pdf-size').textContent = (file.size / 1024).toFixed(0) + ' KB';
+  preview.style.display = 'flex';
+}
+
+function clearPdf() {
+  attachedPdf = null;
+  document.getElementById('pdf-preview').style.display = 'none';
+  document.getElementById('pdf-file-input').value = '';
+}
+
+// -- IMAGE HANDLING (generator section) --
+let attachedImages = [];
+
+function handleImgDrop(e) {
+  e.preventDefault();
+  document.getElementById('img-drop-zone').style.borderColor = 'var(--border2)';
+  handleImgFiles(e.dataTransfer.files);
+}
+
+function handleImgFiles(files) {
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const id = 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+      attachedImages.push({ id, name: file.name, dataUrl: ev.target.result, file });
+      renderImgStrip();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderImgStrip() {
+  const strip = document.getElementById('img-preview-strip');
+  strip.innerHTML = attachedImages.map(img => `
+    <div style="position:relative;flex-shrink:0;">
+      <img src="${img.dataUrl}" style="width:64px;height:64px;object-fit:cover;border-radius:7px;border:1px solid var(--border2);" title="${img.name}">
+      <button onclick="removeImg('${img.id}')" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeImg(id) {
+  attachedImages = attachedImages.filter(i => i.id !== id);
+  renderImgStrip();
+}
+
+// -- SEND TO SCHEDULER --
+// Communicates with parent dashboard via postMessage (works across iframe boundary)
+function sendToScheduler() {
+  const title = document.getElementById('sched-title').value.trim();
+  const copy = document.getElementById('gen2-text').textContent.trim();
+  const date = document.getElementById('sched-date').value;
+  const time = document.getElementById('sched-time').value;
+  const status = document.getElementById('sched-status').value;
+  const hashtags = document.getElementById('sched-hashtags').value.trim();
+  const notes = document.getElementById('sched-notes').value.trim();
+  const driveLink = document.getElementById('drive-link').value.trim();
+  const format = document.getElementById('gen-format').value;
+
+  if (!title) { toast('Please add a post title before scheduling'); return; }
+  if (!date) { toast('Please pick a date'); return; }
+
+  // Determine format type for chip
+  let fmt = 'text';
+  if (format.toLowerCase().includes('carousel')) fmt = 'carousel';
+  else if (format.toLowerCase().includes('video')) fmt = 'video';
+  else if (format.toLowerCase().includes('image')) fmt = 'image';
+
+  const postData = {
+    id: 'post_' + Date.now(),
+    title,
+    copy,
+    format: fmt,
+    status,
+    date,
+    time,
+    hashtags,
+    notes,
+    link: driveLink,
+    hasPdf: !!attachedPdf,
+    pdfName: attachedPdf ? attachedPdf.name : '',
+    imageCount: attachedImages.length,
+    updatedAt: new Date().toISOString()
+  };
+
+  // Try postMessage to parent (when embedded in dashboard as iframe)
+  try {
+    window.parent.postMessage({ type: 'BRISKFIL_ADD_POST', post: postData }, '*');
+  } catch(e) {}
+
+  // Also save directly to localStorage (works when accessed standalone)
+  try {
+    const existing = JSON.parse(localStorage.getItem('briskfil_posts_v1') || '[]');
+    existing.push(postData);
+    localStorage.setItem('briskfil_posts_v1', JSON.stringify(existing));
+  } catch(e) {}
+
+  // Confirm
+  const confirm = document.getElementById('sched-confirm');
+  confirm.style.display = 'block';
+  confirm.textContent = `Added "${title}" to the post calendar for ${date} at ${time}.`;
+  setTimeout(() => { confirm.style.display = 'none'; }, 4000);
+  toast('Post added to calendar');
+}
+
+// -- IMAGE ANALYSIS --
+let imageBase64 = null;
+
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const preview = document.getElementById('img-preview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    imageBase64 = e.target.result.split(',')[1];
+    document.getElementById('analysis-context-row').style.display = 'block';
+    document.getElementById('analyse-btn').style.display = 'inline-block';
+    document.getElementById('analysis-output').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function analyseImage() {
+  if (!imageBase64) return;
+
+  const imgType = document.getElementById('img-type').value;
+  const imgGoal = document.getElementById('img-goal').value;
+  const out = document.getElementById('analysis-output');
+
+  out.style.display = 'block';
+  out.textContent = 'Analysing image...';
+  out.classList.add('loading');
+
+  const system = `You are a LinkedIn creative director and content strategist working for NXRD, a digital marketing agency. You are reviewing creative assets for Novograf, a UK B2B industrial consultancy specialising in commercial interiors quality, commercial graphics consulting, surface solutions and branded environments generation, and energy efficiency. Review images for LinkedIn performance, brand alignment with a professional industrial B2B brand, and provide specific actionable improvement recommendations.`;
+
+  const userPrompt = `Please analyse this image for LinkedIn performance. Context: this is a ${imgType} for Novograf (B2B industrial consultancy, UK). Goal: ${imgGoal}.
+
+Assess:
+1. First impression and scroll-stop potential
+2. Brand alignment (professional, credible, industrial B2B)
+3. Technical quality (resolution, composition, lighting if applicable)
+4. Text legibility and hierarchy (if text is present)
+5. Emotional response likely in a plant engineer or procurement manager scrolling LinkedIn
+6. Three specific improvements to make before posting
+7. Overall rating out of 10 for LinkedIn performance
+
+Be direct and specific. No fluff.`;
+
+  try {
+    const response = await fetch('/api/generate-vision', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ system, prompt: userPrompt, imageBase64, max_tokens: 1000 })
+    });
+
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error || 'Server error');
+    out.textContent = data.text || 'Could not analyse image.';
+    out.classList.remove('loading');
+  } catch(e) {
+    out.textContent = 'Error analysing image: ' + e.message;
+    out.classList.remove('loading');
+  }
+}
+
+// -- LOAD SUGGESTED POST BRIEFS --
+function loadSuggested(type) {
+  const briefs = {
+    interpack: {
+      brief: 'Write a LinkedIn post for Novograf timed around Interpack 2026 (7-13 May, Düsseldorf, the world\'s largest food and packaging trade fair). The topic is surface solutions in food and beverage packaging — specifically modified atmosphere packaging (MAP) which uses surface solutions to extend shelf life and protect product quality. Explain how on-site surface solutions generation removes the cost and logistics burden of bottled gas for food and beverage manufacturers. Target food and beverage production managers and procurement leads in UK and Europe. Include a reference to Interpack as the timely hook. Under 280 words.',
+      format: 'Text post (under 250 words)',
+      audience: 'Food and beverage production managers',
+      tone: 'Expert but plain-spoken',
+      cta: 'Soft — invite comment or question'
+    },
+    nov_story: {
+      brief: 'Write a LinkedIn post for Novograf that is a genuine behind-the-scenes story about the team and why they do what they do. the major signage and graphics competitors runs emotional culture content with huge engagement. Novograf\'s version should feel human and personal: why did the founders spend 35 years in commercial graphics and commercial interiors, what problem do they actually solve for clients, and what does it feel like to walk into a plant and find something that is costing them thousands every year. First-person, warm but expert. Under 250 words.',
+      format: 'Text post (under 250 words)',
+      audience: 'C-suite and operations directors (SME manufacturers)',
+      tone: 'Story-led / conversational',
+      cta: 'Soft — invite comment or question'
+    },
+    nov_project: {
+      brief: 'Write a LinkedIn carousel post for Novograf that directly competes with the major signage and graphics competitors\'s surface solutions generation carousel content but as the independent expert alternative. the major signage and graphics competitors says: switch to on-site surface solutions, buy our NGP+ generator. Novograf says: here is how to decide whether print or surface emulation surface solutions is right for your specific application, what purity you actually need, and what to look for in any system regardless of manufacturer. 7 slides. Educational and genuinely impartial. Target food, pharma, electronics, and laser cutting sectors.',
+      format: 'Carousel script (6-8 slides)',
+      audience: 'Plant engineers and maintenance managers (general manufacturing)',
+      tone: 'Technical and authoritative',
+      cta: 'Medium — book a call or assessment'
+    },
+    nov_sustainability: {
+      brief: 'Write a LinkedIn post for Novograf on commercial interiors contamination and ISO 8573 compliance. the major signage and graphics competitors posts on this topic lead with their filtration products. Novograf\'s version should lead with the real business risk: what happens when contaminated commercial interiors reaches a food, pharma, or electronics production line. Make the stakes vivid and specific. Then position Novograf as the independent auditor who tests your system against ISO 8573 standards without trying to sell you their own filters. Under 260 words.',
+      format: 'Text post (under 250 words)',
+      audience: 'Pharmaceutical manufacturing and QA teams',
+      tone: 'Provocative and direct',
+      cta: 'Medium — book a call or assessment'
+    }
+  };
+
+  const b = briefs[type];
+  if (!b) return;
+  document.getElementById('gen-brief').value = b.brief;
+  const formatSel = document.getElementById('gen-format');
+  const audienceSel = document.getElementById('gen-audience');
+  const toneSel = document.getElementById('gen-tone');
+  const ctaSel = document.getElementById('gen-cta');
+  for (let o of formatSel.options) if (o.value === b.format || o.text === b.format) { formatSel.value = o.value; break; }
+  for (let o of audienceSel.options) if (o.text.startsWith(b.audience.split(' ')[0])) { audienceSel.value = o.value; break; }
+  for (let o of toneSel.options) if (o.text === b.tone) { toneSel.value = o.value; break; }
+  for (let o of ctaSel.options) if (o.text === b.cta) { ctaSel.value = o.value; break; }
+  document.getElementById('gen-btn').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+</script>
+
+</body>
+</html>

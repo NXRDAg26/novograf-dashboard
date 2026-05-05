@@ -432,10 +432,15 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           <h1 style="font-size:28px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;">Good <span id="welcome-greeting">morning</span>, Novograf</h1>
           <p style="font-size:14px;color:var(--gray-300);max-width:520px;line-height:1.6;">Your digital presence dashboard — everything you need to grow Novograf's online visibility, in one place.</p>
         </div>
-        <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:14px 20px;text-align:right;flex-shrink:0;">
-          <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Today</div>
+        <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:16px 20px;text-align:right;flex-shrink:0;min-width:180px;">
+          <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Today · East Kilbride</div>
           <div style="font-size:18px;font-weight:700;color:var(--white);" id="welcome-date">—</div>
           <div style="font-size:11px;color:var(--gray-400);margin-top:2px;" id="welcome-time">—</div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-700);">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;" id="weather-wrap">
+              <span style="font-size:11px;color:var(--gray-400);">Fetching weather...</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1518,7 +1523,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
             <div class="form-group" style="margin-bottom:12px;">
               <label class="form-label">Key points to include (optional)</label>
-              <textarea id="copy-points" rows="3" placeholder="e.g. employee-owned since 2015, national rollout capability, ISO 9001 accredited, Lamigraf PVC-free, trusted by Co-op, Greggs, Sainsbury's"></textarea>
+              <textarea id="copy-points" rows="3" placeholder="e.g. employee-owned since 2015, national rollout capability, ISO 9001 accredited, Eikonic tile-effect wall panel product, trusted by Co-op, Greggs, Sainsbury's"></textarea>
             </div>
 
             <div class="cit-grid-2" style="margin-bottom:0;">
@@ -2335,7 +2340,7 @@ async function seoGenerate(prompt, outputId, loadingId, wrapId) {
   if (loading) loading.style.display = 'flex';
   if (wrap) wrap.style.display = 'none';
 
-  const system = `You are an expert SEO strategist and technical SEO consultant working for NXRD, a UK-based digital marketing agency. You are auditing and building SEO strategy for Novograf (novograf.co.uk), a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland, with over 35 years of experience. Novograf specialises in: custom commercial graphics, window graphics, wall graphics, floor graphics, printed wallcoverings and murals, hoardings, asset wrapping, wayfinding and signage, lift graphics, replicas and lightweight replica finishes, surface emulation, and sustainable print solutions using their own Lamigraf PVC-free product. Their target customers are retail property directors, brand managers, store development leads, fit-out contractors, interior designers, and facilities managers at national retail chains, hospitality groups, banks, restaurants, healthcare organisations, and commercial property developers across the UK. Key clients include Co-op, Sainsbury's, Greggs, NatWest/RBS, M&S, Waitrose, Iceland, Travelodge, Accor Hotels, WH Smith, and First Group Rail. They are ISO 9001 and ISO 14001 accredited, Altius, Construction Line, Safe Contractor and Considerate Constructors approved. The website is built on WordPress. Primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline. Be direct, specific, and actionable. Use clear section headers. Write in plain English. No generic advice — every recommendation must be specific to Novograf's industry, sector, and competitive situation in the UK commercial interiors and retail brand environment market.`;
+  const system = `You are an expert SEO strategist and technical SEO consultant working for NXRD, a UK-based digital marketing agency. You are auditing and building SEO strategy for Novograf (novograf.co.uk), a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland, with over 35 years of experience. Novograf specialises in: custom commercial graphics, window graphics, wall graphics, floor graphics, printed wallcoverings and murals, hoardings, asset wrapping, wayfinding and signage, lift graphics, replicas and lightweight replica finishes, surface emulation, and and their own Eikonic product range — premium tile-effect wall panels for commercial and hospitality spaces. Their target customers are retail property directors, brand managers, store development leads, fit-out contractors, interior designers, and facilities managers at national retail chains, hospitality groups, banks, restaurants, healthcare organisations, and commercial property developers across the UK. Key clients include Co-op, Sainsbury's, Greggs, NatWest/RBS, M&S, Waitrose, Iceland, Travelodge, Accor Hotels, WH Smith, and First Group Rail. They are ISO 9001 and ISO 14001 accredited, Altius, Construction Line, Safe Contractor and Considerate Constructors approved. The website is built on WordPress. Primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline. Be direct, specific, and actionable. Use clear section headers. Write in plain English. No generic advice — every recommendation must be specific to Novograf's industry, sector, and competitive situation in the UK commercial interiors and retail brand environment market.`;
 
   try {
     const response = await fetch('/api/generate', {
@@ -2418,7 +2423,7 @@ Write the optimised meta title (under 60 characters) for this page.
 SUGGESTED META DESCRIPTION
 Write the optimised meta description (under 155 characters) for this page.
 
-BASE YOUR ANALYSIS on what you know about Novograf's business, their target keywords (commercial graphics UK, retail signage, surface solutions, floor graphics, wall graphics, window graphics, hoardings, brand environments, surface emulation, Lamigraf PVC-free, national brand rollout, shopfitting graphics, etc.), and best SEO practice for B2B commercial interiors and signage websites in 2026.`;
+BASE YOUR ANALYSIS on what you know about Novograf's business, their target keywords (commercial graphics UK, retail signage, surface solutions, floor graphics, wall graphics, window graphics, hoardings, brand environments, surface emulation, Eikonic wall panels, national brand rollout, shopfitting graphics, etc.), and best SEO practice for B2B commercial interiors and signage websites in 2026.`;
 
   const system = `You are an expert SEO strategist working for NXRD on the novograf.co.uk account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company in East Kilbride, Scotland. Be specific about this site, this industry, and the UK commercial interiors and retail market. No generic advice.`;
 
@@ -2642,7 +2647,7 @@ async function runPageBuilder() {
   };
 
   const sectorMap = {
-    all: 'all Novograf service areas (window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollout, hospitality interiors, office brand environments, sustainable print and Lamigraf PVC-free)',
+    all: 'all Novograf service areas (window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollout, hospitality interiors, office brand environments, Eikonic tile-effect wall panels and sustainable print)',
     'window-graphics': 'window graphics for retail, hospitality, office, and commercial environments including frosted, printed, and promotional window graphics',
     'wall-graphics': 'wall graphics and printed wallcoverings for retail, hospitality, office, and commercial environments including large format murals and branded wall treatments',
     'floor-graphics': 'floor graphics and floor wraps for retail, hospitality, and commercial environments including anti-slip floor vinyls and branded floor treatments',
@@ -2653,10 +2658,10 @@ async function runPageBuilder() {
     'retail-rollout': 'retail brand rollout and national brand environment programmes for multiple-site retail chains and hospitality brands',
     hospitality: 'hospitality and hotel interiors including bedroom graphics, bar and restaurant environments, lobby and reception branding',
     office: 'office and workplace brand environments including reception graphics, breakout spaces, boardrooms, and wayfinding',
-    lamigraf: 'sustainable print and Lamigraf PVC-free surface solutions for retail and commercial clients with ESG commitments'
+    eikonic: 'Eikonic premium tile-effect wall panels for commercial and hospitality spaces — fire safe, chemical resistant, quick to install'
   };
 
-  const prompt = `You are an expert SEO strategist working for NXRD on the novograf.co.uk account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland. They specialise in window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollouts, and sustainable print using their Lamigraf PVC-free product. Their primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline.
+  const prompt = `You are an expert SEO strategist working for NXRD on the novograf.co.uk account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland. They specialise in window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollouts, and their own Eikonic tile-effect wall panel product range. Their primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline.
 
 Generate ${count} recommended pages for Novograf to build on their WordPress website, targeting: ${sectorMap[sector] || sector}.
 
@@ -2852,7 +2857,7 @@ const DEFAULT_CLIENTS = [
     sector: 'Signage and Graphics · UK',
     desc: 'Employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland. 35+ years delivering commercial fit-outs, custom graphics, printed wallcoverings, floor graphics, window graphics, and murals for retail, hospitality, and office environments.',
     audience: 'Retail property directors, brand managers, store development leads, fit-out contractors, interior designers, and facilities managers at national retail chains, hospitality groups, and commercial office developers across the UK',
-    proof: 'Employee-owned and independently run, 35 years experience, national rollout capability, ISO 9001 and ISO 14001 accredited, Altius, Construction Line and Safe Contractor approved, Considerate Constructors accredited, own Lamigraf PVC-free surface product, trusted by Co-op, Sainsbury\'s, Greggs, NatWest, M&S, Waitrose, Iceland, Travelodge and more'
+    proof: 'Employee-owned and independently run, 35 years experience, national rollout capability, ISO 9001 and ISO 14001 accredited, Altius, Construction Line and Safe Contractor approved, Considerate Constructors accredited, own Eikonic product range (premium tile-effect wall panels), trusted by Co-op, Sainsbury\'s, Greggs, NatWest, M&S, Waitrose, Iceland, Travelodge and more'
   },
   {
     id: 'archway',
@@ -3206,7 +3211,7 @@ const WELCOME_STATS = [
   { icon:'🏆', label:'Named brand clients', val:'13+', sub:"Co-op, Greggs, Sainsbury's, NatWest, M&S, Waitrose and more", col:'var(--lime)' },
   { icon:'📍', label:'Location', val:'Scotland', sub:'East Kilbride — national UK capability', col:'var(--white)' },
   { icon:'✅', label:'Accreditations', val:'9', sub:'ISO 9001, ISO 14001, Altius, CHAS, Construction Line and more', col:'var(--white)' },
-  { icon:'♻', label:'Own eco product', val:'Lamigraf', sub:'PVC-free surface solution — ESG ready', col:'var(--lime)' },
+  { icon:'◈', label:'Own product brand', val:'Eikonic', sub:'Premium tile-effect wall panels for commercial and hospitality spaces', col:'var(--lime)' },
   { icon:'📅', label:'In business since', val:'1989', sub:'Employee-owned since 2015', col:'var(--white)' }
 ];
 
@@ -3224,6 +3229,7 @@ const WELCOME_TOOLS = [
 function initWelcome() {
   updateWelcomeClock();
   setInterval(updateWelcomeClock, 60000);
+  fetchWeather();
 
   document.getElementById('welcome-stat-grid').innerHTML = WELCOME_STATS.map(s => `
     <div class="welcome-stat">
@@ -3257,6 +3263,71 @@ function updateWelcomeClock() {
   if (el) el.textContent = greet;
   if (dateEl) dateEl.textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
   if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+}
+
+async function fetchWeather() {
+  const wrap = document.getElementById('weather-wrap');
+  if (!wrap) return;
+
+  // East Kilbride lat/lng
+  const lat = 55.7643, lon = -4.1769;
+
+  // WMO weather code descriptions
+  const wmoDesc = {
+    0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
+    45:'Foggy', 48:'Icy fog', 51:'Light drizzle', 53:'Drizzle', 55:'Heavy drizzle',
+    61:'Light rain', 63:'Rain', 65:'Heavy rain', 71:'Light snow', 73:'Snow', 75:'Heavy snow',
+    77:'Snow grains', 80:'Light showers', 81:'Showers', 82:'Heavy showers',
+    85:'Snow showers', 86:'Heavy snow showers', 95:'Thunderstorm', 96:'Thunderstorm with hail', 99:'Severe thunderstorm'
+  };
+
+  // Map WMO code to emoji
+  const wmoIcon = (code, isDay) => {
+    if (code === 0) return isDay ? '☀️' : '🌙';
+    if (code <= 2) return isDay ? '⛅' : '🌙';
+    if (code === 3) return '☁️';
+    if (code <= 48) return '🌫️';
+    if (code <= 55) return '🌦️';
+    if (code <= 65) return '🌧️';
+    if (code <= 77) return '❄️';
+    if (code <= 82) return '🌦️';
+    if (code <= 86) return '🌨️';
+    return '⛈️';
+  };
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,is_day,wind_speed_10m,relative_humidity_2m&wind_speed_unit=mph&timezone=Europe/London`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const c = data.current;
+
+    const temp = Math.round(c.temperature_2m);
+    const feels = Math.round(c.apparent_temperature);
+    const code = c.weathercode;
+    const isDay = c.is_day;
+    const wind = Math.round(c.wind_speed_10m);
+    const humidity = c.relative_humidity_2m;
+    const desc = wmoDesc[code] || 'Unknown';
+    const icon = wmoIcon(code, isDay);
+
+    wrap.innerHTML = `
+      <div style="text-align:right;width:100%;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:6px;">
+          <span style="font-size:28px;line-height:1;">${icon}</span>
+          <div>
+            <div style="font-size:24px;font-weight:700;color:var(--white);line-height:1;">${temp}°C</div>
+            <div style="font-size:11px;color:var(--gray-400);">${desc}</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;">
+          <span style="font-size:11px;color:var(--gray-400);">Feels ${feels}°C</span>
+          <span style="font-size:11px;color:var(--gray-400);">💨 ${wind} mph</span>
+          <span style="font-size:11px;color:var(--gray-400);">💧 ${humidity}%</span>
+        </div>
+      </div>`;
+  } catch(e) {
+    wrap.innerHTML = '<span style="font-size:11px;color:var(--gray-500);">Weather unavailable</span>';
+  }
 }
 
 function getActionChecked() {

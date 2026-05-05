@@ -673,7 +673,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           <div class="cit-grid-2" style="margin-bottom:10px;">
             <div class="form-group">
               <label class="form-label">Topic area</label>
-              <input class="form-input" id="blog-topic" type="text" placeholder="e.g. compressed air quality, nitrogen generation, water treatment">
+              <input class="form-input" id="blog-topic" type="text" placeholder="e.g. surface emulation for retail, PVC-free graphics, national brand rollout">
             </div>
             <div class="form-group">
               <label class="form-label">Target audience</label>
@@ -870,7 +870,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-bottom:12px;">
             <div class="form-group">
               <label class="form-label">Page URL</label>
-              <input class="form-input" id="seo-url" type="url" placeholder="https://novograf.co.uk/compressed-air-quality" style="font-family:monospace;font-size:12px;">
+              <input class="form-input" id="seo-url" type="url" placeholder="https://novograf.co.uk/window-graphics" style="font-family:monospace;font-size:12px;">
             </div>
             <button class="add-btn" onclick="runSeoAudit()" id="seo-audit-btn">Audit page</button>
           </div>
@@ -880,12 +880,14 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
             <div class="form-label" style="margin-bottom:8px;">Quick select — known Novograf pages</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
               <button class="header-btn" onclick="quickAudit('https://novograf.co.uk')">Homepage</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/compressed-air-quality')">Custom graphics and surfaces</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/nitrogen-generation')">Retail fit-outs</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/oxygen-generation')">Commercial signage</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/energy-efficiency')">Interior branding</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/services')">Services</button>
-              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/contact')">Contact</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/window-graphics')">Window graphics</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/wall-graphics-2')">Wall graphics</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/hoardinggraphics')">Hoardings</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/graphic-floors')">Floor graphics</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/lightweight-replica-finishes')">Replicas</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/about-us/sustainability')">Sustainability</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/case-studies')">Case studies</button>
+              <button class="header-btn" onclick="quickAudit('https://novograf.co.uk/contact-us')">Contact</button>
             </div>
           </div>
         </div>
@@ -970,7 +972,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
           <div class="form-group" style="margin-bottom:14px;">
             <label class="form-label">Primary SEO goals (optional — describe in plain language)</label>
-            <input class="form-input" id="seo-goals" type="text" placeholder="e.g. Rank for nitrogen generation Portugal, appear when food manufacturers search for on-site gas, beat Atlas Copco locally">
+            <input class="form-input" id="seo-goals" type="text" placeholder="e.g. Rank for retail signage UK, appear when brand managers search for commercial graphics, win national rollout briefs">
           </div>
 
           <button class="add-btn" onclick="runSeoPlanner()" id="seo-plan-btn">Generate growth plan</button>
@@ -1020,10 +1022,11 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
             <div class="form-group">
               <label class="form-label">Target geography</label>
               <select class="form-select" id="kw-geo">
-                <option>Portugal (national)</option>
-                <option>Iberian Peninsula (Portugal and Spain)</option>
-                <option>Europe (broader reach)</option>
-                <option>International (English language)</option>
+                <option>UK national</option>
+                <option>Scotland (local and national)</option>
+                <option>London and South East</option>
+                <option>UK retail and hospitality sector</option>
+                <option>UK and international (English language)</option>
               </select>
             </div>
           </div>
@@ -1074,10 +1077,10 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
             <div class="form-group">
               <label class="form-label">Market</label>
               <select class="form-select" id="pb-geo">
-                <option value="pt">Portugal only</option>
-                <option value="iberia">Portugal and Spain</option>
-                <option value="europe">European market (English)</option>
-                <option value="both">Both Portuguese and English pages</option>
+                <option value="uk">UK national</option>
+                <option value="scotland">Scotland (local emphasis)</option>
+                <option value="london">London and South East</option>
+                <option value="retail">UK retail and hospitality sector</option>
               </select>
             </div>
             <div class="form-group">
@@ -1216,7 +1219,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
             <div class="form-group" style="margin-bottom:12px;">
               <label class="form-label">Topic or subject</label>
-              <input class="form-input" id="copy-topic" type="text" placeholder="e.g. On-site nitrogen generation for food manufacturers — why on-site beats bottled">
+              <input class="form-input" id="copy-topic" type="text" placeholder="e.g. How surface emulation transforms a retail refurb at a fraction of the cost of a full refit">
             </div>
 
             <div class="cit-grid-2" style="margin-bottom:12px;">
@@ -2055,7 +2058,7 @@ async function seoGenerate(prompt, outputId, loadingId, wrapId) {
   if (loading) loading.style.display = 'flex';
   if (wrap) wrap.style.display = 'none';
 
-  const system = `You are an expert SEO strategist and technical SEO consultant working for NXRD, a UK-based digital marketing agency. You are auditing and building SEO strategy for Novograf (novograf.co.uk), a Portuguese B2B industrial consultancy based in Esposende, Portugal, founded in 2021. Novograf specialises in: compressed air quality analysis, on-site nitrogen generation (PSA and membrane), on-site oxygen generation, industrial fluid filtration, energy efficiency audits (ISO 11011), Industry 4.0 consulting, and machinery maintenance. Their target customers are plant engineers, procurement managers, energy managers, and factory directors across Portugal and Europe, in sectors including food and beverage, wine, water treatment, laser cutting, metal fabrication, oil and gas, pharmaceutical, electronics, and medical oxygen. Their primary competitor is Atlas Copco. The website is built on WordPress. Be direct, specific, and actionable. Use clear section headers. Write in plain English. No generic advice — every recommendation must be specific to Novograf's industry, sector, and competitive situation.`;
+  const system = `You are an expert SEO strategist and technical SEO consultant working for NXRD, a UK-based digital marketing agency. You are auditing and building SEO strategy for Novograf (novograf.co.uk), a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland, with over 35 years of experience. Novograf specialises in: custom commercial graphics, window graphics, wall graphics, floor graphics, printed wallcoverings and murals, hoardings, asset wrapping, wayfinding and signage, lift graphics, replicas and lightweight replica finishes, surface emulation, and sustainable print solutions using their own Lamigraf PVC-free product. Their target customers are retail property directors, brand managers, store development leads, fit-out contractors, interior designers, and facilities managers at national retail chains, hospitality groups, banks, restaurants, healthcare organisations, and commercial property developers across the UK. Key clients include Co-op, Sainsbury's, Greggs, NatWest/RBS, M&S, Waitrose, Iceland, Travelodge, Accor Hotels, WH Smith, and First Group Rail. They are ISO 9001 and ISO 14001 accredited, Altius, Construction Line, Safe Contractor and Considerate Constructors approved. The website is built on WordPress. Primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline. Be direct, specific, and actionable. Use clear section headers. Write in plain English. No generic advice — every recommendation must be specific to Novograf's industry, sector, and competitive situation in the UK commercial interiors and retail brand environment market.`;
 
   try {
     const response = await fetch('/api/generate', {
@@ -2138,9 +2141,9 @@ Write the optimised meta title (under 60 characters) for this page.
 SUGGESTED META DESCRIPTION
 Write the optimised meta description (under 155 characters) for this page.
 
-BASE YOUR ANALYSIS on what you know about Novograf's business, their target keywords (compressed air quality, nitrogen generation Portugal, on-site gas generation, industrial gas audits, etc.), and best SEO practice for B2B industrial websites in 2026.`;
+BASE YOUR ANALYSIS on what you know about Novograf's business, their target keywords (commercial graphics UK, retail signage, surface solutions, floor graphics, wall graphics, window graphics, hoardings, brand environments, surface emulation, Lamigraf PVC-free, national brand rollout, shopfitting graphics, etc.), and best SEO practice for B2B commercial interiors and signage websites in 2026.`;
 
-  const system = `You are an expert SEO strategist working for NXRD on the Novograf.com account. Novograf is a Portuguese B2B industrial gas consultancy. Be specific about this site and industry — no generic advice.`;
+  const system = `You are an expert SEO strategist working for NXRD on the novograf.co.uk account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company in East Kilbride, Scotland. Be specific about this site, this industry, and the UK commercial interiors and retail market. No generic advice.`;
 
   try {
     const response = await fetch('/api/generate', {
@@ -2273,7 +2276,7 @@ async function runSeoPlanner() {
 
 Current SEO stage: ${stageMap[stage]}
 Available monthly effort: ${effortMap[effort]}
-Primary goals: ${goals || 'rank for industrial gas and compressed air services in Portugal, beat Atlas Copco in local search, generate qualified B2B leads'}
+Primary goals: ${goals || 'rank for commercial graphics, signage, and surface solutions in the UK, attract retail and hospitality brand managers, win national rollout briefs'}
 
 Structure the plan as follows:
 
@@ -2294,7 +2297,7 @@ QUICK WINS — DO THESE FIRST
 3 actions that can be completed in the first 2 weeks and will show results fastest.
 
 COMPETITIVE NOTES
-Specific opportunities to take rankings from Atlas Copco and other industrial gas competitors in Portuguese and Iberian search results.
+Specific opportunities to take rankings from Octink, Image Technique, XG Group, Vinyline, and other signage and graphics competitors in UK search results.
 
 Make every task specific and actionable. No generic SEO advice. Reference Novograf's actual services and sectors throughout.`;
 
@@ -2328,7 +2331,7 @@ TIER 3 — LONG-TAIL AND NICHE KEYWORDS (low competition, highly specific)
 Same format. 8 to 10 keywords.
 
 COMPETITOR KEYWORDS TO STEAL
-Keywords where Atlas Copco or other industrial gas competitors are currently ranking that Novograf could target. Include why Novograf has a genuine chance of outranking them.
+Keywords where Octink, Image Technique, XG Group, Vinyline, or other UK signage and graphics competitors are currently ranking that Novograf could target. Include why Novograf has a genuine chance of outranking them.
 
 PORTUGUESE LANGUAGE KEYWORDS
 The same intent keywords but in European Portuguese as a potential customer in Portugal would actually type them. Include both formal and informal search phrasing.
@@ -2355,27 +2358,28 @@ async function runPageBuilder() {
   document.getElementById('pb-output').style.display = 'none';
 
   const geoMap = {
-    pt: 'Portugal only — include Portuguese-language keyword variants',
-    iberia: 'Portugal and Spain — include both Portuguese and Spanish keyword variants',
-    europe: 'European market in English — target international buyers searching in English',
-    both: 'Both Portuguese market pages and English international pages — recommend a mix'
+    uk: 'UK national — target buyers across the United Kingdom searching in English',
+    scotland: 'Scotland with national UK reach — emphasise Scottish base and UK capability',
+    london: 'London and South East — target buyers in the largest UK commercial market',
+    retail: 'UK retail and hospitality sector — target brand managers and store development leads across UK retail chains'
   };
 
   const sectorMap = {
-    all: 'all Novograf service areas (compressed air, nitrogen generation, oxygen generation, water treatment, food and beverage, wine, laser cutting, oil and gas, medical oxygen, energy efficiency, industrial fluid filtration)',
-    nitrogen: 'on-site nitrogen generation (PSA and membrane systems) including food, pharma, electronics, laser cutting, and chemical applications',
-    oxygen: 'on-site oxygen generation including biogas, wastewater, medical adjacent, and metal fabrication applications',
-    'compressed-air': 'compressed air quality analysis, ISO 8573 compliance, and energy audits (ISO 11011)',
-    water: 'water treatment and wastewater applications using on-site oxygen',
-    food: 'food and beverage nitrogen applications including modified atmosphere packaging and storage',
-    wine: 'wine and viticulture nitrogen applications including blanketing, transfer, and bottling',
-    laser: 'laser cutting nitrogen supply including PSA generation vs cylinder comparison',
-    'oil-gas': 'oil and gas nitrogen applications including pipeline inerting, purging, and well intervention',
-    medical: 'medical oxygen generation for clinical and healthcare applications',
-    energy: 'industrial energy efficiency audits and compressed air energy management'
+    all: 'all Novograf service areas (window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollout, hospitality interiors, office brand environments, sustainable print and Lamigraf PVC-free)',
+    'window-graphics': 'window graphics for retail, hospitality, office, and commercial environments including frosted, printed, and promotional window graphics',
+    'wall-graphics': 'wall graphics and printed wallcoverings for retail, hospitality, office, and commercial environments including large format murals and branded wall treatments',
+    'floor-graphics': 'floor graphics and floor wraps for retail, hospitality, and commercial environments including anti-slip floor vinyls and branded floor treatments',
+    hoardings: 'construction site hoardings and development hoardings including printed graphics, branding, and site security screening',
+    'asset-wrapping': 'asset wrapping for vehicles, equipment, machinery, and large format commercial assets',
+    wayfinding: 'wayfinding, signage systems, and interior navigation for retail, healthcare, hospitality, and commercial environments',
+    replicas: 'replica finishes and lightweight surface emulation including stone, brick, wood, tile, and metal effect surfaces without structural work',
+    'retail-rollout': 'retail brand rollout and national brand environment programmes for multiple-site retail chains and hospitality brands',
+    hospitality: 'hospitality and hotel interiors including bedroom graphics, bar and restaurant environments, lobby and reception branding',
+    office: 'office and workplace brand environments including reception graphics, breakout spaces, boardrooms, and wayfinding',
+    lamigraf: 'sustainable print and Lamigraf PVC-free surface solutions for retail and commercial clients with ESG commitments'
   };
 
-  const prompt = `You are an expert SEO strategist working for NXRD on the Novograf.com account. Novograf is a Portuguese B2B industrial gas consultancy based in Esposende, Portugal. They specialise in compressed air quality, on-site nitrogen and oxygen generation, energy efficiency audits, and industrial gas consulting. Their primary competitors include Atlas Copco, CompAir, Noxerior, Groupe Novair, and Ultra Controlo.
+  const prompt = `You are an expert SEO strategist working for NXRD on the novograf.co.uk account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company based in East Kilbride, Scotland. They specialise in window graphics, wall graphics, floor graphics, hoardings, asset wrapping, wayfinding, replica finishes, surface emulation, retail brand rollouts, and sustainable print using their Lamigraf PVC-free product. Their primary competitors include Octink (Service Graphics/Paragon Group), Image Technique, XG Group, and Vinyline.
 
 Generate ${count} recommended pages for Novograf to build on their WordPress website, targeting: ${sectorMap[sector] || sector}.
 
@@ -2404,7 +2408,7 @@ List the 3 pages from your recommendations that will generate ranking results fa
 CONTENT ARCHITECTURE NOTE
 One paragraph on how these pages should link to each other and to existing Novograf service pages to build topical authority.
 
-Be specific to Novograf's actual business, the Portuguese and Iberian industrial market, and realistic search volumes for a specialist B2B industrial consultancy in a relatively small national market. Do not recommend pages that Novograf cannot credibly rank for given their domain authority as a relatively new site (founded 2021).`;
+Be specific to Novograf's actual business, the Portuguese and Iberian industrial market, and realistic search volumes for a specialist B2B industrial consultancy in a relatively small national market. Do not recommend pages that Novograf cannot credibly rank for. Novograf has a 35-year heritage and established domain — they can compete for competitive UK commercial terms given the right on-page optimisation and content strategy.`;
 
   document.getElementById('pb-output-title').textContent = `${count} recommended pages — ${sectorMap[sector] ? sectorMap[sector].split('(')[0].trim() : sector}`;
 

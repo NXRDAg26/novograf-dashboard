@@ -1007,7 +1007,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
               <select class="form-select" id="kw-sector">
                 <option>All services (full keyword map)</option>
                 <option>Custom graphics and surfaces and audits</option>
-                <option>Retail fit-outs (PSA and membrane)</option>
+                <option>Retail brand rollout and fit-out graphics</option>
                 <option>Commercial signage</option>
                 <option>Window and floor graphics</option>
                 <option>Printed wallcoverings and murals</option>
@@ -1199,15 +1199,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
           <!-- STEP 3: LANGUAGE -->
           <div class="chart-card">
             <div class="chart-header">
-              <div><div class="chart-title">3. Language</div><div class="chart-subtitle">Output language for this piece</div></div>
+              <div><div class="chart-title">3. Language</div><div class="chart-subtitle">All Novograf copy is generated in UK English</div></div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;">
               <div class="lang-toggle">
                 <button class="lang-btn active" onclick="setLang('en',this)">English</button>
-                <button class="lang-btn" onclick="setLang('pt',this)">Portuguese</button>
-                <button class="lang-btn" onclick="setLang('both',this)">Both</button>
               </div>
-              <span style="font-size:11px;color:var(--gray-400);" id="copy-lang-note">Will generate in English</span>
+              <span style="font-size:11px;color:var(--gray-400);" id="copy-lang-note">UK English — direct, commercially grounded</span>
             </div>
           </div>
 
@@ -1225,7 +1223,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
             <div class="cit-grid-2" style="margin-bottom:12px;">
               <div class="form-group">
                 <label class="form-label">Target audience</label>
-                <input class="form-input" id="copy-audience" type="text" placeholder="e.g. Plant managers, food and beverage sector">
+                <input class="form-input" id="copy-audience" type="text" placeholder="e.g. Retail brand managers, store development directors">
               </div>
               <div class="form-group">
                 <label class="form-label">Tone direction (optional)</label>
@@ -1242,13 +1240,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
             <div class="form-group" style="margin-bottom:12px;">
               <label class="form-label">Key points to include (optional)</label>
-              <textarea id="copy-points" rows="3" placeholder="e.g. 35 years of expertise, manufacturer agnostic, cuts costs vs cylinder supply, reduces carbon footprint, PSA and membrane options available"></textarea>
+              <textarea id="copy-points" rows="3" placeholder="e.g. employee-owned since 2015, national rollout capability, ISO 9001 accredited, Lamigraf PVC-free, trusted by Co-op, Greggs, Sainsbury's"></textarea>
             </div>
 
             <div class="cit-grid-2" style="margin-bottom:0;">
               <div class="form-group">
                 <label class="form-label">CTA (optional)</label>
-                <input class="form-input" id="copy-cta" type="text" placeholder="e.g. Book a free assessment at novograf.co.uk">
+                <input class="form-input" id="copy-cta" type="text" placeholder="e.g. Talk to the Novograf team at novograf.co.uk or call 01355 900 100">
               </div>
               <div class="form-group">
                 <label class="form-label">Word count guide</label>
@@ -2333,8 +2331,8 @@ Same format. 8 to 10 keywords.
 COMPETITOR KEYWORDS TO STEAL
 Keywords where Octink, Image Technique, XG Group, Vinyline, or other UK signage and graphics competitors are currently ranking that Novograf could target. Include why Novograf has a genuine chance of outranking them.
 
-PORTUGUESE LANGUAGE KEYWORDS
-The same intent keywords but in European Portuguese as a potential customer in Portugal would actually type them. Include both formal and informal search phrasing.
+COMPETITOR GAP KEYWORDS
+Keywords that Octink, Image Technique, XG Group, or Vinyline are currently ranking for that Novograf could target with the right content and on-page optimisation.
 
 CONTENT GAP KEYWORDS
 Topics that potential Novograf customers are searching for but no good answer exists yet in Portuguese or for the Iberian market specifically.
@@ -2390,7 +2388,7 @@ For each page, provide the following in this exact format:
 PAGE [N]
 Target keyword: [primary keyword phrase]
 Secondary keywords: [2 to 3 related terms]
-Monthly search volume: [estimated range, e.g. 50 to 200 searches/month in Portugal]
+Monthly search volume: [estimated range, e.g. 50 to 300 searches/month in UK]
 Keyword difficulty: [Low / Medium / High] — [one sentence explanation]
 Search intent: [Informational / Commercial / Transactional]
 Suggested URL: novograf.co.uk/[slug]
@@ -2538,7 +2536,7 @@ async function runTechAudit() {
   const btn = document.getElementById('tech-audit-btn');
   btn.disabled = true; btn.textContent = 'Auditing...';
 
-  const prompt = `Perform a technical SEO audit for Novograf.com (WordPress B2B industrial site, Portugal).
+  const prompt = `Perform a technical SEO audit for novograf.co.uk (WordPress B2B commercial graphics and surface solutions site, UK).
 
 Based on the technical checklist, the following items have NOT yet been completed:
 ${notDone.length ? notDone.map((t,i) => `${i+1}. ${t}`).join('\n') : 'All checklist items marked as complete.'}
@@ -2546,7 +2544,7 @@ ${notDone.length ? notDone.map((t,i) => `${i+1}. ${t}`).join('\n') : 'All checkl
 Provide:
 
 TECHNICAL PRIORITY LIST
-Rank the outstanding items by ranking impact for a B2B industrial site in Portugal. For each: item | why it matters for Novograf specifically | exact steps to fix it on WordPress.
+Rank the outstanding items by ranking impact for a B2B commercial interiors and signage site in the UK. For each: item | why it matters for Novograf specifically | exact steps to fix it on WordPress.
 
 ESTIMATED IMPACT
 For each fix, rate the expected ranking improvement (Low / Medium / High / Critical) and the estimated time to implement.
@@ -2614,10 +2612,10 @@ const COPY_FORMATS = [
   { id: 'proposal', icon: '◈', label: 'Proposal / pitch copy' },
 ];
 
-const BRISKFIL_ONLY = [DEFAULT_CLIENTS[0]];
-let copyClients = BRISKFIL_ONLY;
+const NOVOGRAF_ONLY = [DEFAULT_CLIENTS[0]];
+let copyClients = NOVOGRAF_ONLY;
 // Reset any previously saved multi-client list
-localStorage.setItem('novograf_copy_clients', JSON.stringify(BRISKFIL_ONLY));
+localStorage.setItem('novograf_copy_clients', JSON.stringify(NOVOGRAF_ONLY));
 let selectedClient = 'novograf';
 let selectedFormat = 'linkedin';
 let selectedLang = 'en';
@@ -2659,7 +2657,7 @@ function setLang(lang, btn) {
   selectedLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const notes = { en: 'Will generate in English', pt: 'Will generate in European Portuguese', both: 'Will generate both English and Portuguese' };
+  const notes = { en: 'UK English — direct, commercially grounded' };
   document.getElementById('copy-lang-note').textContent = notes[lang];
 }
 
@@ -2739,7 +2737,7 @@ ${points ? `Key points to include: ${points}` : ''}
 ${cta ? `Call to action: ${cta}` : ''}
 Tone: ${toneMap[tone]}
 Length: ${lengthMap[length]}
-${lang === 'pt' ? 'Write entirely in European Portuguese as spoken in Portugal. Natural, professional, direct.' : 'Write in English.'}
+Write in UK English. Direct, authoritative, commercially grounded. No hyphens. No emojis.
 
 Deliver only the finished copy, ready to use. No preamble, no notes, no explanation. No hyphens. No emojis.`;
 

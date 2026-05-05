@@ -527,11 +527,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
       <!-- KEY CLIENTS STRIP -->
       <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:16px 24px;">
         <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Trusted by</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          ${["Co-op","Sainsbury's","Greggs","NatWest","M&S","Waitrose","Iceland","Travelodge","Accor Hotels","WH Smith","First Group Rail","William Hill","Pets at Home"].map(c =>
-            `<span style="background:var(--gray-700);border:1px solid var(--gray-600);border-radius:var(--radius-sm);padding:5px 12px;font-size:11px;font-weight:600;color:var(--gray-200);">${c}</span>`
-          ).join('')}
-        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;" id="welcome-clients-strip"></div>
       </div>
 
     </div>
@@ -3243,6 +3239,12 @@ function initWelcome() {
     </button>`).join('');
 
   renderWelcomeActions();
+
+  const clients = ["Co-op","Sainsbury's","Greggs","NatWest","M&S","Waitrose","Iceland","Travelodge","Accor Hotels","WH Smith","First Group Rail","William Hill","Pets at Home"];
+  const strip = document.getElementById('welcome-clients-strip');
+  if (strip) strip.innerHTML = clients.map(c =>
+    `<span style="background:var(--gray-700);border:1px solid var(--gray-600);border-radius:var(--radius-sm);padding:5px 12px;font-size:11px;font-weight:600;color:var(--gray-200);">${c}</span>`
+  ).join('');
 }
 
 function updateWelcomeClock() {

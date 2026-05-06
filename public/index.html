@@ -491,6 +491,21 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .comp-weakness-label { font-size:10px; font-weight:700; color:var(--negative); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
 .comp-opportunity-label { font-size:10px; font-weight:700; color:var(--lime); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
 
+/* ── COPY OUTPUT VISUAL ── */
+.copy-doc { font-family: 'Poppins', sans-serif; }
+.copy-doc-subject { background: rgba(200,240,38,0.08); border: 1px solid rgba(200,240,38,0.25); border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 16px; }
+.copy-doc-subject-label { font-size: 10px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.copy-doc-subject-val { font-size: 15px; font-weight: 700; color: var(--white); }
+.copy-doc-divider { height: 1px; background: var(--gray-700); margin: 16px 0; }
+.copy-doc-h { font-size: 15px; font-weight: 700; color: var(--white); margin: 18px 0 8px; line-height: 1.3; }
+.copy-doc-h2 { font-size: 13px; font-weight: 700; color: var(--lime); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.copy-doc-p { font-size: 13px; color: var(--gray-200); line-height: 1.85; margin-bottom: 12px; }
+.copy-doc-cta { display: inline-block; background: rgba(200,240,38,0.12); border: 1px solid rgba(200,240,38,0.3); border-radius: var(--radius-sm); padding: 8px 18px; font-size: 13px; font-weight: 700; color: var(--lime); margin-top: 8px; }
+.copy-doc-meta { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 0; border-top: 1px solid var(--gray-700); margin-top: 16px; }
+.copy-doc-meta-item { font-size: 11px; color: var(--gray-400); }
+.copy-doc-meta-item strong { color: var(--gray-200); }
+.copy-doc-word-count { font-size: 11px; font-weight: 600; color: var(--gray-400); margin-top: 8px; text-align: right; }
+
 /* ── FONT SIZE TOGGLE ── */
 body.large-text { font-size: 18px; }
 body.large-text .nav-tab { font-size: 14px; padding: 14px 20px; }
@@ -1965,25 +1980,20 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
                   <span id="copy-output-title">Generated copy</span>
                 </span>
                 <div style="display:flex;gap:6px;">
-                  <button class="copy-btn" onclick="copyCopyOutput('copy-text-en')" id="copy-copy-en">Copy EN</button>
-                  <button class="copy-btn" onclick="copyCopyOutput('copy-text-pt')" id="copy-copy-pt" style="display:none;">Copy PT</button>
+                  <button class="copy-btn" onclick="copyCopyOutput('copy-text-en')" id="copy-copy-en">Copy text</button>
+                  <button class="copy-btn" onclick="downloadCopyDoc()" id="copy-download-btn">Download .txt</button>
                 </div>
               </div>
 
-              <!-- ENGLISH OUTPUT -->
+              <!-- VISUAL OUTPUT -->
               <div id="copy-block-en" style="display:none;">
-                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;"><span style="font-size:16px;">🇬🇧</span><span style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;">English</span></div>
-                <div class="copy-output-text" id="copy-text-en"></div>
-              </div>
-
-              <!-- PORTUGUESE OUTPUT -->
-              <div id="copy-block-pt" style="display:none;">
-                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;border-top:1px solid var(--gray-700);"><span style="font-size:16px;">🇵🇹</span><span style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;">Português</span></div>
-                <div class="copy-output-text" id="copy-text-pt"></div>
+                <div id="copy-visual-output" style="padding:20px 24px;"></div>
+                <!-- hidden plain text for copy -->
+                <div id="copy-text-en" style="display:none;"></div>
               </div>
 
               <div class="copy-output-footer">
-                <button class="add-btn" onclick="sendCopyToScheduler()" style="font-size:11px;padding:6px 16px;">Add to post scheduler</button>
+                <button class="add-btn" id="copy-to-scheduler-btn" onclick="sendCopyToScheduler()" style="font-size:11px;padding:6px 16px;display:none;">Add to post scheduler</button>
                 <button class="header-btn" onclick="saveCopyToHistory()" style="font-size:11px;">Save to history</button>
                 <button class="header-btn" onclick="runCopywriter()" style="font-size:11px;">Regenerate</button>
               </div>
@@ -3313,13 +3323,13 @@ const DEFAULT_CLIENTS = [
 
 const COPY_FORMATS = [
   { id: 'linkedin', icon: '💼', label: 'LinkedIn post' },
-  { id: 'website', icon: '🌐', label: 'Website / landing page' },
   { id: 'email', icon: '✉', label: 'Email campaign' },
   { id: 'blog', icon: '✍', label: 'Blog article' },
   { id: 'brochure', icon: '📋', label: 'Brochure copy' },
   { id: 'product', icon: '◎', label: 'Product description' },
   { id: 'press', icon: '📢', label: 'Press release' },
   { id: 'proposal', icon: '◈', label: 'Proposal / pitch copy' },
+  { id: 'website', icon: '🌐', label: 'Website / landing page' },
 ];
 
 const NOVOGRAF_ONLY = [DEFAULT_CLIENTS[0]];
@@ -3451,35 +3461,24 @@ Write in UK English. Direct, authoritative, commercially grounded. No hyphens. N
 
 Deliver only the finished copy, ready to use. No preamble, no notes, no explanation. No hyphens. No emojis.`;
 
-  // Show/hide blocks
-  document.getElementById('copy-block-en').style.display = (selectedLang === 'en' || selectedLang === 'both') ? 'block' : 'none';
-  document.getElementById('copy-block-pt').style.display = (selectedLang === 'pt' || selectedLang === 'both') ? 'block' : 'none';
-  document.getElementById('copy-copy-pt').style.display = (selectedLang === 'pt' || selectedLang === 'both') ? 'inline-block' : 'none';
-  document.getElementById('copy-copy-en').style.display = (selectedLang === 'en' || selectedLang === 'both') ? 'inline-block' : 'none';
+  // Show output
+  document.getElementById('copy-block-en').style.display = 'block';
+  document.getElementById('copy-copy-pt')?.remove();
 
   const formatLabel = format.label;
   document.getElementById('copy-output-title').textContent = `${formatLabel} — ${client.name}`;
 
-  if (selectedLang === 'en') {
-    document.getElementById('copy-text-en').textContent = 'Writing...';
-    document.getElementById('copy-text-pt').textContent = '';
-    const text = await callCopyAPI(buildPrompt('en'), system);
-    document.getElementById('copy-text-en').textContent = text;
-  } else if (selectedLang === 'pt') {
-    document.getElementById('copy-text-pt').textContent = 'A escrever...';
-    document.getElementById('copy-text-en').textContent = '';
-    const text = await callCopyAPI(buildPrompt('pt'), system);
-    document.getElementById('copy-text-pt').textContent = text;
-  } else {
-    document.getElementById('copy-text-en').textContent = 'Writing...';
-    document.getElementById('copy-text-pt').textContent = 'A escrever...';
-    const [en, pt] = await Promise.all([
-      callCopyAPI(buildPrompt('en'), system),
-      callCopyAPI(buildPrompt('pt'), system)
-    ]);
-    document.getElementById('copy-text-en').textContent = en;
-    document.getElementById('copy-text-pt').textContent = pt;
-  }
+  // Show scheduler button only for LinkedIn
+  const schedBtn = document.getElementById('copy-to-scheduler-btn');
+  if (schedBtn) schedBtn.style.display = selectedFormat === 'linkedin' ? 'inline-flex' : 'none';
+
+  // Set placeholder
+  document.getElementById('copy-text-en').textContent = '';
+  document.getElementById('copy-visual-output').innerHTML = `<div style="font-size:13px;color:var(--gray-400);">Writing...</div>`;
+
+  const text = await callCopyAPI(buildPrompt('en'), system);
+  document.getElementById('copy-text-en').textContent = text;
+  renderCopyVisual(text, format.id, formatLabel);
 
   document.getElementById('copy-spinner').style.display = 'none';
   btn.disabled = false; btn.textContent = 'Generate copy';
@@ -3498,6 +3497,105 @@ async function callCopyAPI(prompt, system) {
   } catch(e) {
     return 'Error: ' + e.message;
   }
+}
+
+function renderCopyVisual(text, formatId, formatLabel) {
+  const container = document.getElementById('copy-visual-output');
+  const lines = text.split('\n').filter(l => l.trim() !== '');
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
+
+  let html = `<div class="copy-doc">`;
+
+  // Format-specific header badge
+  const badges = {
+    linkedin: { icon:'💼', col:'#60a5fa', bg:'rgba(96,165,250,0.08)', border:'rgba(96,165,250,0.2)' },
+    email: { icon:'✉', col:'#60a5fa', bg:'rgba(96,165,250,0.08)', border:'rgba(96,165,250,0.2)' },
+    blog: { icon:'✍', col:'#a78bfa', bg:'rgba(167,139,250,0.08)', border:'rgba(167,139,250,0.2)' },
+    brochure: { icon:'📋', col:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)' },
+    product: { icon:'◎', col:'var(--lime)', bg:'rgba(200,240,38,0.06)', border:'rgba(200,240,38,0.15)' },
+    press: { icon:'📢', col:'#f87171', bg:'rgba(248,113,113,0.08)', border:'rgba(248,113,113,0.2)' },
+    proposal: { icon:'◈', col:'#34d399', bg:'rgba(52,211,153,0.08)', border:'rgba(52,211,153,0.2)' },
+    website: { icon:'🌐', col:'#38bdf8', bg:'rgba(56,189,248,0.08)', border:'rgba(56,189,248,0.2)' }
+  };
+  const badge = badges[formatId] || badges.blog;
+
+  html += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--gray-700);">
+    <div style="width:36px;height:36px;border-radius:10px;background:${badge.bg};border:1px solid ${badge.border};display:flex;align-items:center;justify-content:center;font-size:18px;">${badge.icon}</div>
+    <div>
+      <div style="font-size:14px;font-weight:700;color:var(--white);">${formatLabel}</div>
+      <div style="font-size:11px;color:var(--gray-400);">${wordCount} words · UK English · Novograf</div>
+    </div>
+  </div>`;
+
+  // Parse and render lines intelligently
+  let inCTA = false;
+  lines.forEach((line, i) => {
+    const trimmed = line.trim();
+    if (!trimmed) return;
+
+    // Subject line detection (email)
+    if ((formatId === 'email') && (trimmed.toLowerCase().startsWith('subject:') || trimmed.toLowerCase().startsWith('**subject'))) {
+      const subjectText = trimmed.replace(/^\*?\*?subject:?\*?\*?/i, '').replace(/\*\*/g, '').trim();
+      html += `<div class="copy-doc-subject"><div class="copy-doc-subject-label">Subject line</div><div class="copy-doc-subject-val">${subjectText}</div></div>`;
+      return;
+    }
+
+    // Heading detection (** or ALL CAPS short line or starts with #)
+    if ((trimmed.startsWith('**') && trimmed.endsWith('**') && trimmed.length < 80) ||
+        (trimmed.startsWith('#'))) {
+      const headText = trimmed.replace(/^\#+\s*/, '').replace(/\*\*/g, '');
+      html += `<div class="copy-doc-h">${headText}</div>`;
+      return;
+    }
+
+    // Section header (bold short phrase, not full sentence)
+    if (trimmed.startsWith('**') && trimmed.includes('**') && trimmed.length < 60) {
+      const h = trimmed.replace(/\*\*/g, '');
+      html += `<div class="copy-doc-h2">${h}</div>`;
+      return;
+    }
+
+    // CTA detection
+    if (trimmed.toLowerCase().startsWith('cta:') ||
+        trimmed.toLowerCase().includes('talk to us') ||
+        trimmed.toLowerCase().includes('get in touch') ||
+        trimmed.toLowerCase().includes('contact us') ||
+        trimmed.toLowerCase().includes('visit novograf') ||
+        (i === lines.length - 1 && trimmed.length < 80)) {
+      const ctaText = trimmed.replace(/^cta:\s*/i, '').replace(/\*\*/g, '');
+      html += `<div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-700);"><span class="copy-doc-cta">${ctaText}</span></div>`;
+      return;
+    }
+
+    // Divider line
+    if (trimmed === '---' || trimmed === '***') {
+      html += `<div class="copy-doc-divider"></div>`;
+      return;
+    }
+
+    // Regular paragraph — clean markdown
+    const cleaned = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--white);">$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+    html += `<div class="copy-doc-p">${cleaned}</div>`;
+  });
+
+  // Word count footer
+  html += `<div class="copy-doc-word-count">${wordCount} words</div>`;
+  html += `</div>`;
+
+  container.innerHTML = html;
+}
+
+function downloadCopyDoc() {
+  const text = document.getElementById('copy-text-en').textContent;
+  const title = document.getElementById('copy-output-title').textContent || 'Novograf copy';
+  if (!text || text === 'Writing...') return;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-').toLowerCase() + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function copyCopyOutput(id) {

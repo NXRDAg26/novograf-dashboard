@@ -473,6 +473,24 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
   .log-entry { grid-template-columns: 1fr 1fr; }
   .score-wrap { flex-direction: column; align-items: center; }
 }
+/* ── COMPETITION PANEL ── */
+.comp-sub-tabs { display:flex; gap:0; border-bottom:1px solid var(--gray-700); margin-bottom:1.5rem; }
+.comp-stab { font-family:'Poppins',sans-serif; font-size:12px; font-weight:500; color:var(--gray-400); background:none; border:none; border-bottom:2px solid transparent; padding:10px 18px; cursor:pointer; transition:all .2s; white-space:nowrap; margin-bottom:-1px; }
+.comp-stab:hover { color:var(--gray-200); }
+.comp-stab.active { color:var(--lime); border-bottom-color:var(--lime); }
+.comp-sub { display:none; }
+.comp-sub.active { display:block; }
+.comp-card { background:var(--gray-800); border:1px solid var(--gray-700); border-radius:var(--radius); padding:18px 20px; margin-bottom:14px; }
+.comp-card:hover { border-color:var(--gray-500); }
+.comp-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:10px; flex-wrap:wrap; }
+.comp-card-title { font-size:15px; font-weight:700; color:var(--white); }
+.comp-card-meta { font-size:11px; color:var(--gray-400); margin-top:2px; }
+.comp-card-body { font-size:13px; color:var(--gray-300); line-height:1.7; margin-bottom:12px; }
+.comp-weakness { background:var(--red-dim); border:1px solid rgba(248,113,113,0.2); border-radius:var(--radius-sm); padding:10px 14px; font-size:12px; color:var(--gray-200); line-height:1.6; margin-bottom:10px; }
+.comp-opportunity { background:rgba(200,240,38,0.06); border:1px solid rgba(200,240,38,0.2); border-radius:var(--radius-sm); padding:10px 14px; font-size:12px; color:var(--gray-200); line-height:1.6; margin-bottom:10px; }
+.comp-weakness-label { font-size:10px; font-weight:700; color:var(--negative); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+.comp-opportunity-label { font-size:10px; font-weight:700; color:var(--lime); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+
 /* ── FONT SIZE TOGGLE ── */
 body.large-text { font-size: 18px; }
 body.large-text .nav-tab { font-size: 14px; padding: 14px 20px; }
@@ -547,6 +565,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
     <button class="nav-tab" onclick="switchTab('scheduler', this)">Post scheduler</button>
     <button class="nav-tab" onclick="switchTab('gsc', this)">Search Console</button>
     <button class="nav-tab" onclick="switchTab('seo', this)">SEO</button>
+    <button class="nav-tab" onclick="switchTab('competition', this)">Competition</button>
     <button class="nav-tab" onclick="switchTab('copy', this)">Copywriter</button>
   </nav>
 
@@ -1577,6 +1596,249 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
   <!-- end seo panel -->
 
   <!-- ══════════════════════════════════════════════════════
+       COMPETITION PANEL
+  ══════════════════════════════════════════════════════ -->
+  <div class="panel" id="panel-competition">
+    <div class="container">
+
+      <div class="page-title">
+        <h1>Competition</h1>
+        <p>Competitive intelligence for Novograf — who is competing, their weaknesses, and how to beat them in search and on LinkedIn</p>
+        <div class="period-label"><span class="period-dot"></span>Eight direct competitors · UK signage and commercial interiors market · Keyword intelligence</div>
+      </div>
+
+      <div class="comp-sub-tabs">
+        <button class="comp-stab active" onclick="nvCompTab('intel',this)">Competitor intelligence</button>
+        <button class="comp-stab" onclick="nvCompTab('keywords',this)">Website keywords</button>
+        <button class="comp-stab" onclick="nvCompTab('counter',this)">Counter-post generator</button>
+      </div>
+
+      <!-- ── COMPETITOR INTELLIGENCE ── -->
+      <div id="nv-comp-intel" class="comp-sub active">
+
+        <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px;line-height:1.6;">Eight companies competing with Novograf for clients, search visibility, and LinkedIn audience in the UK commercial interiors, signage, and brand environments market. Each card identifies their specific weakness and the exact positioning Novograf should use.</p>
+
+        <!-- OCTINK -->
+        <div class="comp-card" style="border-color:rgba(248,113,113,0.3);">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">Octink</div><div class="comp-card-meta">Brentford, London · Part of Paragon Group / Service Graphics · Est. 1962 · 2,200+ followers</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/octink" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge" style="background:var(--red-dim);color:var(--negative);">Primary rival</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Now part of Paragon Group's Service Graphics division — a corporate acquisition that changed Octink from an independent operator to a division of a large group. Active in display graphics, hoardings, marketing suites, signage, exhibitions, and events. Strong in construction, property development, and live events sectors. 2,200 followers with content that is London-centric and product-showcase heavy — lots of project photos without the story behind them.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Corporate ownership shows in every post. Content is written by committee and filtered through brand guidelines. No employee ownership narrative, no Scottish or genuine national manufacturing story, no independence. Everything reads as marketing output from a large group rather than expertise from a team that cares.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>The full-service, employee-owned, nationwide brand environment partner story beats Octink's corporate announcement style every time. Buyers who have worked with large corporate suppliers and experienced the gap between promise and delivery are exactly who Novograf's independence message lands with. Target Octink's SEO gap on "commercial graphics Scotland" and "brand environments national rollout" — terms they do not own.</div>
+        </div>
+
+        <!-- IMAGE TECHNIQUE -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">Image Technique Ltd</div><div class="comp-card-meta">UK · Commercial signage and branded environments · 28+ years · In-house manufacture and install</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/image-technique-ltd" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Signage specialist</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Specialist commercial signage company with 28 years of experience and full in-house design through manufacture through installation. Clients include Halfords, Odeon, M&S, shopping centres, and leisure attractions. Regular LinkedIn content but uses emojis heavily — enthusiastic but not authoritative. Strong on wayfinding, built-up letters, illuminated signage, and digital screens.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Content reads as project announcements rather than industry insight. No thought leadership, no client story depth, no sustainability narrative. Positioned as a signage company rather than a brand environment partner — a narrower proposition that limits who they can win.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>The breadth of Novograf's surface solutions (floor graphics, wall graphics, surface emulation, replicas, Eikonic panels) is significantly wider than Image Technique's signage focus. Own the brand environment conversation, not just the signage conversation. Target their keyword gap on surface emulation, wall graphics, and floor graphics.</div>
+        </div>
+
+        <!-- XG GROUP -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">XG Group (Xtreme Graphics)</div><div class="comp-card-meta">Brackley, Northants · Large format print production · Est. 2001 · Exhibitions, events, retail, architecture</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/xtreme-graphics" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Print house</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Large format digital print production house with in-house dye sublimation, direct-to-fabric, and UV wide format printing up to 5m. Founded 2001, working across exhibitions, live events, architecture, construction, retail, and commercial interiors. Primarily a production supplier rather than a brand environment partner. LinkedIn output is modest and technical — focused on capability and specs.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Production-led positioning means they compete on capability and price rather than outcome and brand transformation. They print things — they do not manage brand environments. No installation, no project management, no national rollout capability.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>A brand environment project is never just a print job. Installation, project management, quality control across multiple sites, and ongoing brand compliance are what XG Group cannot offer. Lead with outcome, not equipment. Target keyword gaps around "brand environment installation UK" and "retail graphics project management".</div>
+        </div>
+
+        <!-- VINYLINE -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">Vinyline Signs and Graphics</div><div class="comp-card-meta">North West England · Signage specialists · 40+ years · Retail and supermarket focus</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/vinyline-signs-graphics" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Regional signage</span>
+            </div>
+          </div>
+          <div class="comp-card-body">North West signage specialists with over 40 years in business. Strong focus on supermarket and retail exterior signage, vehicle wraps, and shop front signage. Work with supermarket brands on consistent branded exterior programmes. Regional in operational footprint with low-volume LinkedIn presence and product-led content.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Strong regional presence but limited national rollout capability and no surface emulation or full brand environment story. Cannot deliver what Co-op, Greggs, or Sainsbury's need at national scale. No sustainability narrative, no employee ownership, no Scottish manufacturing heritage.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>National brand managers working with Vinyline on regional projects need a partner with UK-wide rollout capability. Novograf's track record with Co-op, Sainsbury's, and Greggs on national programmes is the proof. Target keyword gap on "national retail signage rollout" and "supermarket brand environment UK".</div>
+        </div>
+
+        <!-- HARVEY FIT OUT -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">Harvey Fit Out Group</div><div class="comp-card-meta">UK · £53m turnover · Top 20 UK fit-out contractor · Retail, leisure, hospitality · 40+ years</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/harvey-shopfitters-limited" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Structural contractor</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Major national fit-out contractor with £53 million turnover, 40+ years in business, consistently ranked among the UK's top 20 fit-out contractors. Delivers full structural fit-outs across retail, leisure, and hospitality. Professional LinkedIn presence with project-focused, corporate content. Messaging is contractor-led rather than brand-led.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Harvey does the structural fit-out — Novograf does the surface, graphics, and brand layer that makes the fit-out feel finished and on-brand. These are complementary not competing services in most cases. Harvey needs a graphics and surface partner for their projects.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>Be in Harvey's supply chain, not just competing against them. Position as the graphics and surface partner for Harvey fit-out programmes. The same brands they work with are Novograf clients. Being visible on LinkedIn in their space is the first step to being in their supply chain.</div>
+        </div>
+
+        <!-- KDM GROUP -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">KDM Group</div><div class="comp-card-meta">Dalgety Bay, Fife, Scotland · Turnkey fit-out and joinery · Est. 1998 · Tesco, Aldi, McDonald's, Amazon</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/kdm-shopfitting-limited" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge" style="background:rgba(200,240,38,0.08);color:var(--lime);">Fellow Scottish company</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Specialist interior fit-out and joinery contractor based in Dalgety Bay, Fife — a fellow Scottish company. Works with Tesco, Aldi, McDonald's, Amazon, and Primark on national programmes. Offices across UK and Europe. Their work is structural and joinery-led — doors, washrooms, ceilings, partitions, fixtures. LinkedIn content is professional, project-heavy, and community-focused.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>KDM does structure and joinery — they do not deliver the graphics, surface emulation, or visual brand layer. There is a genuine gap that is a genuine opportunity for Novograf to be their surface and graphics partner on Scottish and national fit-out programmes.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>Be the Scottish-based graphics and surface partner that completes KDM's programmes. Position as complementary capability — two Scottish businesses delivering the complete fit-out together. Content celebrating Scottish manufacturing capability in commercial interiors positions both companies and resonates with Scottish brands.</div>
+        </div>
+
+        <!-- EE SMITH -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">EE Smith Contracts</div><div class="comp-card-meta">Leicester · Prestige hotel and luxury interior fit-out · Est. 1897 · Peninsula, Lanesborough, Mandarin Oriental</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/eesmith-contracts" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Ultra-luxury end</span>
+            </div>
+          </div>
+          <div class="comp-card-body">One of the UK's most prestigious interior fit-out contractors, established 1897. Specialists in prestige hotels, luxury residences, and high-end commercial interiors. Clients include The Peninsula London, The Lanesborough, and Mandarin Oriental. Beautifully produced LinkedIn content with high-quality photography and aspirational tone. They operate at the ultra-luxury single-site end of the market.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>They operate at the ultra-luxury end — the opposite end of the scale from Novograf's national retail and hospitality rollout capability. EE Smith has never competed for the work Novograf wins and never will. They are not a competitor in practice — they are a different market entirely.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>Own the high-volume, brand-consistent, national rollout positioning that EE Smith never competes for. Position as the UK's leading brand environment delivery partner for national retail and hospitality chains — a completely different value proposition that serves a different and much larger client base.</div>
+        </div>
+
+        <!-- PACY AND WHEATLEY -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <div><div class="comp-card-title">Pacy and Wheatley Interiors</div><div class="comp-card-meta">Doncaster · Shopfitting and interior fit-out · Est. 1968 · Tesco, Holiday Inn, Marriott, Aldi, Magnet</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <a href="https://www.linkedin.com/company/pacy-wheatley-interiors" target="_blank" class="copy-btn" style="text-decoration:none;">LinkedIn ↗</a>
+              <span class="chart-badge">Shopfitting contractor</span>
+            </div>
+          </div>
+          <div class="comp-card-body">Over 50 years of shopfitting and interior fit-out experience. Works with Tesco's convenience store rollout programme, Holiday Inn, Marriott, Aldi, and Magnet on national programmes. Covers retail, healthcare, hospitality, education, and commercial sectors. Strong on multi-site consistency and project management. Modest LinkedIn presence, project-focused.</div>
+          <div class="comp-weakness"><div class="comp-weakness-label">Their weakness</div>Pacy and Wheatley deliver the structural shopfit — not the visual brand layer. Graphics, surface emulation, wayfinding, and printed environments are not in their scope. The same brands they work with are Novograf clients — Tesco, Holiday Inn, Marriott. There is a direct supply chain opportunity.</div>
+          <div class="comp-opportunity"><div class="comp-opportunity-label">Novograf's opportunity</div>Be the brand environment subcontractor on Pacy and Wheatley programmes. Position as the ideal graphics and surface partner for multi-site shopfitting programmes — consistent quality, predictable delivery, national installation capability, ISO 9001 accredited. Being visible on LinkedIn in their space is the first step.</div>
+        </div>
+
+      </div>
+
+      <!-- ── WEBSITE KEYWORDS ── -->
+      <div id="nv-comp-keywords" class="comp-sub" style="display:none;">
+
+        <!-- AUTH GATE -->
+        <div id="nv-kw-auth-prompt" style="display:none;background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:2.5rem;text-align:center;margin-bottom:1.5rem;">
+          <div style="font-size:28px;margin-bottom:12px;">🔍</div>
+          <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:8px;">Sign in to see your real keyword data</div>
+          <div style="font-size:13px;color:var(--gray-400);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">Pulls the actual search queries people use to find novograf.co.uk from Google Search Console — then analyses them against Octink, Image Technique, XG Group, and Vinyline.</div>
+          <a href="/auth/login" class="login-btn" style="display:inline-flex;">Sign in with Google</a>
+        </div>
+
+        <!-- KEYWORD CONTENT -->
+        <div id="nv-kw-content" style="display:none;">
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;" id="nv-kw-metrics"></div>
+
+          <div class="chart-grid-2" style="margin-bottom:16px;">
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div><div class="chart-title">Keywords novograf.co.uk is found for</div><div class="chart-subtitle">Last 90 days — sorted by impressions</div></div>
+                <div class="chart-badge lime" id="nv-kw-period">Loading...</div>
+              </div>
+              <div id="nv-kw-table-wrap"><div class="loading"><div class="spinner"></div> Fetching keyword data...</div></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div><div class="chart-title">Pages generating search visibility</div><div class="chart-subtitle">Which pages are getting impressions</div></div>
+              </div>
+              <div id="nv-kw-pages-wrap"><div class="loading"><div class="spinner"></div></div></div>
+            </div>
+
+          </div>
+
+          <div class="chart-card" style="margin-bottom:16px;">
+            <div class="chart-header">
+              <div><div class="chart-title">Competitive keyword analysis</div><div class="chart-subtitle">AI analysis of your real keywords vs Octink, Image Technique, XG Group, Vinyline — what to do with each one</div></div>
+              <button class="add-btn" onclick="runNvKwAnalysis()" id="nv-kw-analyse-btn" style="font-size:12px;padding:8px 16px;">Analyse my keywords</button>
+            </div>
+            <p style="font-size:13px;color:var(--gray-400);margin-bottom:14px;line-height:1.6;">Once keywords load above, click Analyse to get a competitive breakdown — which terms competitors currently own, where Novograf can outrank them, and exactly what content to create for each opportunity.</p>
+            <div id="nv-kw-analysis-loading" style="display:none;" class="loading"><div class="spinner"></div> Analysing keywords vs competition...</div>
+            <div class="out-text" id="nv-kw-analysis-output" style="display:none;font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;margin-top:8px;"></div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div><div class="chart-title">Keyword gaps — what Novograf should target next</div><div class="chart-subtitle">High-value terms competitors rank for that Novograf is missing</div></div>
+              <button class="add-btn" onclick="runNvKwGaps()" id="nv-kw-gaps-btn" style="font-size:12px;padding:8px 16px;">Find gaps</button>
+            </div>
+            <div id="nv-kw-gaps-loading" style="display:none;" class="loading"><div class="spinner"></div> Identifying gaps...</div>
+            <div id="nv-kw-gaps-output" style="display:none;"><div class="out-text" id="nv-kw-gaps-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;margin-top:8px;"></div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── COUNTER-POST GENERATOR ── -->
+      <div id="nv-comp-counter" class="comp-sub" style="display:none;">
+        <div class="chart-card" style="margin-bottom:16px;">
+          <div class="chart-header">
+            <div><div class="chart-title">Counter-post generator</div><div class="chart-subtitle">Generate a Novograf LinkedIn post that counters a competitor's content angle</div></div>
+            <div class="chart-badge lime">AI powered</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+            <div class="form-group">
+              <label class="form-label">Competitor to counter</label>
+              <select class="form-select" id="nv-counter-comp">
+                <option value="octink">Octink (Service Graphics / Paragon Group)</option>
+                <option value="image">Image Technique Ltd</option>
+                <option value="xg">XG Group (Xtreme Graphics)</option>
+                <option value="vinyline">Vinyline Signs and Graphics</option>
+                <option value="harvey">Harvey Fit Out Group</option>
+                <option value="kdm">KDM Group</option>
+                <option value="eesmith">EE Smith Contracts</option>
+                <option value="pacy">Pacy and Wheatley Interiors</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Their content angle to counter</label>
+              <select class="form-select" id="nv-counter-angle">
+                <option>Project completion announcement</option>
+                <option>New client win or award</option>
+                <option>Product launch or capability post</option>
+                <option>Sustainability or ESG claim</option>
+                <option>Trade show or event appearance</option>
+                <option>Team or culture post</option>
+                <option>Before and after project post</option>
+                <option>National rollout or scale post</option>
+                <option>Certification or accreditation</option>
+              </select>
+            </div>
+          </div>
+          <button class="add-btn" onclick="runNvCounter()" id="nv-counter-btn">Generate counter-post</button>
+        </div>
+        <div id="nv-counter-loading" style="display:none;" class="loading"><div class="spinner"></div> Writing post...</div>
+        <div id="nv-counter-output" style="display:none;">
+          <div class="chart-card"><div class="out-text" id="nv-counter-text" style="font-size:13px;color:var(--gray-200);line-height:1.8;white-space:pre-wrap;"></div></div>
+          <div style="margin-top:8px;text-align:right;"><button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('nv-counter-text').textContent)">Copy post</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end competition panel -->
+
+  <!-- ══════════════════════════════════════════════════════
        COPYWRITER PANEL
   ══════════════════════════════════════════════════════ -->
   <div class="panel" id="panel-copy">
@@ -1795,7 +2057,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
 function switchTab(tab, btn) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  ['welcome','analytics','citation','linkedin','scheduler','gsc','seo','copy'].forEach(p => {
+  ['welcome','analytics','citation','linkedin','scheduler','gsc','seo','competition','copy'].forEach(p => {
     document.getElementById('panel-'+p).classList.toggle('active', p === tab);
   });
   if (tab === 'linkedin') {
@@ -1805,6 +2067,7 @@ function switchTab(tab, btn) {
   if (tab === 'scheduler') { renderCalendar(); renderPostList(); }
   if (tab === 'seo') { initTechChecklist(); }
   if (tab === 'gsc') { loadGscData(); }
+  if (tab === 'competition') { /* handled by compTab sub-nav */ }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -3549,6 +3812,264 @@ function updateWelcomeScore() {
   if (num) num.textContent = score;
   const msgs = [[100,'Excellent — fully optimised'],[90,'Very strong digital presence'],[80,'Strong — keep the momentum'],[70,'Good foundations, room to grow'],[60,'Solid start — complete the actions'],[0,'Getting started — work through the actions']];
   if (label) label.textContent = (msgs.find(([min]) => score >= min) || msgs[msgs.length-1])[1];
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NOVOGRAF COMPETITION PANEL
+══════════════════════════════════════════════════════════════ */
+
+let nvGscRows = [];
+
+function nvCompTab(id, btn) {
+  document.querySelectorAll('.comp-stab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.comp-sub').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  btn.classList.add('active');
+  const el = document.getElementById('nv-comp-' + id);
+  if (el) { el.classList.add('active'); el.style.display = 'block'; }
+  if (id === 'keywords') loadNvKwData();
+}
+
+async function loadNvKwData() {
+  try {
+    const r = await fetch('/auth/status');
+    const j = await r.json();
+    if (!j.authenticated) {
+      document.getElementById('nv-kw-auth-prompt').style.display = 'block';
+      document.getElementById('nv-kw-content').style.display = 'none';
+      return;
+    }
+  } catch(e) {
+    document.getElementById('nv-kw-auth-prompt').style.display = 'block';
+    return;
+  }
+  document.getElementById('nv-kw-auth-prompt').style.display = 'none';
+  document.getElementById('nv-kw-content').style.display = 'block';
+
+  const [ov, qr, pg] = await Promise.allSettled([
+    fetch('/api/gsc/overview').then(r => r.json()),
+    fetch('/api/gsc/queries').then(r => r.json()),
+    fetch('/api/gsc/pages').then(r => r.json())
+  ]);
+
+  renderNvKwOverview(ov.value);
+  renderNvKwTable(qr.value);
+  renderNvKwPages(pg.value);
+}
+
+function nvFmt(n) { if (!n && n!==0) return '—'; return n >= 1000 ? (n/1000).toFixed(1)+'k' : Math.round(n).toString(); }
+function nvPct(n) { return n ? (n*100).toFixed(1)+'%' : '0%'; }
+function nvPos(n) { return n ? n.toFixed(1) : '—'; }
+
+function renderNvKwOverview(data) {
+  const el = document.getElementById('nv-kw-metrics');
+  if (!data?.success) { el.innerHTML = `<div class="metric-card" style="grid-column:1/-1;color:var(--negative);font-size:13px;">${data?.error || 'Could not load Search Console data.'}</div>`; return; }
+  const c = data.current;
+  const badge = document.getElementById('nv-kw-period');
+  if (badge && data.period) badge.textContent = data.period.startDate + ' to ' + data.period.endDate;
+  el.innerHTML = [
+    { label:'Clicks', val: nvFmt(c.clicks) },
+    { label:'Impressions', val: nvFmt(c.impressions) },
+    { label:'CTR', val: nvPct(c.ctr) },
+    { label:'Avg position', val: nvPos(c.position) }
+  ].map(m => `<div class="metric-card"><div class="metric-label">${m.label}</div><div class="metric-val">${m.val}</div></div>`).join('');
+}
+
+function renderNvKwTable(data) {
+  const wrap = document.getElementById('nv-kw-table-wrap');
+  if (!data?.success || !data.rows?.length) { wrap.innerHTML = '<div style="font-size:13px;color:var(--gray-400);padding:8px 0;">No keyword data found. Make sure novograf.co.uk is verified in Search Console with sufficient data.</div>'; return; }
+  nvGscRows = data.rows;
+  const max = data.rows[0].impressions;
+  wrap.innerHTML = `<table style="width:100%;border-collapse:collapse;">
+    <thead><tr style="border-bottom:1px solid var(--gray-700);">
+      <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">Keyword</th>
+      <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 8px 10px;text-align:right;">Impr.</th>
+      <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 8px 10px;text-align:right;">Clicks</th>
+      <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 8px 10px;text-align:right;">CTR</th>
+      <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:right;">Pos.</th>
+    </tr></thead>
+    <tbody>${data.rows.slice(0,40).map(r => {
+      const pos = r.position;
+      const posCol = pos <= 3 ? '#4ade80' : pos <= 10 ? '#f59e0b' : '#f87171';
+      const barW = Math.round((r.impressions / max) * 100);
+      return `<tr style="border-bottom:1px solid var(--gray-700);">
+        <td style="padding:8px 0;">
+          <div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:3px;">${r.keys[0]}</div>
+          <div style="height:4px;background:var(--gray-700);border-radius:2px;overflow:hidden;"><div style="width:${barW}%;height:100%;background:var(--lime);border-radius:2px;"></div></div>
+        </td>
+        <td style="font-size:12px;color:var(--gray-300);text-align:right;padding:8px 8px;">${nvFmt(r.impressions)}</td>
+        <td style="font-size:12px;color:var(--gray-300);text-align:right;padding:8px 8px;">${nvFmt(r.clicks)}</td>
+        <td style="font-size:12px;color:var(--gray-300);text-align:right;padding:8px 8px;">${nvPct(r.ctr)}</td>
+        <td style="text-align:right;padding:8px 0;"><span style="font-size:11px;font-weight:700;padding:2px 6px;border-radius:6px;background:${posCol}22;color:${posCol};">${nvPos(pos)}</span></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+function renderNvKwPages(data) {
+  const wrap = document.getElementById('nv-kw-pages-wrap');
+  if (!data?.success || !data.rows?.length) { wrap.innerHTML = '<div style="font-size:13px;color:var(--gray-400);">No page data.</div>'; return; }
+  const max = data.rows[0].impressions;
+  wrap.innerHTML = data.rows.map(r => {
+    const slug = r.keys[0].replace('https://novograf.co.uk','').replace('https://www.novograf.co.uk','') || '/';
+    const barW = Math.round((r.impressions / max) * 100);
+    return `<div style="padding:9px 0;border-bottom:1px solid var(--gray-700);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <div style="flex:1;font-size:12px;color:var(--gray-200);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.keys[0]}">${slug}</div>
+        <span style="font-size:11px;color:var(--gray-400);flex-shrink:0;">${nvFmt(r.impressions)} impr</span>
+        <span style="font-size:11px;color:var(--gray-300);flex-shrink:0;">${nvFmt(r.clicks)} clicks</span>
+      </div>
+      <div style="height:4px;background:var(--gray-700);border-radius:2px;overflow:hidden;"><div style="width:${barW}%;height:100%;background:var(--lime);border-radius:2px;"></div></div>
+    </div>`;
+  }).join('');
+}
+
+async function runNvKwAnalysis() {
+  if (!nvGscRows.length) { alert('Wait for keywords to load first.'); return; }
+  const btn = document.getElementById('nv-kw-analyse-btn');
+  const loading = document.getElementById('nv-kw-analysis-loading');
+  const output = document.getElementById('nv-kw-analysis-output');
+  btn.disabled = true; btn.textContent = 'Analysing...';
+  loading.style.display = 'flex'; output.style.display = 'none';
+
+  const kwList = nvGscRows.slice(0,30).map(r =>
+    `${r.keys[0]} (${nvFmt(r.impressions)} impressions, position ${nvPos(r.position)}, ${nvPct(r.ctr)} CTR)`
+  ).join('\n');
+
+  const prompt = `You are an expert SEO strategist for NXRD working on Novograf (novograf.co.uk), a UK-based employee-owned signage, graphics, and surface solutions company in East Kilbride, Scotland. Primary competitors: Octink (Service Graphics/Paragon Group), Image Technique Ltd, XG Group (Xtreme Graphics), Vinyline Signs and Graphics, Harvey Fit Out Group, KDM Group, EE Smith Contracts, and Pacy and Wheatley Interiors.
+
+Actual keywords people search to find novograf.co.uk (from Google Search Console, last 90 days):
+
+${kwList}
+
+Analyse these real keywords and provide:
+
+1. WHAT THESE KEYWORDS TELL US
+What do these searches reveal about who is finding Novograf and why? What intent do they show?
+
+2. COMPETITIVE POSITIONING ON EACH KEY TERM
+For the top 10 keywords by impressions — which competitors (Octink, Image Technique, XG Group, Vinyline) currently dominate each term and what Novograf needs to do to outrank them.
+
+3. QUICK WINS — keywords sitting in positions 11 to 20 where Novograf can reach page 1 within 60 to 90 days. Exact content improvement needed for each.
+
+4. HIGH-VOLUME GAPS — important UK commercial graphics and signage terms that are NOT in this list but should be. Terms where Octink or Image Technique get traffic that Novograf is invisible for.
+
+5. EMPLOYEE OWNERSHIP AND SCOTLAND OPPORTUNITY — keywords where Novograf's unique positioning (employee-owned, Scottish manufacturer, 35 years) could own entirely unchallenged search territory.
+
+Be specific to Novograf's actual services. No generic advice.`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, systemPrompt: 'You are an expert SEO strategist for the UK commercial interiors and signage market. Be direct, specific, and commercially focused. Every recommendation must be actionable within 30 to 90 days.' })
+    });
+    const data = await res.json();
+    output.textContent = data.content || data.text || '';
+    output.style.display = 'block';
+  } catch(e) {
+    output.textContent = 'Error generating analysis. Please try again.';
+    output.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Analyse my keywords';
+    loading.style.display = 'none';
+  }
+}
+
+async function runNvKwGaps() {
+  const btn = document.getElementById('nv-kw-gaps-btn');
+  const loading = document.getElementById('nv-kw-gaps-loading');
+  const output = document.getElementById('nv-kw-gaps-output');
+  const text = document.getElementById('nv-kw-gaps-text');
+  btn.disabled = true; btn.textContent = 'Finding gaps...';
+  loading.style.display = 'flex'; output.style.display = 'none';
+
+  const current = nvGscRows.length
+    ? 'Keywords Novograf currently appears for: ' + nvGscRows.slice(0,20).map(r => r.keys[0]).join(', ')
+    : 'No current keyword data loaded.';
+
+  const prompt = `You are an expert SEO strategist for NXRD working on Novograf (novograf.co.uk).
+
+${current}
+
+Identify the most important keyword gaps — high-value UK commercial graphics and signage search terms that Novograf should rank for but does NOT appear for. Focus on:
+
+1. HIGH-VOLUME COMPETITOR TERMS — specific keywords Octink, Image Technique, XG Group, or Vinyline rank for in UK search results that Novograf is completely absent from
+
+2. SURFACE EMULATION AND EIKONIC GAPS — important terms around surface emulation, tile-effect wall panels, replica finishes, and sustainable print where there is essentially no competition and Novograf could own the space
+
+3. SECTOR-SPECIFIC GAPS — keyword clusters around retail wall graphics, hospitality floor graphics, healthcare wayfinding, office brand environments, rail station graphics, bank branch signage — where Novograf has the capability but no visible content
+
+4. NATIONAL ROLLOUT TERMS — multi-site brand environment, national brand rollout, retail brand consistency, national signage contract — high-value commercial terms where Novograf's Co-op, Greggs, Sainsbury's track record would rank well
+
+5. SCOTLAND AND EMPLOYEE OWNERSHIP — keywords where Novograf can own unchallenged territory: commercial graphics East Kilbride, employee-owned signage company, Scotland brand environment
+
+For each gap: the keyword, estimated monthly UK searches, which competitor (if any) currently owns it, and the specific page Novograf needs to create.`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, systemPrompt: 'You are an expert UK commercial interiors and signage SEO strategist. Be specific, commercially focused, and actionable.' })
+    });
+    const data = await res.json();
+    text.textContent = data.content || data.text || '';
+    output.style.display = 'block';
+  } catch(e) {
+    text.textContent = 'Error. Please try again.';
+    output.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Find gaps';
+    loading.style.display = 'none';
+  }
+}
+
+const NV_COMP_PROFILES = {
+  octink: 'Octink — now part of Paragon Group/Service Graphics division. Corporate-owned display graphics, hoardings, exhibitions. 2,200 LinkedIn followers. Their weakness: corporate committee tone, no independence, no employee ownership story.',
+  image: 'Image Technique Ltd — 28 years UK commercial signage. Clients include Halfords, Odeon, M&S. Strong on illuminated signs, wayfinding, built-up letters. Their weakness: project announcement style content, no thought leadership, narrower proposition than Novograf.',
+  xg: 'XG Group (Xtreme Graphics) — large format print production house. Good print capability but no installation, no project management, no national rollout. Competes on price and capability not outcome.',
+  vinyline: 'Vinyline Signs and Graphics — North West regional specialists. 40+ years. Strong on supermarket exterior signage. Their weakness: regional footprint, no national rollout, no surface emulation or brand environment story.',
+  harvey: 'Harvey Fit Out Group — £53m structural fit-out contractor. Top 20 UK. Delivers the structural work, not the surface and graphics layer. Potential supply chain partner more than competitor.',
+  kdm: 'KDM Group — Scottish fit-out and joinery contractor from Dalgety Bay, Fife. Works with Tesco, Aldi, McDonald\'s. Structural and joinery focus only — no graphics or surface solutions capability.',
+  eesmith: 'EE Smith Contracts — ultra-luxury hotel and residential fit-out. Peninsula, Lanesborough, Mandarin Oriental. Opposite end of market from Novograf — single prestige sites, not national rollouts.',
+  pacy: 'Pacy and Wheatley Interiors — shopfitting and fit-out from Doncaster. 50+ years. Tesco, Holiday Inn, Marriott. Structural shopfit only — no graphics, surface emulation, or brand environment capability.'
+};
+
+async function runNvCounter() {
+  const comp = document.getElementById('nv-counter-comp').value;
+  const angle = document.getElementById('nv-counter-angle').value;
+  const btn = document.getElementById('nv-counter-btn');
+  const loading = document.getElementById('nv-counter-loading');
+  const output = document.getElementById('nv-counter-output');
+  btn.disabled = true; btn.textContent = 'Writing...';
+  loading.style.display = 'flex'; output.style.display = 'none';
+
+  const compProfile = NV_COMP_PROFILES[comp] || NV_COMP_PROFILES.octink;
+
+  const prompt = `Competitor: ${compProfile}
+
+Their content angle: ${angle}
+
+Write a LinkedIn counter-post for Novograf that responds to this competitor's angle without naming them directly. Position Novograf's employee ownership, 35-year heritage, national rollout capability, and Scottish manufacturing base as the differentiator. Make the reader think: there is a better, more accountable partner out there than the corporate option.
+
+Under 270 words. Strong opening. Commercially specific. End with a soft CTA. No hyphens. No emojis.`;
+
+  const sysPrompt = `You are an expert LinkedIn content strategist working for NXRD on the Novograf account. Novograf is a UK-based employee-owned signage, graphics, and surface solutions company in East Kilbride, Scotland. Over 35 years in business. National rollout capability. Trusted by Co-op, Greggs, Sainsbury's, NatWest, M&S, Travelodge and more. ISO 9001 and ISO 14001 accredited. Own Eikonic tile-effect wall panels. Write direct, confident, plain-English UK copy. No hyphens. No emojis.`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, systemPrompt: sysPrompt })
+    });
+    const data = await res.json();
+    document.getElementById('nv-counter-text').textContent = data.content || data.text || '';
+    output.style.display = 'block';
+  } catch(e) {
+    document.getElementById('nv-counter-text').textContent = 'Error. Please try again.';
+    output.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Generate counter-post';
+    loading.style.display = 'none';
+  }
 }
 
 function switchTabFromWelcome(tab) {

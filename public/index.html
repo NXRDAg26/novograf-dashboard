@@ -386,8 +386,50 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
   .log-entry { grid-template-columns: 1fr 1fr; }
   .score-wrap { flex-direction: column; align-items: center; }
 }
+/* ── FONT SIZE TOGGLE ── */
+body.large-text { font-size: 18px; }
+body.large-text .nav-tab { font-size: 14px; padding: 14px 20px; }
+body.large-text .chart-title { font-size: 17px; }
+body.large-text .chart-subtitle { font-size: 14px; }
+body.large-text .chart-badge { font-size: 13px; }
+body.large-text .metric-val { font-size: 34px; }
+body.large-text .metric-label { font-size: 13px; }
+body.large-text .metric-delta { font-size: 13px; }
+body.large-text .form-label { font-size: 13px; }
+body.large-text .form-input, body.large-text .form-select, body.large-text textarea, body.large-text select, body.large-text input { font-size: 15px; padding: 10px 14px; }
+body.large-text .add-btn { font-size: 14px; padding: 10px 20px; }
+body.large-text .header-btn { font-size: 13px; }
+body.large-text .out-text { font-size: 16px; line-height: 1.9; }
+body.large-text .page-title h1 { font-size: 26px; }
+body.large-text .page-title p { font-size: 16px; }
+body.large-text .section-title { font-size: 13px; }
+body.large-text .copy-btn { font-size: 13px; }
+body.large-text .seo-stab { font-size: 14px; }
+body.large-text .gsc-action-title { font-size: 16px; }
+body.large-text .gsc-action-desc { font-size: 14px; }
+body.large-text .gsc-action-why { font-size: 13px; }
+body.large-text .gsc-row-label { font-size: 14px; }
+body.large-text .gsc-row-num { font-size: 13px; }
+body.large-text .gsc-opp-query { font-size: 14px; }
+body.large-text .gsc-opp-meta { font-size: 13px; }
+body.large-text .gsc-opp-fix { font-size: 13px; }
+body.large-text .welcome-action-title { font-size: 16px; }
+body.large-text .welcome-action-desc { font-size: 14px; }
+body.large-text .welcome-tool-btn { font-size: 14px; }
+body.large-text .bf-action-title { font-size: 16px; }
+body.large-text .seo-issue-title { font-size: 14px; }
+body.large-text .seo-issue-desc { font-size: 13px; }
+body.large-text .tech-item-title { font-size: 14px; }
+body.large-text .tech-item-desc { font-size: 13px; }
+body.large-text .action-title { font-size: 16px; }
+body.large-text .action-desc { font-size: 14px; }
+body.large-text .card-title { font-size: 17px; }
+body.large-text .card-body { font-size: 15px; }
+body.large-text .copy-client-tile .cct-name { font-size: 16px; }
+body.large-text .copy-format-tile .cft-label { font-size: 14px; }
+body.large-text .copy-output-text { font-size: 16px; line-height: 1.9; }
+body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var(--lime); border-color: var(--lime); }
 </style>
-</head>
 <body>
 
 <!-- DASHBOARD — always visible, no login gate -->
@@ -404,6 +446,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
       <button class="header-btn" id="header-signin-btn" style="display:none;" onclick="window.location='/auth/login'">Sign in for Analytics</button>
       <button class="header-btn" id="header-refresh-btn" style="display:none;" onclick="loadAll()">Refresh</button>
       <button class="header-btn logout" id="header-signout-btn" style="display:none;" onclick="logout()">Sign out</button>
+      <button class="header-btn" id="font-toggle-btn" onclick="toggleFontSize()" title="Toggle text size" style="font-size:16px;padding:6px 10px;">A</button>
     </div>
   </header>
 
@@ -1689,6 +1732,22 @@ function fmt(n){if(!n)return'0';if(n>=1000000)return(n/1000000).toFixed(1)+'m';i
 function fmtDur(s){const m=Math.floor(s/60),sec=Math.round(s%60);return m+'m '+sec+'s';}
 function pct(a,b){if(!b)return null;return Math.round(((a-b)/b)*100);}
 function deltaHtml(c,p){const d=pct(c,p);if(d===null)return'';const cls=d>=0?'up':'down';return`<span class="metric-delta ${cls}">${d>=0?'↑':'↓'} ${Math.abs(d)}%</span>`;}
+
+// ── FONT SIZE TOGGLE ──────────────────────────────────────────
+function toggleFontSize() {
+  const isLarge = document.body.classList.toggle('large-text');
+  localStorage.setItem('novograf_font_large', isLarge ? '1' : '0');
+  const btn = document.getElementById('font-toggle-btn');
+  if (btn) { btn.style.color = isLarge ? 'var(--lime)' : ''; btn.style.borderColor = isLarge ? 'var(--lime)' : ''; }
+}
+
+function applyFontSize() {
+  if (localStorage.getItem('novograf_font_large') === '1') {
+    document.body.classList.add('large-text');
+    const btn = document.getElementById('font-toggle-btn');
+    if (btn) { btn.style.color = 'var(--lime)'; btn.style.borderColor = 'var(--lime)'; }
+  }
+}
 
 async function checkAuth(){
   try {
@@ -3190,6 +3249,7 @@ function sendCopyToScheduler() {
 document.addEventListener('DOMContentLoaded', () => {
   initCopywriter();
   initWelcome();
+  applyFontSize();
 });
 
 /* ══════════════════════════════════════════════════════════════

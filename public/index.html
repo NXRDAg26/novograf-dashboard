@@ -13,7 +13,7 @@
 :root {
   --black: #0a0a0a; --white: #ffffff; --lime: #c8f026; --lime-dim: #a8cc10;
   --gray-900: #111111; --gray-800: #1a1a1a; --gray-700: #242424; --gray-600: #2e2e2e;
-  --gray-500: #3d3d3d; --gray-400: #666666; --gray-300: #999999; --gray-200: #cccccc;
+  --gray-500: #3d3d3d; --gray-400: #a0a0a0; --gray-300: #d4d4d4; --gray-200: #ebebeb;
   --positive: #4ade80; --negative: #f87171; --radius: 12px; --radius-sm: 8px;
 }
 
@@ -32,17 +32,17 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .header-logo { display: flex; align-items: center; gap: 12px; }
 .header-logo img { height: 28px; width: auto; }
 .logo-text { font-size: 13px; font-weight: 600; color: var(--white); letter-spacing: 0.5px; }
-.logo-sub { font-size: 11px; color: var(--gray-400); font-weight: 400; }
+.logo-sub { font-size: 11px; color: var(--gray-200); font-weight: 400; }
 .header-right { display: flex; align-items: center; gap: 12px; }
-.last-updated { font-size: 11px; color: var(--gray-400); }
+.last-updated { font-size: 11px; color: var(--gray-200); }
 .header-btn { background: var(--gray-700); border: 1px solid var(--gray-600); color: var(--gray-200); font-family: 'Poppins', sans-serif; font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: all .2s; }
 .header-btn:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
-.header-btn.logout { background: transparent; color: var(--gray-400); border-color: var(--gray-600); }
+.header-btn.logout { background: transparent; color: var(--gray-200); border-color: var(--gray-600); }
 .header-btn.logout:hover { background: var(--negative); color: var(--white); border-color: var(--negative); }
 
 /* ── NAV TABS ── */
 .nav-tabs { background: var(--black); border-bottom: 1px solid var(--gray-700); padding: 0 2rem; display: flex; gap: 0; }
-.nav-tab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-400); background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 18px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.nav-tab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-200); background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 18px; cursor: pointer; transition: all .2s; white-space: nowrap; }
 .nav-tab:hover { color: var(--gray-200); }
 .nav-tab.active { color: var(--lime); border-bottom-color: var(--lime); }
 /* ── IFRAME PANEL ── */
@@ -50,15 +50,15 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
 /* ── SCHEDULER ── */
 .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 20px; }
-.cal-header-cell { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; text-align: center; padding-bottom: 6px; letter-spacing: 0.5px; }
+.cal-header-cell { font-size: 10px; font-weight: 600; color: var(--gray-200); text-transform: uppercase; text-align: center; padding-bottom: 6px; letter-spacing: 0.5px; }
 .cal-day { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); min-height: 80px; padding: 6px; cursor: pointer; transition: border-color .15s; position: relative; }
 .cal-day:hover { border-color: var(--lime); }
 .cal-day.today { border-color: var(--lime); }
 .cal-day.other-month { opacity: 0.35; }
-.cal-day-num { font-size: 11px; font-weight: 600; color: var(--gray-300); margin-bottom: 4px; }
+.cal-day-num { font-size: 11px; font-weight: 600; color: var(--gray-200); margin-bottom: 4px; }
 .cal-day.today .cal-day-num { color: var(--lime); }
 .cal-post-chip { font-size: 9px; padding: 2px 5px; border-radius: 3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; cursor: pointer; }
-.chip-draft { background: rgba(102,102,102,.3); color: var(--gray-300); }
+.chip-draft { background: rgba(102,102,102,.3); color: var(--gray-200); }
 .chip-scheduled { background: rgba(200,240,38,.15); color: var(--lime); }
 .chip-published { background: rgba(74,222,128,.15); color: var(--positive); }
 
@@ -67,7 +67,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .modal { background: var(--gray-800); border: 1px solid var(--gray-600); border-radius: var(--radius); padding: 1.75rem; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
 .modal-title { font-size: 15px; font-weight: 600; color: var(--white); }
-.modal-close { background: none; border: none; color: var(--gray-400); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; }
+.modal-close { background: none; border: none; color: var(--gray-200); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; }
 .modal-close:hover { color: var(--white); }
 .sched-textarea { width: 100%; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 13px; padding: 10px 12px; resize: vertical; outline: none; line-height: 1.6; min-height: 120px; }
 .sched-textarea:focus { border-color: var(--lime); }
@@ -77,9 +77,9 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .post-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); padding: 12px 14px; display: flex; align-items: flex-start; gap: 12px; }
 .post-card-body { flex: 1; min-width: 0; }
 .post-card-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.post-card-meta { font-size: 11px; color: var(--gray-400); }
+.post-card-meta { font-size: 11px; color: var(--gray-200); }
 .post-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.icon-btn { background: none; border: 1px solid var(--gray-600); border-radius: 5px; color: var(--gray-400); font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'Poppins',sans-serif; transition: all .15s; }
+.icon-btn { background: none; border: 1px solid var(--gray-600); border-radius: 5px; color: var(--gray-200); font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'Poppins',sans-serif; transition: all .15s; }
 .icon-btn:hover { border-color: var(--lime); color: var(--lime); }
 .icon-btn.del:hover { border-color: var(--negative); color: var(--negative); }
 .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
@@ -90,7 +90,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .dot-draft { background: var(--gray-400); }
 .dot-scheduled { background: var(--lime); }
 .dot-published { background: var(--positive); }
-.content-link-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--gray-300); margin-top: 4px; }
+.content-link-chip { display: inline-flex; align-items: center; gap: 4px; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--gray-200); margin-top: 4px; }
 .format-badge { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 600; margin-right: 4px; }
 .fmt-carousel { background: rgba(59,130,246,.2); color: #60a5fa; }
 .fmt-video { background: rgba(249,115,22,.2); color: #fb923c; }
@@ -105,23 +105,23 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
 .page-title { margin-bottom: 2rem; }
 .page-title h1 { font-size: 22px; font-weight: 600; }
-.page-title p { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
-.period-label { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--gray-300); margin-top: 8px; }
+.page-title p { font-size: 13px; color: var(--gray-200); margin-top: 4px; }
+.period-label { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--gray-200); margin-top: 8px; }
 .period-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
-.section-title { font-size: 13px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center; gap: 8px; }
+.section-title { font-size: 13px; font-weight: 600; color: var(--gray-200); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center; gap: 8px; }
 .section-title::after { content: ''; flex: 1; height: 1px; background: var(--gray-700); }
 
 /* ── METRIC CARDS ── */
 .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
 .metric-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.25rem; }
 .metric-card.highlight { border-color: var(--lime); }
-.metric-label { font-size: 11px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.metric-label { font-size: 11px; color: var(--gray-200); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
 .metric-value { font-size: 28px; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 8px; }
 .metric-compare { display: flex; align-items: center; gap: 6px; font-size: 11px; }
 .metric-delta { display: flex; align-items: center; gap: 3px; font-weight: 600; font-size: 11px; }
 .metric-delta.up { color: var(--positive); }
 .metric-delta.down { color: var(--negative); }
-.metric-prev { color: var(--gray-400); }
+.metric-prev { color: var(--gray-200); }
 
 /* ── CHART CARDS ── */
 .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -129,8 +129,8 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .chart-card.wide { grid-column: span 2; }
 .chart-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
 .chart-title { font-size: 14px; font-weight: 600; color: var(--white); }
-.chart-subtitle { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-.chart-badge { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--gray-300); }
+.chart-subtitle { font-size: 11px; color: var(--gray-200); margin-top: 2px; }
+.chart-badge { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: 20px; padding: 3px 10px; font-size: 10px; color: var(--gray-200); }
 .chart-badge.lime { background: rgba(200,240,38,.1); border-color: rgba(200,240,38,.3); color: var(--lime); }
 
 /* ── CHANNELS ── */
@@ -140,13 +140,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .channel-name { font-size: 12px; color: var(--gray-200); font-weight: 500; }
 .channel-stats { display: flex; align-items: center; gap: 8px; font-size: 11px; }
 .channel-current { color: var(--white); font-weight: 600; }
-.channel-prev { color: var(--gray-400); }
+.channel-prev { color: var(--gray-200); }
 .channel-bar-track { height: 4px; background: var(--gray-700); border-radius: 2px; overflow: hidden; }
 .channel-bar-fill { height: 100%; border-radius: 2px; transition: width .8s ease; }
 
 /* ── GEO ── */
 .geo-table { width: 100%; border-collapse: collapse; }
-.geo-table th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 0 10px; text-align: left; border-bottom: 1px solid var(--gray-700); }
+.geo-table th { font-size: 10px; font-weight: 600; color: var(--gray-200); text-transform: uppercase; letter-spacing: 0.5px; padding: 0 0 10px; text-align: left; border-bottom: 1px solid var(--gray-700); }
 .geo-table td { padding: 8px 0; font-size: 12px; color: var(--gray-200); border-bottom: 1px solid var(--gray-800); }
 .geo-table tr:last-child td { border-bottom: none; }
 .geo-bar-track { width: 80px; height: 3px; background: var(--gray-700); border-radius: 2px; display: inline-block; vertical-align: middle; margin: 0 8px; }
@@ -169,13 +169,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .ai-source-name { font-size: 12px; color: var(--gray-200); font-weight: 500; display: flex; align-items: center; gap: 8px; }
 .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
 .ai-sessions { font-size: 13px; font-weight: 700; color: var(--white); }
-.ai-empty { text-align: center; padding: 2rem; color: var(--gray-400); font-size: 13px; }
+.ai-empty { text-align: center; padding: 2rem; color: var(--gray-200); font-size: 13px; }
 
 /* ── TRACKER ── */
 .tracker-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 16px; }
 .tracker-form { display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 1.5rem; }
 .form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.form-label { font-size: 10px; color: var(--gray-200); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 .form-input, .form-select { background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 12px; padding: 8px 10px; outline: none; transition: border-color .2s; width: 100%; }
 .form-input:focus, .form-select:focus { border-color: var(--lime); }
 .form-input::placeholder { color: var(--gray-500); }
@@ -186,12 +186,12 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .vis-stat { background: var(--gray-700); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
 .vis-stat-value { font-size: 22px; font-weight: 700; color: var(--white); }
 .vis-stat-value.lime { color: var(--lime); }
-.vis-stat-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.vis-stat-label { font-size: 10px; color: var(--gray-200); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 .visibility-log { display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; }
 .log-entry { display: grid; grid-template-columns: 100px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 14px; background: var(--gray-700); border-radius: var(--radius-sm); border: 1px solid var(--gray-600); }
 .log-platform { font-size: 11px; font-weight: 600; color: var(--lime); }
 .log-query { font-size: 12px; color: var(--gray-200); }
-.log-query span { font-size: 10px; color: var(--gray-400); display: block; margin-top: 2px; }
+.log-query span { font-size: 10px; color: var(--gray-200); display: block; margin-top: 2px; }
 .log-cited { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; }
 .log-cited.yes { color: var(--positive); }
 .log-cited.no { color: var(--negative); }
@@ -199,13 +199,13 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .log-delete:hover { color: var(--negative); }
 
 /* ── LOADING ── */
-.loading { display: flex; align-items: center; justify-content: center; padding: 2rem; color: var(--gray-400); font-size: 13px; gap: 10px; }
+.loading { display: flex; align-items: center; justify-content: center; padding: 2rem; color: var(--gray-200); font-size: 13px; gap: 10px; }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--gray-600); border-top-color: var(--lime); border-radius: 50%; animation: spin .8s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── FOOTER ── */
 .footer { border-top: 1px solid var(--gray-700); padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; }
-.footer-brand { font-size: 11px; color: var(--gray-400); }
+.footer-brand { font-size: 11px; color: var(--gray-200); }
 .footer-brand span { color: var(--lime); font-weight: 600; }
 .footer-note { font-size: 10px; color: var(--gray-500); }
 
@@ -213,7 +213,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .cit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .cit-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 16px; }
 .cit-card.highlight { border-color: rgba(200,240,38,.4); }
-.cit-section-intro { font-size: 13px; color: var(--gray-400); margin-bottom: 1.5rem; line-height: 1.6; }
+.cit-section-intro { font-size: 13px; color: var(--gray-200); margin-bottom: 1.5rem; line-height: 1.6; }
 
 .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 .scard { padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--gray-600); background: var(--gray-700); cursor: pointer; transition: border-color .15s; }
@@ -221,7 +221,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .scard.active { border-color: var(--lime); background: rgba(200,240,38,.06); }
 .scard-name { font-size: 12px; font-weight: 600; color: var(--gray-200); margin-bottom: 3px; }
 .scard.active .scard-name { color: var(--lime); }
-.scard-desc { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
+.scard-desc { font-size: 11px; color: var(--gray-200); line-height: 1.4; }
 
 .gen-btn { background: var(--lime); color: var(--black); border: none; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; padding: 10px 24px; cursor: pointer; width: 100%; margin-top: 20px; transition: background .2s; }
 .gen-btn:hover { background: var(--lime-dim); }
@@ -231,23 +231,23 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .out-label { font-size: 10px; color: var(--lime); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 8px; }
 .out-text { font-size: 12px; color: var(--gray-200); line-height: 1.7; word-break: break-word; white-space: pre-wrap; }
 .schema-out { font-family: 'Courier New', Consolas, monospace; font-size: 11px; color: #a5b4fc; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
-.copy-btn { margin-top: 10px; background: transparent; border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--gray-400); font-family: 'Poppins', sans-serif; font-size: 11px; padding: 5px 14px; cursor: pointer; transition: all .15s; }
+.copy-btn { margin-top: 10px; background: transparent; border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--gray-200); font-family: 'Poppins', sans-serif; font-size: 11px; padding: 5px 14px; cursor: pointer; transition: all .15s; }
 .copy-btn:hover { border-color: var(--lime); color: var(--lime); }
 
 .score-wrap { display: flex; align-items: flex-start; gap: 20px; }
 .score-right { flex: 1; padding-top: 4px; }
 .score-item { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-.score-item-label { font-size: 11px; color: var(--gray-300); min-width: 60px; }
+.score-item-label { font-size: 11px; color: var(--gray-200); min-width: 60px; }
 .score-bar-bg { flex: 1; height: 3px; background: var(--gray-600); border-radius: 2px; overflow: hidden; }
 .score-bar-fill { height: 3px; border-radius: 2px; background: var(--lime); transition: width .6s ease; }
 .score-num { font-size: 11px; color: var(--lime); font-weight: 600; min-width: 28px; text-align: right; }
 .tip-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
 .tip-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); margin-top: 6px; flex-shrink: 0; }
-.tip-text { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.tip-text { font-size: 11px; color: var(--gray-200); line-height: 1.5; }
 .tip-text strong { color: var(--gray-200); }
 
 .platform-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.ptab { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid var(--gray-600); background: transparent; color: var(--gray-400); cursor: pointer; font-family: 'Poppins', sans-serif; transition: all .15s; }
+.ptab { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid var(--gray-600); background: transparent; color: var(--gray-200); cursor: pointer; font-family: 'Poppins', sans-serif; transition: all .15s; }
 .ptab:hover { border-color: var(--lime); color: var(--lime); }
 .ptab.active { background: rgba(200,240,38,.1); color: var(--lime); border-color: rgba(200,240,38,.4); }
 
@@ -255,12 +255,12 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .checklist-item:last-child { border-bottom: none; }
 .check-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(200,240,38,.1); border: 1px solid rgba(200,240,38,.3); color: var(--lime); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
 .check-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
-.check-desc { font-size: 11px; color: var(--gray-400); line-height: 1.6; }
+.check-desc { font-size: 11px; color: var(--gray-200); line-height: 1.6; }
 
 .cit-results { display: none; }
 
 /* ── SEO TOOL ── */
-.seo-stab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-400); background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; cursor: pointer; transition: all .2s; white-space: nowrap; margin-bottom: -1px; }
+.seo-stab { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; color: var(--gray-200); background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 16px; cursor: pointer; transition: all .2s; white-space: nowrap; margin-bottom: -1px; }
 .seo-stab:hover { color: var(--gray-200); }
 .seo-stab.active { color: var(--lime); border-bottom-color: var(--lime); }
 .seo-sub { display: none; }
@@ -270,10 +270,10 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .seo-issue-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
 .seo-issue-body { flex: 1; }
 .seo-issue-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-.seo-issue-desc { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.seo-issue-desc { font-size: 11px; color: var(--gray-200); line-height: 1.5; }
 .seo-priority { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
 .seo-score-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 14px 16px; }
-.seo-score-label { font-size: 11px; color: var(--gray-400); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.seo-score-label { font-size: 11px; color: var(--gray-200); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 .seo-score-val { font-size: 24px; font-weight: 700; line-height: 1; }
 .seo-score-note { font-size: 11px; margin-top: 4px; }
 .tech-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--gray-700); cursor: pointer; }
@@ -282,12 +282,12 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .tech-checkbox.checked { background: var(--lime); border-color: var(--lime); color: var(--black); }
 .tech-item-body { flex: 1; }
 .tech-item-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-.tech-item-desc { font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+.tech-item-desc { font-size: 11px; color: var(--gray-200); line-height: 1.5; }
 .tech-impact { font-size: 10px; padding: 2px 7px; border-radius: 10px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
 
 /* ── SEARCH CONSOLE ── */
 .gsc-metric { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 16px 18px; }
-.gsc-metric-label { font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.gsc-metric-label { font-size: 10px; color: var(--gray-200); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
 .gsc-metric-val { font-size: 26px; font-weight: 700; color: var(--white); line-height: 1; }
 .gsc-metric-delta { font-size: 11px; margin-top: 5px; }
 .gsc-action-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--gray-700); align-items: flex-start; }
@@ -295,43 +295,43 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .gsc-action-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 .gsc-action-body { flex: 1; }
 .gsc-action-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.4; }
-.gsc-action-desc { font-size: 12px; color: var(--gray-400); line-height: 1.6; }
+.gsc-action-desc { font-size: 12px; color: var(--gray-200); line-height: 1.6; }
 .gsc-action-why { font-size: 11px; color: var(--lime); margin-top: 4px; font-weight: 500; }
 .gsc-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; flex-shrink: 0; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
 .gsc-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--gray-700); }
 .gsc-row:last-child { border-bottom: none; }
-.gsc-row-label { flex: 1; font-size: 12px; color: var(--gray-200); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gsc-row-label { flex: 1; font-size: 12px; color: var(--white); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gsc-row-bar-wrap { width: 80px; flex-shrink: 0; }
 .gsc-row-bar-track { background: var(--gray-700); border-radius: 3px; height: 5px; overflow: hidden; }
 .gsc-row-bar-fill { height: 100%; border-radius: 3px; background: var(--lime); }
-.gsc-row-num { font-size: 11px; color: var(--gray-400); width: 44px; text-align: right; flex-shrink: 0; }
+.gsc-row-num { font-size: 11px; color: var(--gray-200); width: 44px; text-align: right; flex-shrink: 0; }
 .gsc-row-pos { font-size: 11px; font-weight: 700; width: 28px; text-align: center; flex-shrink: 0; padding: 2px 4px; border-radius: 4px; }
 .gsc-opp-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--gray-700); }
 .gsc-opp-row:last-child { border-bottom: none; }
 .gsc-opp-query { flex: 1; font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-.gsc-opp-meta { font-size: 11px; color: var(--gray-400); }
+.gsc-opp-meta { font-size: 11px; color: var(--gray-200); }
 .gsc-opp-fix { font-size: 11px; color: var(--lime); margin-top: 3px; }
 .gsc-device-card { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius-sm); padding: 12px 16px; min-width: 140px; }
-.gsc-device-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); margin-bottom: 4px; }
+.gsc-device-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-200); margin-bottom: 4px; }
 .gsc-device-clicks { font-size: 20px; font-weight: 700; color: var(--white); }
-.gsc-device-impr { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.gsc-device-impr { font-size: 11px; color: var(--gray-200); margin-top: 2px; }
 
 /* ── WELCOME PANEL ── */
 .welcome-stat { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); padding: 16px 18px; transition: border-color .2s; cursor: default; }
 .welcome-stat:hover { border-color: var(--gray-500); }
 .welcome-stat-icon { font-size: 20px; margin-bottom: 8px; }
 .welcome-stat-val { font-size: 22px; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 4px; }
-.welcome-stat-label { font-size: 10px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.welcome-stat-sub { font-size: 11px; color: var(--gray-300); margin-top: 4px; }
+.welcome-stat-label { font-size: 10px; color: var(--gray-200); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.welcome-stat-sub { font-size: 11px; color: var(--gray-200); margin-top: 4px; }
 .welcome-action-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--gray-700); cursor: pointer; transition: background .15s; }
 .welcome-action-item:last-child { border-bottom: none; }
 .welcome-action-item:hover { background: rgba(255,255,255,0.02); }
-.welcome-action-item.done .welcome-action-title { text-decoration: line-through; color: var(--gray-400); }
+.welcome-action-item.done .welcome-action-title { text-decoration: line-through; color: var(--gray-200); }
 .welcome-action-item.done .welcome-action-desc { color: var(--gray-500); }
 .welcome-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--gray-500); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .welcome-checkbox.checked { background: var(--lime); border-color: var(--lime); }
 .welcome-action-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.4; }
-.welcome-action-desc { font-size: 11px; color: var(--gray-400); line-height: 1.55; }
+.welcome-action-desc { font-size: 11px; color: var(--gray-200); line-height: 1.55; }
 .welcome-action-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; flex-shrink: 0; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
 .welcome-tool-btn { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); cursor: pointer; font-family: 'Poppins',sans-serif; font-size: 12px; font-weight: 600; color: var(--white); transition: all .15s; border: none; text-align: left; }
 .welcome-tool-btn:hover { background: var(--gray-600); border-color: var(--lime); color: var(--lime); }
@@ -345,7 +345,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .copy-client-tile:hover { border-color: var(--lime); background: rgba(200,240,38,.04); }
 .copy-client-tile.selected { border-color: var(--lime); background: rgba(200,240,38,.08); }
 .copy-client-tile .cct-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-.copy-client-tile .cct-sector { font-size: 11px; color: var(--gray-400); }
+.copy-client-tile .cct-sector { font-size: 11px; color: var(--gray-200); }
 .copy-client-tile.selected .cct-name { color: var(--lime); }
 .copy-format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 20px; }
 .copy-format-tile { background: var(--gray-800); border: 1.5px solid var(--gray-700); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px; }
@@ -357,16 +357,16 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .copy-output-block { background: var(--gray-800); border: 1px solid var(--gray-700); border-radius: var(--radius); overflow: hidden; margin-top: 20px; }
 .copy-output-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--gray-700); }
 .copy-output-label { font-size: 10px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; }
-.copy-output-text { padding: 18px 20px; font-size: 13px; color: var(--gray-200); line-height: 1.8; white-space: pre-wrap; min-height: 120px; }
+.copy-output-text { padding: 18px 20px; font-size: 13px; color: var(--white); line-height: 1.8; white-space: pre-wrap; min-height: 120px; }
 .copy-output-footer { padding: 10px 16px; border-top: 1px solid var(--gray-700); display: flex; gap: 8px; flex-wrap: wrap; }
 .copy-history-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-700); cursor: pointer; transition: all .15s; }
 .copy-history-item:last-child { border-bottom: none; }
 .copy-history-item:hover { padding-left: 6px; }
 .copy-history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); flex-shrink: 0; margin-top: 5px; }
 .copy-history-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-.copy-history-meta { font-size: 11px; color: var(--gray-400); }
+.copy-history-meta { font-size: 11px; color: var(--gray-200); }
 .lang-toggle { display: flex; gap: 0; border: 1px solid var(--gray-600); border-radius: var(--radius-sm); overflow: hidden; }
-.lang-btn { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 14px; border: none; background: transparent; color: var(--gray-400); cursor: pointer; transition: all .15s; text-transform: uppercase; letter-spacing: 0.04em; }
+.lang-btn { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; padding: 5px 14px; border: none; background: transparent; color: var(--gray-200); cursor: pointer; transition: all .15s; text-transform: uppercase; letter-spacing: 0.04em; }
 .lang-btn.active { background: var(--lime); color: var(--black); }
 .lang-btn:hover:not(.active) { background: var(--gray-700); color: var(--gray-200); }
 
@@ -473,15 +473,15 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">NXRD AI Marketing Tool</div>
           <h1 style="font-size:28px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;">Good <span id="welcome-greeting">morning</span>, Novograf</h1>
-          <p style="font-size:14px;color:var(--gray-300);max-width:520px;line-height:1.6;">Your digital presence dashboard — everything you need to grow Novograf's online visibility, in one place.</p>
+          <p style="font-size:14px;color:var(--gray-200);max-width:520px;line-height:1.6;">Your digital presence dashboard — everything you need to grow Novograf's online visibility, in one place.</p>
         </div>
         <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:16px 20px;text-align:right;flex-shrink:0;min-width:180px;">
-          <div style="font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Today · East Kilbride</div>
+          <div style="font-size:11px;color:var(--gray-200);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Today · East Kilbride</div>
           <div style="font-size:18px;font-weight:700;color:var(--white);" id="welcome-date">—</div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:2px;" id="welcome-time">—</div>
+          <div style="font-size:11px;color:var(--gray-200);margin-top:2px;" id="welcome-time">—</div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-700);">
             <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;" id="weather-wrap">
-              <span style="font-size:11px;color:var(--gray-400);">Fetching weather...</span>
+              <span style="font-size:11px;color:var(--gray-200);">Fetching weather...</span>
             </div>
           </div>
         </div>
@@ -492,7 +492,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
 
         <!-- PRESENCE SCORE RING -->
         <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:24px 20px;text-align:center;">
-          <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Digital presence score</div>
+          <div style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Digital presence score</div>
           <svg width="120" height="120" viewBox="0 0 120 120" style="display:block;margin:0 auto 12px;">
             <circle cx="60" cy="60" r="50" fill="none" stroke="var(--gray-700)" stroke-width="10"/>
             <circle id="welcome-score-ring" cx="60" cy="60" r="50" fill="none" stroke="var(--lime)" stroke-width="10"
@@ -501,7 +501,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <text x="60" y="55" text-anchor="middle" font-family="Poppins,sans-serif" font-size="28" font-weight="700" fill="#ffffff" id="welcome-score-num">0</text>
             <text x="60" y="72" text-anchor="middle" font-family="Poppins,sans-serif" font-size="11" fill="#666666">out of 100</text>
           </svg>
-          <div style="font-size:12px;color:var(--gray-300);line-height:1.5;" id="welcome-score-label">Calculating your score...</div>
+          <div style="font-size:12px;color:var(--gray-200);line-height:1.5;" id="welcome-score-label">Calculating your score...</div>
         </div>
 
         <!-- STAT GRID -->
@@ -519,7 +519,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
           <div style="padding:16px 20px;border-bottom:1px solid var(--gray-700);display:flex;align-items:center;justify-content:space-between;">
             <div>
               <div style="font-size:13px;font-weight:700;color:var(--white);">Top 5 actions</div>
-              <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Tick these off to grow your digital presence</div>
+              <div style="font-size:11px;color:var(--gray-200);margin-top:2px;">Tick these off to grow your digital presence</div>
             </div>
             <div style="font-size:11px;font-weight:700;color:var(--lime);" id="welcome-actions-progress">0 / 5 done</div>
           </div>
@@ -533,7 +533,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);overflow:hidden;">
           <div style="padding:16px 20px;border-bottom:1px solid var(--gray-700);">
             <div style="font-size:13px;font-weight:700;color:var(--white);">What do you want to do today?</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">Jump straight to the right tool</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:2px;">Jump straight to the right tool</div>
           </div>
           <div style="padding:8px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="welcome-tools-grid">
           </div>
@@ -547,34 +547,34 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">35+</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Years in business</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">Years in business</div>
           </div>
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--lime);line-height:1;">100%</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Employee owned</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">Employee owned</div>
           </div>
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">9</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Accreditations including ISO 9001 and 14001</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">Accreditations including ISO 9001 and 14001</div>
           </div>
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">10+</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Major national brand clients</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">Major national brand clients</div>
           </div>
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">7</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">Product and service categories</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">Product and service categories</div>
           </div>
           <div>
             <div style="font-size:32px;font-weight:700;color:var(--white);line-height:1;">UK</div>
-            <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">National rollout capability from East Kilbride</div>
+            <div style="font-size:11px;color:var(--gray-200);margin-top:4px;">National rollout capability from East Kilbride</div>
           </div>
         </div>
       </div>
 
       <!-- KEY CLIENTS STRIP -->
       <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:16px 24px;">
-        <div style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Trusted by</div>
+        <div style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Trusted by</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;" id="welcome-clients-strip"></div>
       </div>
 
@@ -592,7 +592,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
       <div id="analytics-signin-prompt" style="display:none; background:var(--gray-800); border:1px solid var(--gray-700); border-radius:var(--radius); padding:2.5rem; text-align:center; margin-bottom:2rem;">
         <div style="font-size:28px;margin-bottom:12px;">📊</div>
         <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;">Analytics requires Google sign-in</div>
-        <div style="font-size:13px;color:var(--gray-400);margin-bottom:1.5rem;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto;">The Analytics tab connects to the Novograf GA4 property. All other tabs — Content and Social, Post Scheduler, Citation Generator, SEO, and Copywriter — are available without signing in.</div>
+        <div style="font-size:13px;color:var(--gray-200);margin-bottom:1.5rem;line-height:1.6;max-width:400px;margin-left:auto;margin-right:auto;">The Analytics tab connects to the Novograf GA4 property. All other tabs — Content and Social, Post Scheduler, Citation Generator, SEO, and Copywriter — are available without signing in.</div>
         <a href="/auth/login" class="login-btn" style="display:inline-flex;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
           Sign in with Google
@@ -614,7 +614,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div class="chart-card wide">
           <div class="chart-header">
             <div><div class="chart-title">Sessions vs users</div><div class="chart-subtitle">Current month vs previous month</div></div>
-            <div style="display:flex;gap:12px;align-items:center;font-size:11px;color:var(--gray-400)">
+            <div style="display:flex;gap:12px;align-items:center;font-size:11px;color:var(--gray-200)">
               <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:2px;background:var(--lime);display:inline-block"></span>This month</span>
               <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:2px;background:#444;display:inline-block"></span>Last month</span>
             </div>
@@ -632,7 +632,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div class="chart-card">
           <div class="chart-header"><div><div class="chart-title">Channel share</div><div class="chart-subtitle">Current month distribution</div></div></div>
           <div style="position:relative;height:200px"><canvas id="donutChart" role="img" aria-label="Channel distribution"></canvas></div>
-          <div id="donutLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--gray-400)"></div>
+          <div id="donutLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11px;color:var(--gray-200)"></div>
         </div>
       </div>
 
@@ -699,7 +699,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
           <button class="add-btn" onclick="addVisibilityEntry()">Add entry</button>
         </div>
         <div class="visibility-log" id="visibilityLog">
-          <div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No entries yet.</div>
+          <div style="text-align:center;padding:2rem;color:var(--gray-200);font-size:13px">No entries yet.</div>
         </div>
       </div>
 
@@ -887,7 +887,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <div class="chart-badge lime">AI powered</div>
           </div>
 
-          <p style="font-size:13px;color:var(--gray-400);margin-bottom:1.25rem;line-height:1.6;">Enter your topic area and target audience below. The AI will generate a recommended posting frequency, a 4-week blog calendar, and a list of high-priority article titles optimised to get your site cited by ChatGPT, Claude, and Perplexity.</p>
+          <p style="font-size:13px;color:var(--gray-200);margin-bottom:1.25rem;line-height:1.6;">Enter your topic area and target audience below. The AI will generate a recommended posting frequency, a 4-week blog calendar, and a list of high-priority article titles optimised to get your site cited by ChatGPT, Claude, and Perplexity.</p>
 
           <div class="cit-grid-2" style="margin-bottom:10px;">
             <div class="form-group">
@@ -1073,7 +1073,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
       <div id="gsc-auth-prompt" style="display:none; background:var(--gray-800); border:1px solid var(--gray-700); border-radius:var(--radius); padding:2.5rem; text-align:center; margin-bottom:2rem;">
         <div style="font-size:28px;margin-bottom:12px;">🔍</div>
         <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;">Search Console requires Google sign-in</div>
-        <div style="font-size:13px;color:var(--gray-400);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">Sign in with the Google account that has access to novograf.co.uk in Search Console.</div>
+        <div style="font-size:13px;color:var(--gray-200);margin-bottom:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">Sign in with the Google account that has access to novograf.co.uk in Search Console.</div>
         <a href="/auth/login" class="login-btn" style="display:inline-flex;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
           Sign in with Google
@@ -1098,7 +1098,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
                 <div class="chart-title" style="color:var(--lime);">Your action list</div>
                 <div class="chart-subtitle">Prioritised by impact — do these in order</div>
               </div>
-              <div id="gsc-action-spinner" class="chart-badge" style="background:var(--gray-700);color:var(--gray-400);">Loading...</div>
+              <div id="gsc-action-spinner" class="chart-badge" style="background:var(--gray-700);color:var(--gray-200);">Loading...</div>
             </div>
             <div id="gsc-action-list">
               <div class="loading" style="padding:1rem 0;"><div class="spinner"></div> Analysing your data...</div>
@@ -1312,7 +1312,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <button class="copy-btn" onclick="copySeoOutput('seo-plan-text')">Copy plan</button>
           </div>
           <div class="chart-card">
-            <div class="out-text" id="seo-plan-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+            <div class="out-text" id="seo-plan-text" style="font-size:13px;color:var(--white);line-height:1.85;white-space:pre-wrap;"></div>
           </div>
         </div>
 
@@ -1367,7 +1367,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <button class="copy-btn" onclick="copySeoOutput('kw-text')">Copy</button>
           </div>
           <div class="chart-card">
-            <div class="out-text" id="kw-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+            <div class="out-text" id="kw-text" style="font-size:13px;color:var(--white);line-height:1.85;white-space:pre-wrap;"></div>
           </div>
         </div>
 
@@ -1381,7 +1381,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <div class="chart-badge lime">AI powered</div>
           </div>
 
-          <p style="font-size:13px;color:var(--gray-400);margin-bottom:16px;line-height:1.6;">Each recommendation includes the target keyword, estimated monthly search volume, current competition level, the URL slug to use, and a full content brief so the page can be written and built immediately.</p>
+          <p style="font-size:13px;color:var(--gray-200);margin-bottom:16px;line-height:1.6;">Each recommendation includes the target keyword, estimated monthly search volume, current competition level, the URL slug to use, and a full content brief so the page can be written and built immediately.</p>
 
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
             <div class="form-group">
@@ -1436,16 +1436,16 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             <table style="width:100%;border-collapse:collapse;" id="pb-table">
               <thead>
                 <tr style="border-bottom:1px solid var(--gray-700);">
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">#</th>
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Target keyword</th>
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Monthly searches</th>
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Difficulty</th>
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Suggested URL</th>
-                  <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">Priority</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">#</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Target keyword</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Monthly searches</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Difficulty</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 12px 10px;text-align:left;">Suggested URL</th>
+                  <th style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.05em;padding:0 0 10px;text-align:left;">Priority</th>
                 </tr>
               </thead>
               <tbody id="pb-table-body">
-                <tr><td colspan="6" style="padding:1rem 0;color:var(--gray-400);font-size:12px;">Generating recommendations...</td></tr>
+                <tr><td colspan="6" style="padding:1rem 0;color:var(--gray-200);font-size:12px;">Generating recommendations...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1453,7 +1453,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
           <!-- FULL BRIEFS -->
           <div class="chart-card">
             <div style="font-size:11px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Full page briefs</div>
-            <div class="out-text" id="pb-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+            <div class="out-text" id="pb-text" style="font-size:13px;color:var(--white);line-height:1.85;white-space:pre-wrap;"></div>
           </div>
         </div>
 
@@ -1465,7 +1465,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
         <div class="chart-card" style="margin-bottom:16px;">
           <div class="chart-header">
             <div><div class="chart-title">Technical SEO checklist — Novograf.com</div><div class="chart-subtitle">Core technical requirements for ranking in 2026. Check each item against the live site.</div></div>
-            <div id="tech-progress-text" style="font-size:12px;color:var(--gray-400);"></div>
+            <div id="tech-progress-text" style="font-size:12px;color:var(--gray-200);"></div>
           </div>
           <div id="tech-checklist"></div>
         </div>
@@ -1478,7 +1478,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
           <button class="add-btn" onclick="runTechAudit()" id="tech-audit-btn" style="margin-bottom:14px;">Run technical audit</button>
           <div id="tech-audit-loading" style="display:none;" class="loading"><div class="spinner"></div> Auditing technical signals...</div>
           <div id="tech-audit-output" style="display:none;">
-            <div class="out-text" id="tech-audit-text" style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;"></div>
+            <div class="out-text" id="tech-audit-text" style="font-size:13px;color:var(--white);line-height:1.85;white-space:pre-wrap;"></div>
           </div>
         </div>
 
@@ -1531,7 +1531,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
               <div class="lang-toggle">
                 <button class="lang-btn active" onclick="setLang('en',this)">English</button>
               </div>
-              <span style="font-size:11px;color:var(--gray-400);" id="copy-lang-note">UK English — direct, commercially grounded</span>
+              <span style="font-size:11px;color:var(--gray-200);" id="copy-lang-note">UK English — direct, commercially grounded</span>
             </div>
           </div>
 
@@ -1597,12 +1597,12 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
           <div class="chart-card" style="border-color:rgba(200,240,38,0.2);">
             <div class="chart-header"><div><div class="chart-title">NXRD Male Copywriter — voice rules</div></div></div>
             <div style="display:flex;flex-direction:column;gap:7px;">
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">01</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">No hyphens. No emojis. No bullet point lists in creative copy. No filler phrases.</span></div>
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">02</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Every sentence earns its place. If it does not add something, it is cut.</span></div>
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">03</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Opens with a statement, not a question. Hooks the reader on the problem before offering the solution.</span></div>
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">04</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Commercial weight behind every claim. Sector proof, named clients, and specificity over generic assertions.</span></div>
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">05</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Confident without being arrogant. The expert in the room, not the loudest voice in it.</span></div>
-              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">06</span><span style="font-size:12px;color:var(--gray-300);line-height:1.5;">Ends with direction, not decoration. The reader knows exactly what to do next.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">01</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">No hyphens. No emojis. No bullet point lists in creative copy. No filler phrases.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">02</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">Every sentence earns its place. If it does not add something, it is cut.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">03</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">Opens with a statement, not a question. Hooks the reader on the problem before offering the solution.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">04</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">Commercial weight behind every claim. Sector proof, named clients, and specificity over generic assertions.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">05</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">Confident without being arrogant. The expert in the room, not the loudest voice in it.</span></div>
+              <div style="display:flex;gap:10px;align-items:flex-start;"><span style="color:var(--lime);font-size:12px;font-weight:700;flex-shrink:0;">06</span><span style="font-size:12px;color:var(--gray-200);line-height:1.5;">Ends with direction, not decoration. The reader knows exactly what to do next.</span></div>
             </div>
           </div>
 
@@ -1622,13 +1622,13 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
 
               <!-- ENGLISH OUTPUT -->
               <div id="copy-block-en" style="display:none;">
-                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;"><span style="font-size:16px;">🇬🇧</span><span style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;">English</span></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;"><span style="font-size:16px;">🇬🇧</span><span style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;">English</span></div>
                 <div class="copy-output-text" id="copy-text-en"></div>
               </div>
 
               <!-- PORTUGUESE OUTPUT -->
               <div id="copy-block-pt" style="display:none;">
-                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;border-top:1px solid var(--gray-700);"><span style="font-size:16px;">🇵🇹</span><span style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;">Português</span></div>
+                <div style="display:flex;align-items:center;gap:8px;padding:10px 20px 0;border-top:1px solid var(--gray-700);"><span style="font-size:16px;">🇵🇹</span><span style="font-size:10px;font-weight:700;color:var(--gray-200);text-transform:uppercase;letter-spacing:0.08em;">Português</span></div>
                 <div class="copy-output-text" id="copy-text-pt"></div>
               </div>
 
@@ -1647,7 +1647,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
               <button class="copy-btn" onclick="clearCopyHistory()">Clear</button>
             </div>
             <div id="copy-history-list">
-              <div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No history yet. Generate your first piece above.</div>
+              <div style="font-size:12px;color:var(--gray-200);padding:8px 0;">No history yet. Generate your first piece above.</div>
             </div>
           </div>
 
@@ -1873,7 +1873,7 @@ async function loadGeo(){
     const flags={'Portugal':'🇵🇹','United Kingdom':'🇬🇧','Spain':'🇪🇸','Germany':'🇩🇪','France':'🇫🇷','United States':'🇺🇸','Netherlands':'🇳🇱','Brazil':'🇧🇷','Italy':'🇮🇹','Belgium':'🇧🇪','Poland':'🇵🇱','Sweden':'🇸🇪','Switzerland':'🇨🇭','Australia':'🇦🇺','Canada':'🇨🇦'};
     const tbody=data.slice(0,10).map(d=>{
       const share=Math.round((d.sessions/total)*100);const flag=flags[d.country]||'🌍';
-      return`<tr><td>${flag} ${d.country}</td><td style="font-weight:600">${fmt(d.sessions)}</td><td><div style="display:flex;align-items:center;gap:6px"><div class="geo-bar-track"><div class="geo-bar-fill" style="width:${share}%"></div></div><span style="font-size:11px;color:var(--gray-400)">${share}%</span></div></td></tr>`;
+      return`<tr><td>${flag} ${d.country}</td><td style="font-weight:600">${fmt(d.sessions)}</td><td><div style="display:flex;align-items:center;gap:6px"><div class="geo-bar-track"><div class="geo-bar-fill" style="width:${share}%"></div></div><span style="font-size:11px;color:var(--gray-200)">${share}%</span></div></td></tr>`;
     }).join('');
     document.getElementById('geoTable').querySelector('tbody').innerHTML=tbody;
   }catch(err){console.error(err);}
@@ -1905,7 +1905,7 @@ async function loadVisibility(){
     document.getElementById('totalCited').textContent=cited;
     document.getElementById('citationRate').textContent=rate+'%';
     document.getElementById('platformsCovered').textContent=platforms;
-    if(!data.length){document.getElementById('visibilityLog').innerHTML='<div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No entries yet. Start logging above.</div>';return;}
+    if(!data.length){document.getElementById('visibilityLog').innerHTML='<div style="text-align:center;padding:2rem;color:var(--gray-200);font-size:13px">No entries yet. Start logging above.</div>';return;}
     document.getElementById('visibilityLog').innerHTML=data.map(e=>`<div class="log-entry"><span class="log-platform">${e.platform}</span><div class="log-query">${e.query}<span>${e.date}</span></div><div class="log-cited ${e.cited?'yes':'no'}">${e.cited?'Cited':'Not cited'}</div><button class="log-delete" onclick="deleteEntry(${e.id})">✕</button></div>`).join('');
   }catch(err){console.error(err);}
 }
@@ -2028,7 +2028,7 @@ document.getElementById('cit-genbtn').addEventListener('click', () => {
   if (!siteRaw) tips.push({ t:'Add your website name', d:'A recognisable brand name helps AI associate your URL with a trusted source.' });
   if (total===100) tips.push({ t:'Excellent — fully citable', d:'Your content has everything it needs. Follow the checklist below to maximise reach.' });
 
-  let tipsHtml = tips.length ? '<p style="font-size:11px;color:var(--gray-400);margin-bottom:10px;">Suggestions to improve your score</p>' : '';
+  let tipsHtml = tips.length ? '<p style="font-size:11px;color:var(--gray-200);margin-bottom:10px;">Suggestions to improve your score</p>' : '';
   tips.forEach(t => { tipsHtml += `<div class="tip-row"><div class="tip-dot"></div><div class="tip-text"><strong>${t.t} — </strong>${t.d}</div></div>`; });
   document.getElementById('cit-score-tips').innerHTML = tipsHtml;
 
@@ -2222,7 +2222,7 @@ function renderCalendar() {
         <span class="format-badge ${fmtCls}">${p.format}</span>${p.title}
       </div>`;
     }).join('');
-    const extra = dayPosts.length > 3 ? `<div style="font-size:9px;color:var(--gray-400)">+${dayPosts.length-3} more</div>` : '';
+    const extra = dayPosts.length > 3 ? `<div style="font-size:9px;color:var(--gray-200)">+${dayPosts.length-3} more</div>` : '';
     return `<div class="cal-day ${isToday?'today':''} ${c.cur?'':'other-month'}" onclick="${c.cur?`openModal(null,'${dateStr}')`:''}" >
       <div class="cal-day-num">${c.day}</div>
       ${chips}${extra}
@@ -2240,7 +2240,7 @@ function renderPostList(status) {
   const fmtCls = {text:'fmt-text',carousel:'fmt-carousel',video:'fmt-video',image:'fmt-image'};
 
   if (!posts.length) {
-    document.getElementById('post-list').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:13px">No posts yet. Click "+ New post" to add one.</div>';
+    document.getElementById('post-list').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray-200);font-size:13px">No posts yet. Click "+ New post" to add one.</div>';
     return;
   }
 
@@ -2256,10 +2256,10 @@ function renderPostList(status) {
           ${p.title||'Untitled post'}
         </div>
         <div class="post-card-meta">${p.date||'No date'} ${p.time?'at '+p.time:''} &nbsp;·&nbsp; ${p.status}</div>
-        <div style="font-size:11px;color:var(--gray-300);margin-top:4px;line-height:1.5;">${excerpt}</div>
-        ${p.hashtags ? `<div style="font-size:10px;color:var(--gray-400);margin-top:3px;">${p.hashtags}</div>` : ''}
+        <div style="font-size:11px;color:var(--gray-200);margin-top:4px;line-height:1.5;">${excerpt}</div>
+        ${p.hashtags ? `<div style="font-size:10px;color:var(--gray-200);margin-top:3px;">${p.hashtags}</div>` : ''}
         ${linkChip}
-        ${p.notes ? `<div style="font-size:10px;color:var(--gray-400);margin-top:3px;">Notes: ${p.notes}</div>` : ''}
+        ${p.notes ? `<div style="font-size:10px;color:var(--gray-200);margin-top:3px;">Notes: ${p.notes}</div>` : ''}
       </div>
       <div class="post-card-actions">
         <button class="icon-btn" onclick="openModal('${p.id}')">Edit</button>
@@ -2556,7 +2556,7 @@ function parseSeoAudit(text, url) {
       <div class="seo-issue-icon" style="background:var(--green-dim)">✓</div>
       <div class="seo-issue-body"><div class="seo-issue-desc">${l.replace(/^[\d\-\.\*\•]+\s*/,'').trim()}</div></div>
     </div>`
-  ).join('') || '<div style="padding:1rem;font-size:12px;color:var(--gray-400)">Audit this page to see strengths.</div>';
+  ).join('') || '<div style="padding:1rem;font-size:12px;color:var(--gray-200)">Audit this page to see strengths.</div>';
 
   // Fix list
   const fixSection = extractSection(text, ['COMPLETE FIX LIST','SUGGESTED META']);
@@ -2778,16 +2778,16 @@ Be specific to Novograf's actual business, the Portuguese and Iberian industrial
         const diffCol = { low: 'var(--positive)', medium: '#f59e0b', high: 'var(--negative)' }[difficulty] || 'var(--gray-400)';
         const priCol = { high: 'var(--positive)', medium: '#f59e0b', low: 'var(--gray-400)' }[priority] || 'var(--gray-400)';
         return `<tr style="border-bottom:1px solid var(--gray-700);">
-          <td style="padding:9px 0;font-size:12px;color:var(--gray-400);font-weight:600;">${m[1]}</td>
+          <td style="padding:9px 0;font-size:12px;color:var(--gray-200);font-weight:600;">${m[1]}</td>
           <td style="padding:9px 12px;font-size:12px;font-weight:600;color:var(--white);">${m[2].trim()}</td>
-          <td style="padding:9px 12px;font-size:12px;color:var(--gray-300);">${m[3].trim()}</td>
+          <td style="padding:9px 12px;font-size:12px;color:var(--gray-200);">${m[3].trim()}</td>
           <td style="padding:9px 12px;font-size:12px;font-weight:600;color:${diffCol};">${m[4].trim().split(' ')[0]}</td>
           <td style="padding:9px 12px;font-size:11px;color:var(--lime);font-family:monospace;">${m[5].trim()}</td>
           <td style="padding:9px 0;font-size:11px;font-weight:700;color:${priCol};text-transform:uppercase;">${m[6].trim().split(' ')[0]}</td>
         </tr>`;
       }).join('');
     } else {
-      tableBody.innerHTML = '<tr><td colspan="6" style="padding:1rem 0;color:var(--gray-400);font-size:12px;">See full briefs below for page details.</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="6" style="padding:1rem 0;color:var(--gray-200);font-size:12px;">See full briefs below for page details.</td></tr>';
     }
 
     document.getElementById('pb-loading').style.display = 'none';
@@ -3171,7 +3171,7 @@ function saveCopyToHistory() {
 function renderCopyHistory() {
   const list = document.getElementById('copy-history-list');
   if (!copyHistory.length) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No history yet. Generate your first piece above.</div>';
+    list.innerHTML = '<div style="font-size:12px;color:var(--gray-200);padding:8px 0;">No history yet. Generate your first piece above.</div>';
     return;
   }
   list.innerHTML = copyHistory.map(h => `
@@ -3376,13 +3376,13 @@ async function fetchWeather() {
           <span style="font-size:28px;line-height:1;">${icon}</span>
           <div>
             <div style="font-size:24px;font-weight:700;color:var(--white);line-height:1;">${temp}°C</div>
-            <div style="font-size:11px;color:var(--gray-400);">${desc}</div>
+            <div style="font-size:11px;color:var(--gray-200);">${desc}</div>
           </div>
         </div>
         <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;">
-          <span style="font-size:11px;color:var(--gray-400);">Feels ${feels}°C</span>
-          <span style="font-size:11px;color:var(--gray-400);">💨 ${wind} mph</span>
-          <span style="font-size:11px;color:var(--gray-400);">💧 ${humidity}%</span>
+          <span style="font-size:11px;color:var(--gray-200);">Feels ${feels}°C</span>
+          <span style="font-size:11px;color:var(--gray-200);">💨 ${wind} mph</span>
+          <span style="font-size:11px;color:var(--gray-200);">💧 ${humidity}%</span>
         </div>
       </div>`;
   } catch(e) {
@@ -3411,7 +3411,7 @@ function renderWelcomeActions() {
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
         <span class="welcome-action-tag" style="color:${a.tagCol};background:${a.tagBg}">${a.tag}</span>
-        <button onclick="event.stopPropagation();switchTabFromWelcome('${a.tab}')" style="font-size:10px;padding:3px 10px;background:transparent;border:1px solid var(--gray-600);border-radius:var(--radius-sm);color:var(--gray-400);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s;" onmouseover="this.style.color='var(--lime)';this.style.borderColor='var(--lime)'" onmouseout="this.style.color='var(--gray-400)';this.style.borderColor='var(--gray-600)'">Open tool ↗</button>
+        <button onclick="event.stopPropagation();switchTabFromWelcome('${a.tab}')" style="font-size:10px;padding:3px 10px;background:transparent;border:1px solid var(--gray-600);border-radius:var(--radius-sm);color:var(--gray-200);cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s;" onmouseover="this.style.color='var(--lime)';this.style.borderColor='var(--lime)'" onmouseout="this.style.color='var(--gray-400)';this.style.borderColor='var(--gray-600)'">Open tool ↗</button>
       </div>
     </div>`;
   }).join('');
@@ -3528,7 +3528,7 @@ function renderGscOverview(data) {
 
 function renderGscQueries(data) {
   const el = document.getElementById('gsc-queries');
-  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No query data available.</div>'; return; }
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-200);padding:8px 0;">No query data available.</div>'; return; }
   const max = data.rows[0].impressions;
   el.innerHTML = data.rows.map(r => {
     const pos = r.position;
@@ -3544,7 +3544,7 @@ function renderGscQueries(data) {
 
 function renderGscPages(data) {
   const el = document.getElementById('gsc-pages');
-  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No page data available.</div>'; return; }
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-200);padding:8px 0;">No page data available.</div>'; return; }
   const max = data.rows[0].impressions;
   el.innerHTML = data.rows.map(r => {
     const slug = r.keys[0].replace('https://novograf.co.uk','') || '/';
@@ -3560,7 +3560,7 @@ function renderGscPages(data) {
 function renderGscOpportunities(data) {
   const el = document.getElementById('gsc-opportunities');
   if (!data?.success || !data.rows?.length) {
-    el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);padding:8px 0;">No quick win opportunities found — either CTR is already good or not enough data yet.</div>';
+    el.innerHTML = '<div style="font-size:12px;color:var(--gray-200);padding:8px 0;">No quick win opportunities found — either CTR is already good or not enough data yet.</div>';
     return;
   }
   el.innerHTML = data.rows.map(r => {
@@ -3583,12 +3583,12 @@ function renderGscOpportunities(data) {
 
 function renderGscDevices(data) {
   const el = document.getElementById('gsc-devices');
-  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-400);">No device data.</div>'; return; }
+  if (!data?.success || !data.rows?.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray-200);">No device data.</div>'; return; }
   const icons = { MOBILE: '📱', DESKTOP: '💻', TABLET: '⊡' };
   el.innerHTML = data.rows.map(r => `
     <div class="gsc-device-card">
       <div class="gsc-device-name">${icons[r.keys[0]] || ''} ${r.keys[0]}</div>
-      <div class="gsc-device-clicks">${gscFmt(r.clicks)}<span style="font-size:12px;color:var(--gray-400);font-weight:400;"> clicks</span></div>
+      <div class="gsc-device-clicks">${gscFmt(r.clicks)}<span style="font-size:12px;color:var(--gray-200);font-weight:400;"> clicks</span></div>
       <div class="gsc-device-impr">${gscFmt(r.impressions)} impressions</div>
     </div>`).join('');
 }

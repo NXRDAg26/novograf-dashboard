@@ -460,7 +460,10 @@
         <div id="event-post-output" style="display:none;">
           <div class="output-header">
             <span class="output-label">Generated post</span>
-            <button class="copy-btn" onclick="copyOutput('event-post-text')">Copy</button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="copy-btn" onclick="copyOutput('event-post-text')">Copy</button>
+              <button onclick="addEventPostToScheduler()" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
+            </div>
           </div>
           <div class="generated-output" id="event-post-text">Generating...</div>
         </div>
@@ -538,7 +541,10 @@
               <span class="output-label">Generated post</span>
               <span id="gen-spinner" style="display:none;"><span class="spinner"></span></span>
             </div>
-            <button class="copy-btn" onclick="copyOutput('gen-text')">Copy</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="copy-btn" onclick="copyOutput('gen-text')">Copy</button>
+              <button onclick="sendToParentScheduler(document.getElementById('gen-text').textContent,'LinkedIn post')" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
+            </div>
           </div>
           <div class="generated-output" id="gen-text"></div>
         </div>
@@ -603,7 +609,10 @@
               <span class="output-label">Generated content</span>
               <span id="content-spinner" style="display:none;"><span class="spinner"></span></span>
             </div>
-            <button class="copy-btn" onclick="copyOutput('content-text')">Copy</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="copy-btn" onclick="copyOutput('content-text')">Copy</button>
+              <button onclick="sendToParentScheduler(document.getElementById('content-text').textContent,'LinkedIn post')" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
+            </div>
           </div>
           <div class="generated-output" id="content-text"></div>
         </div>
@@ -865,6 +874,7 @@
             <div style="display:flex;gap:6px;">
               <button class="copy-btn" onclick="copyOutput('gen2-text-pt')">Copy PT</button>
               <button class="copy-btn" onclick="copyOutput('gen2-text-en')">Copy EN</button>
+              <button onclick="addGen2PostToScheduler()" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
             </div>
           </div>
 
@@ -1172,7 +1182,10 @@
               <span class="output-label">Generated brief</span>
               <span id="video-spinner" style="display:none;"><span class="spinner"></span></span>
             </div>
-            <button class="copy-btn" onclick="copyOutput('video-text')">Copy</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="copy-btn" onclick="copyOutput('video-text')">Copy</button>
+              <button onclick="sendToParentScheduler(document.getElementById('video-text').textContent,'Video brief')" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
+            </div>
           </div>
           <div class="generated-output" id="video-text"></div>
         </div>
@@ -1457,7 +1470,10 @@
         <div id="ig-output" style="display:none;">
           <div class="output-header">
             <span class="output-label">Generated caption</span>
-            <button class="copy-btn" onclick="copyOutput('ig-text')">Copy</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="copy-btn" onclick="copyOutput('ig-text')">Copy</button>
+              <button onclick="sendToParentScheduler(document.getElementById('ig-text').textContent,'Instagram post')" style="background:#c8f026;border:none;border-radius:6px;color:#000;font-size:11px;font-weight:700;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='#c8f026'">+ Schedule</button>
+            </div>
           </div>
           <div class="generated-output" id="ig-text"></div>
         </div>
@@ -1513,6 +1529,45 @@
 </div><!-- /shell -->
 
 <script>
+// -- ADD TO SCHEDULER --
+function addEventPostToScheduler() {
+  const text = document.getElementById('event-post-text').textContent;
+  if (!text || text === 'Generating...') return;
+  sendToParentScheduler(text, 'LinkedIn post');
+}
+
+function addPostToScheduler(textId) {
+  const el = document.getElementById(textId);
+  const text = el ? el.textContent : '';
+  if (!text || text === 'Generating...') return;
+  sendToParentScheduler(text, 'LinkedIn post');
+}
+
+function addGen2PostToScheduler() {
+  const enEl = document.getElementById('gen2-text-en');
+  const ptEl = document.getElementById('gen2-text-pt');
+  const text = (enEl && enEl.textContent) || (ptEl && ptEl.textContent) || '';
+  if (!text || text === 'Generating...') return;
+  sendToParentScheduler(text, 'LinkedIn post');
+}
+
+function sendToParentScheduler(text, format) {
+  try {
+    window.parent.postMessage({
+      type: 'ADD_TO_SCHEDULER',
+      payload: {
+        title: text.substring(0, 60).trim() + (text.length > 60 ? '...' : ''),
+        content: text,
+        format: format || 'LinkedIn post',
+        status: 'draft'
+      }
+    }, '*');
+    showToast('Added to post scheduler ✓');
+  } catch(e) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied — paste into the Post Scheduler tab'));
+  }
+}
+
 // -- NAVIGATION --
 function nav(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));

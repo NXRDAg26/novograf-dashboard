@@ -151,12 +151,12 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 999; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--gray-800); border: 1px solid var(--gray-600); border-radius: var(--radius); padding: 1.75rem; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+.modal { background: var(--gray-800); border: 1px solid var(--gray-600); border-radius: var(--radius); padding: 1.75rem; width: 780px; max-width: 96vw; max-height: 92vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
 .modal-title { font-size: 15px; font-weight: 600; color: var(--white); }
 .modal-close { background: none; border: none; color: var(--gray-200); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; }
 .modal-close:hover { color: var(--white); }
-.sched-textarea { width: 100%; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 13px; padding: 10px 12px; resize: vertical; outline: none; line-height: 1.6; min-height: 120px; }
+.sched-textarea { width: 100%; background: var(--gray-700); border: 1px solid var(--gray-600); border-radius: var(--radius-sm); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 13px; padding: 14px 16px; resize: vertical; outline: none; min-height: 280px; line-height: 1.75; box-sizing: border-box; transition: border-color .15s; }
 .sched-textarea:focus { border-color: var(--lime); }
 .sched-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
 .sched-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -168,7 +168,7 @@ body { font-family: 'Poppins', sans-serif; background: var(--gray-900); color: v
 .post-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
 .icon-btn { background: none; border: 1px solid var(--gray-600); border-radius: 5px; color: var(--gray-200); font-size: 11px; padding: 3px 8px; cursor: pointer; font-family: 'Poppins',sans-serif; transition: all .15s; }
 .icon-btn:hover { border-color: var(--lime); color: var(--lime); }
-.icon-btn.del:hover { border-color: var(--negative); color: var(--negative); }
+.icon-btn.del { border-color: rgba(248,113,113,0.3); color: #f87171; } .icon-btn.del:hover { border-color: var(--negative); color: #fff; background: var(--negative); }
 .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .cal-nav-btn { background: var(--gray-700); border: 1px solid var(--gray-600); color: var(--gray-200); font-family: 'Poppins',sans-serif; font-size: 12px; padding: 5px 14px; border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; }
 .cal-nav-btn:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
@@ -1123,7 +1123,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
 
       <div class="form-group" style="margin-bottom:10px;">
         <label class="form-label">Post copy</label>
-        <textarea class="sched-textarea" id="post-copy" placeholder="Write your LinkedIn post here, or paste generated copy from the Content and Social tool..."></textarea>
+        <textarea class="sched-textarea" id="post-copy" style="min-height:280px;font-size:14px;line-height:1.7;" placeholder="Write your LinkedIn post here, or paste generated copy from the Content and Social tool..."></textarea>
       </div>
 
       <div class="sched-row">
@@ -1158,8 +1158,12 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
       </div>
 
       <div class="form-group" style="margin-top:10px;">
-        <label class="form-label">Hashtags</label>
-        <input class="form-input" id="post-hashtags" placeholder="#CompressedAir #NitrogenGeneration #Novograf" type="text">
+        <label class="form-label" style="display:flex;align-items:center;justify-content:space-between;">
+          Hashtags
+          <button onclick="suggestHashtags()" id="hashtag-suggest-btn" style="background:rgba(200,240,38,0.1);border:1px solid rgba(200,240,38,0.3);border-radius:6px;color:var(--lime);font-size:10px;font-weight:700;padding:3px 10px;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .15s;text-transform:uppercase;letter-spacing:0.04em;" onmouseover="this.style.background='rgba(200,240,38,0.2)'" onmouseout="this.style.background='rgba(200,240,38,0.1)'">⚡ Suggest</button>
+        </label>
+        <input class="form-input" id="post-hashtags" placeholder="Click Suggest to auto-generate hashtags from your post content" type="text">
+        <div id="hashtag-suggestions" style="display:none;margin-top:8px;flex-wrap:wrap;gap:6px;"></div>
       </div>
 
       <div class="form-group" style="margin-top:10px;">
@@ -1789,7 +1793,7 @@ body.large-text #font-toggle-btn { font-size: 20px; font-weight: 700; color: var
             </div>
             <p style="font-size:13px;color:var(--gray-400);margin-bottom:14px;line-height:1.6;">Once keywords load above, click Analyse to get a competitive breakdown — which terms competitors currently own, where Novograf can outrank them, and exactly what content to create for each opportunity.</p>
             <div id="nv-kw-analysis-loading" style="display:none;" class="loading"><div class="spinner"></div> Analysing keywords vs competition...</div>
-            <div class="out-text" id="nv-kw-analysis-output" style="display:none;font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;margin-top:8px;"></div>
+            <div class="out-text" id="nv-kw-analysis-output" style="display:none;margin-top:8px;"></div>
           </div>
 
           <div class="chart-card">
@@ -2072,7 +2076,7 @@ function switchTab(tab, btn) {
   });
   if (tab === 'linkedin') {
     const iframe = document.getElementById('linkedin-iframe');
-    if (!iframe.src || iframe.src === window.location.href) iframe.src = '/linkedin';
+    if (!iframe.src || iframe.src === window.location.href) iframe.src = '/linkedin?v=' + Date.now();
   }
   if (tab === 'scheduler') { renderCalendar(); renderPostList(); }
   if (tab === 'seo') { initTechChecklist(); }
@@ -2100,6 +2104,82 @@ function toggleTheme() {
   localStorage.setItem('novograf_theme', isLight ? 'light' : 'dark');
   const btn = document.getElementById('theme-toggle-btn');
   if (btn) btn.textContent = isLight ? '🌙' : '☀';
+}
+
+
+// ── HASHTAG SUGGESTER ──────────────────────────────────────────
+async function suggestHashtags() {
+  const copy = document.getElementById('post-copy').value.trim();
+  const format = document.getElementById('post-format')?.value || 'linkedin';
+  const btn = document.getElementById('hashtag-suggest-btn');
+  const suggestionsEl = document.getElementById('hashtag-suggestions');
+  
+  if (!copy) {
+    alert('Write or paste your post content first, then click Suggest.');
+    return;
+  }
+
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: `You are a social media hashtag expert for Novograf. UK commercial graphics and surface solutions company in East Kilbride, Scotland. Client includes Co-op, Greggs, Sainsbury's, NatWest, M&S, Travelodge. Employee-owned. Services: wall graphics, floor graphics, window graphics, hoardings, surface emulation, wayfinding, Eikonic wall panels.
+
+Post content:
+"${copy.substring(0, 500)}"
+
+Format: ${format}
+
+Generate exactly 8 to 10 relevant hashtags for this post. Rules:
+- Start with the most specific and relevant hashtags
+- Mix 2-3 high-volume broad tags with 5-7 niche specific ones
+- Always include brand tags: #Novograf #CommercialInteriors #BrandEnvironments #RetailDesign #Scotland
+- Return ONLY the hashtags as a single line, space-separated, starting with #
+- No explanation, no numbering, just the hashtags on one line`,
+        systemPrompt: 'You are a hashtag expert. Return only a single line of space-separated hashtags starting with #. No explanation.'
+      })
+    });
+    const data = await res.json();
+    const raw = (data.content || data.text || '').trim();
+    
+    // Extract hashtags
+    const tags = raw.match(/#[a-zA-Z0-9À-ÿ]+/g) || [];
+    
+    if (tags.length) {
+      // Show as clickable pills
+      suggestionsEl.style.display = 'flex';
+      suggestionsEl.innerHTML = tags.map(tag => 
+        `<span onclick="addHashtag('${tag}')" style="background:rgba(200,240,38,0.1);border:1px solid rgba(200,240,38,0.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--lime);cursor:pointer;transition:all .15s;white-space:nowrap;" onmouseover="this.style.background='rgba(200,240,38,0.25)'" onmouseout="this.style.background='rgba(200,240,38,0.1)'">${tag}</span>`
+      ).join('') + 
+      `<span onclick="addAllHashtags(${JSON.stringify(tags.join(' '))})" style="background:var(--lime);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#000;cursor:pointer;transition:background .15s;white-space:nowrap;" onmouseover="this.style.background='#b8e020'" onmouseout="this.style.background='var(--lime)'">+ Add all</span>`;
+    } else {
+      suggestionsEl.style.display = 'flex';
+      suggestionsEl.innerHTML = '<span style="font-size:12px;color:var(--gray-400);">No hashtags generated. Try again.</span>';
+    }
+  } catch(e) {
+    suggestionsEl.style.display = 'flex';
+    suggestionsEl.innerHTML = '<span style="font-size:12px;color:var(--negative);">Error generating hashtags. Please try again.</span>';
+  } finally {
+    btn.textContent = '⚡ Suggest';
+    btn.disabled = false;
+  }
+}
+
+function addHashtag(tag) {
+  const el = document.getElementById('post-hashtags');
+  const current = el.value.trim();
+  if (!current.includes(tag)) {
+    el.value = current ? current + ' ' + tag : tag;
+  }
+}
+
+function addAllHashtags(tagsStr) {
+  document.getElementById('post-hashtags').value = tagsStr;
+  document.getElementById('hashtag-suggestions').style.display = 'none';
 }
 
 function applyTheme() {
@@ -2640,7 +2720,7 @@ function renderPostList(status) {
       </div>
       <div class="post-card-actions">
         <button class="icon-btn" onclick="openModal('${p.id}')">Edit</button>
-        <button class="icon-btn del" onclick="deletePost('${p.id}')">Delete</button>
+        <button onclick="deletePost('${p.id}')" title="Delete post" style="background:#ef4444;border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;cursor:pointer;font-family:'Poppins',sans-serif;flex-shrink:0;transition:background .15s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">🗑 Delete</button>
       </div>
     </div>`;
   }).join('');
@@ -2738,19 +2818,29 @@ initCal();
 
 // -- RECEIVE POSTS FROM LINKEDIN GROWTH TOOL IFRAME --
 window.addEventListener('message', e => {
-  if (!e.data || e.data.type !== 'BRISKFIL_ADD_POST') return;
-  const post = e.data.post;
-  if (!post || !post.id) return;
-  const posts = getPosts();
-  // Avoid duplicates
-  if (!posts.find(p => p.id === post.id)) {
-    posts.push(post);
-    savePosts(posts);
+  // Existing post sync from scheduler
+  if (e.data?.type === 'BRISKFIL_ADD_POST') {
+    const post = e.data.post;
+    if (!post || !post.id) return;
+    const posts = getPosts();
+    if (!posts.find(p => p.id === post.id)) { posts.push(post); savePosts(posts); }
+    if (document.getElementById('panel-scheduler').classList.contains('active')) { renderCalendar(); renderPostList(); }
+    return;
   }
-  // If scheduler tab is active, re-render
-  if (document.getElementById('panel-scheduler').classList.contains('active')) {
-    renderCalendar();
-    renderPostList();
+  // Add to scheduler from social tool iframe
+  if (e.data?.type === 'ADD_TO_SCHEDULER') {
+    const p = e.data.payload;
+    const schedBtn = document.querySelector('.nav-tab[onclick*="scheduler"]');
+    switchTab('scheduler', schedBtn);
+    setTimeout(() => {
+      openModal(null);
+      const titleEl = document.getElementById('post-title');
+      const copyEl = document.getElementById('post-copy');
+      const fmtEl = document.getElementById('post-format');
+      if (titleEl) titleEl.value = p.title || '';
+      if (copyEl) copyEl.value = p.content || '';
+      if (fmtEl) fmtEl.value = 'linkedin';
+    }, 300);
   }
 });
 
@@ -4029,47 +4119,193 @@ async function runNvKwAnalysis() {
   loading.style.display = 'flex'; output.style.display = 'none';
 
   const kwList = nvGscRows.slice(0,30).map(r =>
-    `${r.keys[0]} (${nvFmt(r.impressions)} impressions, position ${nvPos(r.position)}, ${nvPct(r.ctr)} CTR)`
+    `${r.keys[0]} | ${nvFmt(r.impressions)} impressions | position ${nvPos(r.position)} | ${nvPct(r.ctr)} CTR`
   ).join('\n');
 
-  const prompt = `You are an expert SEO strategist for NXRD working on Novograf (novograf.co.uk), a UK-based employee-owned signage, graphics, and surface solutions company in East Kilbride, Scotland. Primary competitors: Octink (Service Graphics/Paragon Group), Image Technique Ltd, XG Group (Xtreme Graphics), Vinyline Signs and Graphics, Harvey Fit Out Group, KDM Group, EE Smith Contracts, and Pacy and Wheatley Interiors.
+  const prompt = `You are an expert SEO strategist for NXRD working on Novograf (novograf.co.uk), UK employee-owned signage and surface solutions company in East Kilbride, Scotland. Primary competitors: Octink (Service Graphics/Paragon Group), Image Technique Ltd, XG Group, Vinyline Signs and Graphics.
 
-Actual keywords people search to find novograf.co.uk (from Google Search Console, last 90 days):
-
+Real keywords from Google Search Console (last 90 days):
 ${kwList}
 
-Analyse these real keywords and provide:
+Return ONLY a valid JSON object. No preamble, no markdown, no explanation outside the JSON.
 
-1. WHAT THESE KEYWORDS TELL US
-What do these searches reveal about who is finding Novograf and why? What intent do they show?
+{
+  "intent_summary": "2-3 sentences on what these searches reveal about buyer intent and stage",
+  "quick_wins": [
+    {
+      "keyword": "exact keyword",
+      "position": "current position",
+      "impressions": "e.g. 150/mo",
+      "ctr": "e.g. 1.8%",
+      "action": "one specific sentence on what to do to reach page 1",
+      "timeline": "e.g. 45 days"
+    }
+  ],
+  "competitive_terms": [
+    {
+      "keyword": "exact keyword",
+      "competitor": "Octink or Image Technique etc",
+      "briskfil_position": "current position or Not ranking",
+      "difficulty": "Low or Medium or High",
+      "strategy": "one specific sentence on how to outrank"
+    }
+  ],
+  "scotland_opportunities": [
+    {
+      "keyword": "Scotland or employee-owned specific term",
+      "volume": "estimated monthly UK searches",
+      "competition": "Low or None",
+      "action": "one sentence on what content to create"
+    }
+  ],
+  "high_volume_gaps": [
+    {
+      "keyword": "missing keyword",
+      "owned_by": "Octink or Image Technique etc or None",
+      "volume": "estimated monthly searches",
+      "action": "one sentence on what page to create"
+    }
+  ]
+}
 
-2. COMPETITIVE POSITIONING ON EACH KEY TERM
-For the top 10 keywords by impressions — which competitors (Octink, Image Technique, XG Group, Vinyline) currently dominate each term and what Novograf needs to do to outrank them.
+quick_wins: only keywords from the GSC data above with position between 8 and 25.
+competitive_terms: top 6 keywords by impressions from the GSC data.
+scotland_opportunities: 4 keywords where Novograf's unique positioning can own unchallenged territory.
+high_volume_gaps: 5-6 important missing UK commercial graphics keywords.
 
-3. QUICK WINS — keywords sitting in positions 11 to 20 where Novograf can reach page 1 within 60 to 90 days. Exact content improvement needed for each.
-
-4. HIGH-VOLUME GAPS — important UK commercial graphics and signage terms that are NOT in this list but should be. Terms where Octink or Image Technique get traffic that Novograf is invisible for.
-
-5. EMPLOYEE OWNERSHIP AND SCOTLAND OPPORTUNITY — keywords where Novograf's unique positioning (employee-owned, Scottish manufacturer, 35 years) could own entirely unchallenged search territory.
-
-Be specific to Novograf's actual services. No generic advice.`;
+Return only valid JSON. No backticks.`;
 
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, systemPrompt: 'You are an expert SEO strategist for the UK commercial interiors and signage market. Be direct, specific, and commercially focused. Every recommendation must be actionable within 30 to 90 days.' })
+      body: JSON.stringify({
+        prompt,
+        systemPrompt: 'You are an expert SEO strategist for the UK commercial interiors and signage market. Return only valid JSON objects. No markdown, no backticks, no explanation.'
+      })
     });
     const data = await res.json();
-    output.textContent = data.content || data.text || '';
-    output.style.display = 'block';
+    let raw = (data.content || data.text || '').trim().replace(/```json|```/g, '').trim();
+    const s = raw.indexOf('{'), e = raw.lastIndexOf('}');
+    if (s === -1) throw new Error('No JSON');
+    const analysis = JSON.parse(raw.slice(s, e + 1));
+    renderNvKwAnalysis(analysis, output);
   } catch(e) {
-    output.textContent = 'Error generating analysis. Please try again.';
+    output.innerHTML = `<div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:20px 24px;"><div style="font-size:13px;color:var(--gray-200);line-height:1.85;">Analysis could not be structured. Please click Analyse again.</div></div>`;
     output.style.display = 'block';
   } finally {
     btn.disabled = false; btn.textContent = 'Analyse my keywords';
     loading.style.display = 'none';
   }
+}
+
+function renderNvKwAnalysis(data, container) {
+  let html = '';
+
+  if (data.intent_summary) {
+    html += `<div style="background:rgba(200,240,38,0.06);border:1px solid rgba(200,240,38,0.2);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;">
+      <div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">What your keywords tell us</div>
+      <div style="font-size:13px;color:var(--gray-200);line-height:1.7;">${data.intent_summary}</div>
+    </div>`;
+  }
+
+  if (data.quick_wins?.length) {
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        <span style="background:var(--lime);color:#000;font-size:10px;padding:2px 8px;border-radius:8px;">Quick wins</span>
+        <span style="color:var(--gray-400);font-weight:400;font-size:11px;">Page 1 within 30 to 90 days</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
+    data.quick_wins.forEach(q => {
+      html += `<div style="background:var(--gray-800);border:1px solid rgba(200,240,38,0.2);border-radius:var(--radius);padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:8px;">${q.keyword}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <span style="font-size:11px;background:var(--gray-700);color:var(--gray-300);padding:2px 8px;border-radius:6px;">Pos. ${q.position}</span>
+          <span style="font-size:11px;background:var(--gray-700);color:var(--gray-300);padding:2px 8px;border-radius:6px;">${q.impressions} impr</span>
+          <span style="font-size:11px;background:var(--gray-700);color:var(--gray-300);padding:2px 8px;border-radius:6px;">${q.ctr} CTR</span>
+          <span style="font-size:11px;background:rgba(200,240,38,0.1);color:var(--lime);padding:2px 8px;border-radius:6px;">~${q.timeline}</span>
+        </div>
+        <div style="font-size:12px;color:var(--gray-200);line-height:1.5;border-top:1px solid var(--gray-700);padding-top:8px;">→ ${q.action}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (data.competitive_terms?.length) {
+    const diffCol = { 'Low':'#4ade80','Medium':'#f59e0b','High':'#f87171' };
+    const diffBg  = { 'Low':'rgba(74,222,128,0.1)','Medium':'rgba(245,158,11,0.1)','High':'rgba(248,113,113,0.1)' };
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        <span style="background:var(--red-dim);color:var(--negative);font-size:10px;padding:2px 8px;border-radius:8px;border:1px solid rgba(248,113,113,0.3);">Competitive terms</span>
+        <span style="color:var(--gray-400);font-weight:400;font-size:11px;">Your keywords vs Octink and Image Technique</span>
+      </div>
+      <div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr style="border-bottom:1px solid var(--gray-700);background:var(--gray-700);">
+            <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:10px 16px;text-align:left;">Keyword</th>
+            <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:10px 12px;text-align:left;">Competitor</th>
+            <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:10px 12px;text-align:left;">Your pos.</th>
+            <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:10px 12px;text-align:left;">Difficulty</th>
+            <th style="font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.05em;padding:10px 16px;text-align:left;">Strategy</th>
+          </tr></thead>
+          <tbody>`;
+    data.competitive_terms.forEach(t => {
+      const dc = diffCol[t.difficulty] || '#a0a0a0';
+      const dbg = diffBg[t.difficulty] || 'rgba(160,160,160,0.1)';
+      html += `<tr style="border-bottom:1px solid var(--gray-700);">
+        <td style="font-size:12px;font-weight:600;color:var(--white);padding:11px 16px;">${t.keyword}</td>
+        <td style="padding:11px 12px;"><span style="font-size:11px;color:#f87171;font-weight:600;">${t.competitor}</span></td>
+        <td style="font-size:12px;color:var(--gray-300);padding:11px 12px;">${t.briskfil_position}</td>
+        <td style="padding:11px 12px;"><span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:${dbg};color:${dc};">${t.difficulty}</span></td>
+        <td style="font-size:12px;color:var(--gray-200);padding:11px 16px;line-height:1.5;">${t.strategy}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  }
+
+  if (data.scotland_opportunities?.length) {
+    html += `<div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        <span style="background:rgba(200,240,38,0.1);color:var(--lime);font-size:10px;padding:2px 8px;border-radius:8px;border:1px solid rgba(200,240,38,0.2);">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland and employee ownership</span>
+        <span style="color:var(--gray-400);font-weight:400;font-size:11px;">Unchallenged territory only Novograf can own</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
+    data.scotland_opportunities.forEach(s => {
+      html += `<div style="background:var(--gray-800);border:1px solid rgba(200,240,38,0.15);border-radius:var(--radius);padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">${s.keyword}</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <span style="font-size:11px;background:var(--gray-700);color:var(--gray-300);padding:2px 8px;border-radius:6px;">${s.volume}</span>
+          <span style="font-size:11px;background:rgba(74,222,128,0.1);color:#4ade80;padding:2px 8px;border-radius:6px;">${s.competition} competition</span>
+        </div>
+        <div style="font-size:12px;color:var(--gray-200);line-height:1.5;border-top:1px solid var(--gray-700);padding-top:8px;">→ ${s.action}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (data.high_volume_gaps?.length) {
+    html += `<div>
+      <div style="font-size:11px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+        <span style="background:rgba(245,158,11,0.1);color:#f59e0b;font-size:10px;padding:2px 8px;border-radius:8px;border:1px solid rgba(245,158,11,0.2);">High-volume gaps</span>
+        <span style="color:var(--gray-400);font-weight:400;font-size:11px;">Traffic competitors get that Novograf is missing</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">`;
+    data.high_volume_gaps.forEach(g => {
+      const isUnclaimed = (g.owned_by||'').toLowerCase().includes('none');
+      html += `<div style="background:var(--gray-800);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius);padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;">${g.keyword}</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <span style="font-size:11px;background:${isUnclaimed ? 'rgba(74,222,128,0.1)' : 'var(--red-dim)'};color:${isUnclaimed ? '#4ade80' : 'var(--negative)'};padding:2px 8px;border-radius:6px;">${isUnclaimed ? 'Unclaimed ✓' : g.owned_by}</span>
+          <span style="font-size:11px;background:var(--gray-700);color:var(--gray-300);padding:2px 8px;border-radius:6px;">${g.volume}</span>
+        </div>
+        <div style="font-size:12px;color:var(--gray-200);line-height:1.5;border-top:1px solid var(--gray-700);padding-top:8px;">→ ${g.action}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  container.innerHTML = html;
+  container.style.display = 'block';
 }
 
 async function runNvKwGaps() {
@@ -4087,7 +4323,9 @@ async function runNvKwGaps() {
 
 ${current}
 
-Identify 12 to 15 keyword gaps. Return ONLY a valid JSON array. No preamble, no markdown, no explanation outside the array.
+[{"keyword":"example","volume":"100-300/mo","difficulty":"Low","competitor":"Octink","category":"Retail graphics","action":"Create a page","priority":"High"}]
+
+That is the EXACT format. Now generate 12 real keyword gaps for Novograf (novograf.co.uk), UK commercial graphics and surface solutions company in East Kilbride. Return ONLY the JSON array starting with [ and ending with ]. No text before or after.
 
 Each object must have exactly these keys:
 - keyword: the exact search term
@@ -4121,12 +4359,26 @@ Return only the JSON array.`;
     const gaps = JSON.parse(raw.slice(startIdx, endIdx + 1));
     renderNvGapCards(gaps, output);
   } catch(e) {
-    output.innerHTML = `<div style="color:var(--negative);font-size:13px;padding:12px 0;">Could not parse gap analysis. Please try again.</div>`;
-    output.style.display = 'block';
+    try {
+      const res2 = await fetch('/api/generate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: prompt + '\n\nIMPORTANT: Return ONLY a valid JSON array starting with [ and ending with ]. No other text.', systemPrompt: 'Return ONLY a valid JSON array. Start with [ end with ].' })
+      });
+      const d2 = await res2.json();
+      let r2 = (d2.content || d2.text || '').trim().replace(/```json|```/g,'').trim();
+      const s2 = r2.indexOf('['), e2 = r2.lastIndexOf(']');
+      if (s2 !== -1) { renderNvGapCards(JSON.parse(r2.slice(s2, e2+1)), output); }
+      else { renderNvGapFallback(r2 || 'Please click Find gaps again.', output); }
+    } catch(e2) { renderNvGapFallback('Please click Find gaps again.', output); }
   } finally {
     btn.disabled = false; btn.textContent = 'Find gaps';
     loading.style.display = 'none';
   }
+}
+
+function renderNvGapFallback(text, container) {
+  container.innerHTML = `<div style="background:var(--gray-800);border:1px solid var(--gray-700);border-radius:var(--radius);padding:20px 24px;"><div style="font-size:10px;font-weight:700;color:var(--lime);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Keyword gap analysis</div><div style="font-size:13px;color:var(--gray-200);line-height:1.85;white-space:pre-wrap;">${text}</div></div>`;
+  container.style.display = 'block';
 }
 
 function renderNvGapCards(gaps, container) {

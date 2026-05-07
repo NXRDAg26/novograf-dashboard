@@ -2672,11 +2672,14 @@ function renderCalendar() {
   document.getElementById('cal-body').innerHTML = cells.map(c => {
     const dateStr = c.cur ? fmt(c.day, calMonth, calYear) : '';
     const dayPosts = posts.filter(p => p.date === dateStr);
+      const visiblePosts = dayPosts.slice(0, 2);
+      const extraCount = dayPosts.length - 2;
     const isToday = c.cur && new Date(calYear, calMonth, c.day).getTime() === today.getTime();
     const chips = dayPosts.slice(0,3).map(p => {
       const fmtCls = {text:'fmt-text',carousel:'fmt-carousel',video:'fmt-video',image:'fmt-image'}[p.format]||'fmt-text';
+      const chipTitle = (p.title||'Untitled').length > 28 ? (p.title||'Untitled').substring(0,28)+'…' : (p.title||'Untitled');
       return `<div class="cal-post-chip chip-${p.status}" onclick="event.stopPropagation();openModal('${p.id}')" title="${p.title}">
-        <span class="format-badge ${fmtCls}">${p.format}</span>${p.title}
+        <span class="format-badge ${fmtCls}">${p.format}</span>${chipTitle}
       </div>`;
     }).join('');
     const extra = dayPosts.length > 3 ? `<div style="font-size:9px;color:var(--gray-200)">+${dayPosts.length-3} more</div>` : '';
